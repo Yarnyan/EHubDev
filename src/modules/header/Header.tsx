@@ -1,10 +1,26 @@
-import React from 'react'
-import styles from './Header.module.scss'
+import { AppBar, Toolbar, Typography } from '@mui/material'
 
-const Header = () => {
+
+export const Header = () => {
   return (
-    <div>Header</div>
+    <AppBar
+      component='header'
+      sx={{
+        height: '80px',
+        position: 'relative'
+      }}
+    >
+      <Toolbar>
+        <Typography
+          component='span'
+          fontSize={32}
+          sx={{
+            margin: 'auto',
+          }}
+        >
+          Header
+        </Typography>
+      </Toolbar>
+    </AppBar>
   )
 }
-
-export default Header

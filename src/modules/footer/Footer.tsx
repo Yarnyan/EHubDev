@@ -1,10 +1,26 @@
-import React from 'react'
-import styles from './Footer.module.scss'
+import { Box, Typography } from '@mui/material'
 
-const Footer = () => {
+export const Footer = () => {
   return (
-    <div>Footer</div>
+    <Box
+      component='footer'
+      bgcolor='secondary.main'
+      flexGrow={1}
+      sx={{
+        height: '184px',
+        display: 'flex',
+        mt: 'auto',
+      }}
+    >
+      <Typography
+        component='span'
+        fontSize={32}
+        sx={{
+          margin: 'auto',
+        }}
+      >
+        Footer
+      </Typography>
+    </Box>
   )
 }
-
-export default Footer
