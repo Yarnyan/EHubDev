@@ -1,0 +1,41 @@
+.buttonAuth {
+    margin: 18px auto;
+    border-radius: 10px;
+    padding: 8px 4px;
+    width: 290px;
+    height: 60px;
+    background-color: #72C075;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border: 2px solid #72C075;
+    transition: 1s background-color, .5s color;
+    cursor: pointer;
+}
+
+.buttonAuth:hover {
+    background-color: transparent;
+    color: #000;
+}
+
+.authLink {
+    color: #000;
+    font-size: 18px;
+    transition: .5s color;
+}
+
+.authLink:hover {
+    color: #64b23c;
+}
+
+.authTitle {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.authSubTitle {
+    margin-bottom: 18px;
+    font-size: 30px;
+    font-weight: 600;
+}

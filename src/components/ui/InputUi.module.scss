@@ -1,0 +1,22 @@
+.input__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.input__container input {
+    padding: 19px 14px;
+    border: 1px solid #E3E3E3;
+    border-radius: 25px;
+    height: 60px;
+    width: 400px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #4C584C;
+    margin-top: 10px;
+}
+
+.input__container label {
+    font-weight: 500;
+    font-size: 16px;
+    color: #888888;
+}

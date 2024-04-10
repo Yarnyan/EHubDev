@@ -1,25 +1,32 @@
-import { Outlet } from 'react-router-dom'
-import { Container } from '@mui/material'
-import { Footer } from '../../modules/footer/Footer.tsx'
-import { Header } from '../../modules/header/Header.tsx'
+import { Outlet } from 'react-router-dom';
+import { Container } from '@mui/material';
+import { Footer } from '../../modules/footer/Footer.tsx';
+import { Header } from '../../modules/header/Header.tsx';
 
 export const Layout = () => {
   return (
     <Container
       sx={{
-        border: 1,
-        borderColor: 'black',
-        width: '1600px',
-        minHeight: '100vh',
+        width: '100vw',
         display: 'flex',
-        flexWrap: 'wrap',
+        flexDirection: 'column',
+        minHeight: '100vh',
       }}
-      disableGutters>
+      disableGutters
+    >
       <Header />
-      <Container component='main'>
+
+      <Container
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
         <Outlet />
       </Container>
       <Footer />
     </Container>
-  )
-}
+  );
+};

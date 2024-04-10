@@ -7,7 +7,9 @@ import { useRegistrationMutation, useAuthorizationMutation } from './api/authori
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { AUTHORIZATION_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE } from '../../consts/routes.ts'
+import InputUi from '../../components/ui/InputUi.tsx'
 // import { handleFieldError } from './helpers/handle-field-error.ts'
+import styles from './authorization-form.module.scss'
 import { Inputs } from './types/Inputs.ts'
 
 export const AuthorizationForm = () => {
@@ -73,29 +75,25 @@ export const AuthorizationForm = () => {
           minHeight: '356px',
           maxWidth: '640px',
           maxHeight: '640px',
-          border: 1,
-          borderColor: '#64b23c',
           borderRadius: '24px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center'
         }}
       >
-        <Typography
-          component='h5'
-          variant='h5'
-          align='center'
-          sx={{
-            margin: 3,
-          }}
-        >
+        <h5 className={styles.authSubTitle}>
           {isRegistration ? 'Регистрация' : 'Авторизация'}
-        </Typography>
+        </h5>
         <ControlledTextField
           type='email'
           name='email'
           label='Email'
-          InputProps={{ sx: { borderRadius: '12px', borderColor: '#64b23c' } }}
+          InputProps={{
+            sx: {
+              borderRadius: '12px',
+              borderColor: '#64b23c',
+            },
+          }}
           rules={{
             required: 'Поле не заполнено',
             pattern: {
@@ -137,15 +135,10 @@ export const AuthorizationForm = () => {
           </>
         )}
 
-        <Button
+        <button
           type='submit'
-          color='secondary'
-          variant='contained'
+          className={styles.buttonAuth}
           disabled={!isValid || isSendingForm}
-          sx={{
-            margin: '18px auto',
-            borderRadius: '12px',
-          }}
         >
           {isSendingForm ? (
             <CircularProgress size={20} />
@@ -154,10 +147,10 @@ export const AuthorizationForm = () => {
           ) : (
             'Авторизироваться'
           )}
-        </Button>
+        </button>
         {isRegistration ?
-          <NavLink to={AUTHORIZATION_ROUTE}>Войти</NavLink> :
-          <NavLink to={REGISTRATION_ROUTE}>Зарегистрироваться</NavLink>
+          <p className={styles.authTitle}>Уже есть аккаунт? <NavLink to={AUTHORIZATION_ROUTE} className={styles.authLink}>Войти</NavLink></p> :
+          <p className={styles.authTitle}>Нет аккаунта? <NavLink to={REGISTRATION_ROUTE} className={styles.authLink}>Зарегистрироваться</NavLink></p>
         }
       </Box>
     </FormProvider>

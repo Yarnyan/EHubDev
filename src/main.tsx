@@ -4,6 +4,7 @@ import { App } from './app/App.tsx'
 import { Provider } from 'react-redux'
 import { setupStore } from './store/store'
 import { BrowserRouter } from 'react-router-dom'
+import './style/style.scss'
 
 const store = setupStore()
 
