@@ -1,5 +1,5 @@
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
-import { Box, Button, CircularProgress, Typography } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 import { ControlledTextField } from '../../components/controlled-text-field/Controlled-text-field.tsx'
 import { EMAIL_PATTERN } from './consts/consts.ts'
 import { validatePassword } from './helpers/validate-password.ts'
@@ -7,7 +7,6 @@ import { useRegistrationMutation, useAuthorizationMutation } from './api/authori
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { AUTHORIZATION_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE } from '../../consts/routes.ts'
-import InputUi from '../../components/ui/InputUi.tsx'
 // import { handleFieldError } from './helpers/handle-field-error.ts'
 import styles from './authorization-form.module.scss'
 import { Inputs } from './types/Inputs.ts'
@@ -85,13 +84,16 @@ export const AuthorizationForm = () => {
           {isRegistration ? 'Регистрация' : 'Авторизация'}
         </h5>
         <ControlledTextField
+          sx={{
+            width: '100%',
+          }}
+          labelType='moving'
           type='email'
           name='email'
           label='Email'
           InputProps={{
             sx: {
               borderRadius: '12px',
-              borderColor: '#64b23c',
             },
           }}
           rules={{
@@ -104,9 +106,11 @@ export const AuthorizationForm = () => {
         />
         <ControlledTextField
           sx={{
+            width: '100%',
             mt: 3,
           }}
           InputProps={{ sx: { borderRadius: '12px' } }}
+          labelType='moving'
           type='password'
           name='password'
           label='Пароль'
@@ -119,9 +123,11 @@ export const AuthorizationForm = () => {
           <>
             <ControlledTextField
               sx={{
+                width: '100%',
                 mt: 3,
               }}
               InputProps={{ sx: { borderRadius: '12px' } }}
+              labelType='moving'
               type='password'
               name='confirmPassword'
               label='Подтвердите пароль'
