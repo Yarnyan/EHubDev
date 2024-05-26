@@ -18,17 +18,16 @@ const StyledTextField = styled(TextField)({
   },
 })
 
-export const ControlledTextField = (
-  {
-    name,
-    rules,
-    label,
-    sx,
-    type,
-    InputProps,
-    labelType,
-    labelSx,
-  }: ControlledTextFieldProps) => {
+export const ControlledTextField = ({
+                                      name,
+                                      rules,
+                                      label,
+                                      sx,
+                                      type,
+                                      InputProps,
+                                      labelType,
+                                      labelSx,
+                                    }: ControlledTextFieldProps) => {
   return (
     <Controller
       name={name}
