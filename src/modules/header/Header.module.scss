@@ -3,6 +3,10 @@
   height: 80px;
   padding: 6px 100px;
 
+  .burger {
+    display: none;
+  }
+
   .container {
     display: flex;
     align-items: center;
@@ -107,6 +111,10 @@
   .header {
     height: 60px;
     padding: 20px;
+
+    .burger {
+      display: block;
+    }
 
     .container {
       display: flex;

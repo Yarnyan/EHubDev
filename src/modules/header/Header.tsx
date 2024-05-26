@@ -24,11 +24,11 @@ export const Header = () => {
       <div className={styles.container}>
         <IconButton
           size="large"
-          edge="start"
           color="inherit"
           aria-label="menu"
           sx={{ mr: 2 }}
           onClick={handleMenuButtonClick}
+          className={styles.burger}
         >
           <MenuIcon />
         </IconButton>
