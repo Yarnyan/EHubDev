@@ -17,6 +17,7 @@ export const Layout = () => {
       <Header />
 
       <Container
+        component='main'
         sx={{
           flexGrow: 1,
           display: 'flex',

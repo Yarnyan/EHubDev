@@ -70,7 +70,7 @@ export const AuthorizationForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           margin: '3px auto',
-          minWidth: '356px',
+          minWidth: '280px',
           minHeight: '356px',
           maxWidth: '640px',
           maxHeight: '640px',

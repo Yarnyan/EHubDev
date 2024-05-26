@@ -1,10 +1,16 @@
-import React from 'react'
 import Avatar from '@mui/material/Avatar';
-type Props = {}
+import { useNavigate } from 'react-router-dom'
+import { PROFILE_ROUTE } from '../../consts/routes.ts'
 
-const UserAvatar = (props: Props) => {
+const UserAvatar = () => {
+  const navigate = useNavigate()
+
   return (
-    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+    <Avatar
+      onClick={() => navigate(PROFILE_ROUTE)}
+      sx={{cursor: 'pointer'}}
+      alt="Remy Sharp"
+      src="/static/images/avatar/1.jpg" />
   )
 }
 
