@@ -1,7 +1,7 @@
 import { Menu, MenuItem } from '@mui/material'
 import { Link } from 'react-router-dom'
 import styles from './header-burger.module.scss'
-
+import { RESUMEBUILDER_ROUTE } from '../../../../consts/routes'
 export const HeaderBurger = (props: {
   anchorEl: HTMLElement | null
   isMenuOpen: boolean
@@ -17,7 +17,7 @@ export const HeaderBurger = (props: {
         <Link className={styles.link} to={'/'}>Репозитории</Link>
       </MenuItem>
       <MenuItem onClick={props.handleCloseMenu}>
-        <Link className={styles.link} to={'/'}>Конструктор резюме</Link>
+        <Link className={styles.link} to={RESUMEBUILDER_ROUTE}>Конструктор резюме</Link>
       </MenuItem>
       <MenuItem onClick={props.handleCloseMenu}>
         <Link className={styles.link} to={'/'}>Мессенджер</Link>

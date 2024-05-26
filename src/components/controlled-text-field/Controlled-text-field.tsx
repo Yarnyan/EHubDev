@@ -19,15 +19,16 @@ const StyledTextField = styled(TextField)({
 })
 
 export const ControlledTextField = ({
-                                      name,
-                                      rules,
-                                      label,
-                                      sx,
-                                      type,
-                                      InputProps,
-                                      labelType,
-                                      labelSx,
-                                    }: ControlledTextFieldProps) => {
+  name,
+  rules,
+  label,
+  sx,
+  type,
+  InputProps,
+  labelType,
+  labelSx,
+  placeholder,
+}: ControlledTextFieldProps) => {
   return (
     <Controller
       name={name}
@@ -38,6 +39,7 @@ export const ControlledTextField = ({
             sx={{ ...sx, cursor: 'pointer' }}
             InputProps={InputProps}
             color='secondary'
+            placeholder={placeholder}
             type={type || 'text'}
             helperText={error ? error.message : null}
             error={!!error}

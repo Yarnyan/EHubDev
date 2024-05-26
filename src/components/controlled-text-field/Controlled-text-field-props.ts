@@ -6,6 +6,7 @@ export interface ControlledTextFieldProps {
   name: string
   label: string
   labelType: 'static' | 'moving'
+  placeholder?: string
   rules?: Omit<
     RegisterOptions<FieldValues, string>,
     'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
