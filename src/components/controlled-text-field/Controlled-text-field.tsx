@@ -18,16 +18,17 @@ const StyledTextField = styled(TextField)({
   },
 })
 
-export const ControlledTextField = ({
-                                      name,
-                                      rules,
-                                      label,
-                                      sx,
-                                      type,
-                                      InputProps,
-                                      labelType,
-                                      labelSx,
-                                    }: ControlledTextFieldProps) => {
+export const ControlledTextField = (
+  {
+    name,
+    rules,
+    label,
+    sx,
+    type,
+    InputProps,
+    labelType,
+    labelSx,
+  }: ControlledTextFieldProps) => {
   return (
     <Controller
       name={name}
@@ -51,7 +52,7 @@ export const ControlledTextField = ({
                 fontWeight: '500',
                 fontSize: '16px',
                 color: '#888888',
-                ...labelSx
+                ...labelSx,
               },
             } : {}}
             label={label}
