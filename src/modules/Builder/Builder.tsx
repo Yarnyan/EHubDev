@@ -25,9 +25,8 @@ export const Builder = () => {
                             <ControlledTextField
                                 sx={{ width: '100%', marginTop: '10px' }}
                                 labelType='static'
-                                name='password'
-                                label='password'
-                                placeholder='Введите пожалуйста ваше образование'
+                                name='about'
+                                label='Расскажите о вашем образовании'
                             />
                         </div>
                         <div className={styles.input}>
@@ -35,8 +34,7 @@ export const Builder = () => {
                                 sx={{ width: '100%', marginTop: '10px' }}
                                 labelType='static'
                                 name='email'
-                                label='Email'
-                                placeholder='Введите пожалуйста ваше образование'
+                                label='Расскажите о себе'
                             />
                         </div>
                         <div className={styles.input}>
@@ -44,7 +42,7 @@ export const Builder = () => {
                                 sx={{ width: '100%', marginTop: '10px' }}
                                 labelType='static'
                                 name='email'
-                                label='name'
+                                label='Откуда вы?'
                             />
                         </div>
                         <div className={styles.input}>
@@ -52,7 +50,7 @@ export const Builder = () => {
                                 sx={{ width: '100%', marginTop: '10px' }}
                                 labelType='static'
                                 name='email'
-                                label='Email'
+                                label='Где сейчас проживаете?'
                             />
                         </div>
                     </div>
@@ -65,7 +63,7 @@ export const Builder = () => {
                                 sx={{ width: '100%', marginTop: '10px' }}
                                 labelType='static'
                                 name='email'
-                                label='Email'
+                                label='Какой у вас стэк?'
                             />
                         </div>
                         <div className={styles.input}>
@@ -73,7 +71,7 @@ export const Builder = () => {
                                 sx={{ width: '100%', marginTop: '10px' }}
                                 labelType='static'
                                 name='email'
-                                label='Email'
+                                label='Что сейчас изучаете?'
                             />
                         </div>
                     </div>
@@ -86,7 +84,7 @@ export const Builder = () => {
                                 sx={{ width: '100%', marginTop: '10px' }}
                                 labelType='static'
                                 name='email'
-                                label='Email'
+                                label='Расскажите о своих проектах'
                             />
                         </div>
                         <div className={styles.input}>
@@ -94,7 +92,7 @@ export const Builder = () => {
                                 sx={{ width: '100%', marginTop: '10px' }}
                                 labelType='static'
                                 name='email'
-                                label='Email'
+                                label='Расскажите о своих проектах'
                             />
                         </div>
                     </div>
