@@ -33,7 +33,7 @@
     height: 18px;
   }
 
-  .navigate a {
+  .navigate p {
     margin-left: 6px;
     font-size: 18px;
     font-weight: 500;
@@ -43,10 +43,14 @@
 
   .navigateItem {
     position: relative;
+    background: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
   }
 
   .navigateItem:hover {
-    a {
+    p {
       color: #1E331F;
     }
   }
@@ -67,13 +71,8 @@
     transition: width 0.3s ease;
   }
 
-  .navigate.active a {
+  .navigate.active p {
     color: #1E331F
-  }
-
-  .navigateItem {
-    display: flex;
-    align-items: center;
   }
 
   .navigateItem:not(:first-child) {

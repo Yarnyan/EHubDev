@@ -1,16 +1,17 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import userReducer from './reducers/user-slice.ts'
 
 const rootReducer = combineReducers({
-
+  userReducer,
 })
 
 export const setupStore = () => {
-    return configureStore({
-        reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => {
-            return getDefaultMiddleware().concat();
-        }, 
-    })
+  return configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => {
+      return getDefaultMiddleware().concat()
+    },
+  })
 }
 
 export type RootState = ReturnType<typeof rootReducer>

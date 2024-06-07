@@ -5,11 +5,14 @@ import { useRef, useState } from 'react'
 import { HeaderBurger } from './components/header-burger/Header-burger.tsx'
 import { IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import { RESUMEBUILDER_ROUTE } from '../../consts/routes.ts'
+import { useNavigate } from 'react-router-dom'
 
 export const Header = () => {
   const headerRef = useRef(null)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const isMenuOpen = Boolean(anchorEl)
+  const navigate = useNavigate()
 
   const handleMenuButtonClick = () => {
     setAnchorEl(headerRef.current)
@@ -37,18 +40,18 @@ export const Header = () => {
           <h1>EdevHub</h1>
         </div>
         <div className={styles.navigate}>
-          <div className={styles.navigateItem}>
+          <button onClick={() => navigate('/')} className={styles.navigateItem}>
             <img src="/icons/repo.png" alt="" />
-            <Link to={'/'}>Репозитории</Link>
-          </div>
-          <div className={styles.navigateItem}>
+            <p>Репозитории</p>
+          </button>
+          <button onClick={() => navigate(RESUMEBUILDER_ROUTE)} className={styles.navigateItem}>
             <img src="/icons/edit.png" alt="" />
-            <Link to={'/'}>Конструктор резюме</Link>
-          </div>
-          <div className={styles.navigateItem}>
+            <p>Конструктор резюме</p>
+          </button>
+          <button onClick={() => navigate('/')} className={styles.navigateItem}>
             <img src="/icons/message.png" alt="" />
-            <Link to={'/'}>Мессенджер</Link>
-          </div>
+            <p>Мессенджер</p>
+          </button>
         </div>
         <div className={styles.tools}>
           <Link to={'/'} className={styles.toolLink}>

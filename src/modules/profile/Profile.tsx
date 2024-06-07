@@ -2,8 +2,8 @@
 
 export const Profile = () => {
   return (
-    <div>
-
-    </div>
+    <h1>
+      Profile
+    </h1>
   )
 }
