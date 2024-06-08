@@ -1,7 +1,7 @@
 import styles from './profile.module.scss'
 import { UserData } from './types/User-data.ts'
 import { SubmitHandler, useForm, FormProvider } from 'react-hook-form'
-import { useRef, useState } from 'react'
+import { useImperativeHandle, useRef, useState } from 'react'
 
 interface Inputs extends Omit<UserData, 'avatar'> {
   avatar?: File
@@ -14,8 +14,8 @@ export const Profile = () => {
     name: 'ПОльЗоваТель Номер-один',
     phone: '+78334516946',
   }
+  const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<null | HTMLInputElement>(null)
-  const [isDirtyFields, setIsDirtyFields] = useState(false)
   const formMethods = useForm<Inputs>({
     mode: 'onChange',
     defaultValues: {
@@ -33,6 +33,12 @@ export const Profile = () => {
     console.log(data)
   }
 
+  const { ref, ...rest } = register('avatar', {
+    onChange: () => {formRef.current?.requestSubmit()}
+  })
+
+  useImperativeHandle(ref, () => fileInputRef.current)
+
   const handleSelectAvatarClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click()
@@ -43,12 +49,10 @@ export const Profile = () => {
   return (
     <div className={styles.container}>
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
           <input
-            {...register('avatar',  {
-              onChange: () => setIsDirtyFields(true)
-          })} type='file' />
-          {isDirtyFields && <button type='submit'>принять</button>}
+
+            {...rest} ref={fileInputRef} type='file' hidden/>
         </form>
       </FormProvider>
       <div className={styles.avatarContainer}>
