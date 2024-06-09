@@ -1,10 +1,11 @@
+import react, {useState} from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { ControlledTextField } from '../../components/controlled-text-field/Controlled-text-field.tsx'
 import { Inputs } from '../authorization-form/types/Inputs.ts'
 import styles from './Builder.module.scss'
+import jsPDF from 'jspdf'
 export const Builder = () => {
     const formMethods = useForm<Inputs>({ mode: 'onBlur' })
-
     const {
         handleSubmit,
         getValues,
@@ -12,7 +13,19 @@ export const Builder = () => {
         // setError,
         formState: { },
     } = formMethods
+    const generatePDF = () => {
+        const doc = new jsPDF()
 
+        doc.text('Education', 10, 10)
+        doc.text(`About: `, 10, 20)
+        doc.text(`Email: `, 10, 30)
+
+        doc.text('Experience', 10, 50)
+
+        doc.text('Project', 10, 70)
+
+        doc.save('resume.pdf')
+    }
     return (
         <FormProvider {...formMethods}>
             <div className={styles.container}>
@@ -95,6 +108,10 @@ export const Builder = () => {
                                 label='Расскажите о своих проектах'
                             />
                         </div>
+                    </div>
+                    <div className={styles.buttons}>
+                        <button>Cохранить</button>
+                        <button type="button" onClick={() => generatePDF()}>Скачать</button>
                     </div>
                 </div>
                 <div className={styles.resume}>
