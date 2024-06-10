@@ -1,0 +1,44 @@
+.container {
+    margin: 20px 0;
+    padding: 20px 10px;
+    transition: .5s all;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: rgb(253, 253, 253);
+    box-shadow: 5px 6px 10.7px 0px rgba(0, 0, 0, 0.05);
+}
+
+.subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.subtitle p:nth-child(1) {
+    font-weight: 700;
+    font-size: 24px;
+    color: rgba(114, 192, 117, 1);
+}
+
+.subtitle p:nth-child(2) {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 22.6px;
+    color: rgb(95, 95, 95);
+}
+
+.description {
+    margin: 15px 0;
+}
+
+.description p {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22.6px;
+    color: rgba(136, 136, 136, 1);
+}
+
+// .container:hover {
+//     background-color: darken(#fff, 5);
+//     border: none
+// }
