@@ -1,0 +1,16 @@
+.inputContainer {
+  margin-top: 38px;
+  position: relative;
+
+  .editBtn {
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: -26px;
+    right: 0;
+  }
+}

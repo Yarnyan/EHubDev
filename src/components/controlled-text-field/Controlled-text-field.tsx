@@ -28,6 +28,9 @@ export const ControlledTextField = ({
   labelType,
   labelSx,
   placeholder,
+  disabled,
+  focused,
+  multiline
 }: ControlledTextFieldProps) => {
   return (
     <Controller
@@ -36,6 +39,9 @@ export const ControlledTextField = ({
       render={({ field: { value = '', onChange, onBlur }, fieldState: { error } }) => (
         <>
           <StyledTextField
+            multiline={multiline || false}
+            focused={focused || false}
+            disabled={disabled || false}
             sx={{ ...sx, cursor: 'pointer' }}
             InputProps={InputProps}
             color='secondary'
@@ -59,7 +65,7 @@ export const ControlledTextField = ({
             label={label}
             variant='outlined'
             inputProps={{
-              maxLength: 50,
+              maxLength: multiline ? 600 : 50,
               autoComplete: 'new-password',
             }}
           />

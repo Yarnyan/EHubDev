@@ -15,4 +15,7 @@ export interface ControlledTextFieldProps {
   labelSx?: SxProps<Theme>
   type?: HTMLInputTypeAttribute
   InputProps?:  Partial<FilledInputProps> | Partial<OutlinedInputProps>
+  disabled?: boolean
+  focused?: boolean
+  multiline?: boolean
 }
