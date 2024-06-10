@@ -1,7 +1,14 @@
 .container {
     margin-top: 30px;
+    min-height: 100vw;
 }
 
 .input {
     width: 30%;
+}
+
+@media only screen and (max-width: 768px) {
+    .input {
+        width: 90%;
+    }
 }
