@@ -8,7 +8,7 @@ export const data = [
     {
         id: 2,
         title: 'Продавец',
-        description: 'Опыт работы: Более 5 лет опыта в разработке и поддержке веб-приложений. Имею навыки работы с такими технологиями как HTML5, CSS3, JavaScript, TypeScript, React, Redux, Angular, Vue.js, Webpack, Gulp, Git и другими. Умею создавать адаптивные и кроссбраузерные веб-сайты, оптимизированные под высокую нагрузку и скорость загрузки. Имею опыт работы с REST API, GraphQL, AJAX, JSON.',
+        description: 'хуй',
         position: 'frontend'
     },
     {
