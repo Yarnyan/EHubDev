@@ -3,7 +3,6 @@ import { UserData } from './types/User-data.ts'
 import { SubmitHandler, useForm, FormProvider } from 'react-hook-form'
 import { useImperativeHandle, useRef, useState } from 'react'
 import { EMAIL_PATTERN } from '../authorization-form/consts/consts.ts'
-import { ControlledTextField } from '../../components/controlled-text-field/Controlled-text-field.tsx'
 import { Input } from './components/input/Input.tsx'
 
 interface Inputs extends Omit<UserData, 'avatar'> {
@@ -23,6 +22,9 @@ export const Profile = () => {
     mode: 'onChange',
     defaultValues: {
       avatar: undefined,
+      email: userData.email,
+      name: userData.name,
+      phone: userData.phone
     },
   })
 
@@ -56,6 +58,7 @@ export const Profile = () => {
         <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
           <input{...rest} ref={fileInputRef} type='file' hidden />
           <Input
+            sendForm={() => formRef.current?.requestSubmit()}
             enableEdit={true}
             type='text'
             name='name'
@@ -65,6 +68,7 @@ export const Profile = () => {
             }}
           />
           <Input
+            sendForm={() => formRef.current?.requestSubmit()}
             enableEdit={true}
             type='text'
             name='info'
@@ -75,6 +79,7 @@ export const Profile = () => {
             }}
           />
           <Input
+            sendForm={() => formRef.current?.requestSubmit()}
             enableEdit={true}
             type='email'
             name='email'
@@ -88,6 +93,7 @@ export const Profile = () => {
             }}
           />
           <Input
+            sendForm={() => formRef.current?.requestSubmit()}
             enableEdit={true}
             type='tel'
             name='phone'
@@ -99,8 +105,8 @@ export const Profile = () => {
         </form>
       </FormProvider>
       <div className={styles.avatarContainer}>
-        <img src={userData.avatar || 'icons/avatar.svg'} alt='default avatar' />
-        <button onClick={handleSelectAvatarClick}>
+        <img src={userData.avatar || 'image/avatar.png'} alt='default avatar' />
+        <button className={styles.confirmBtn} onClick={handleSelectAvatarClick}>
           Загрузить фото
         </button>
       </div>

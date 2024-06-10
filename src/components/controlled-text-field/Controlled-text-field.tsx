@@ -30,7 +30,8 @@ export const ControlledTextField = ({
   placeholder,
   disabled,
   focused,
-  multiline
+  multiline,
+  id
 }: ControlledTextFieldProps) => {
   return (
     <Controller
@@ -39,6 +40,7 @@ export const ControlledTextField = ({
       render={({ field: { value = '', onChange, onBlur }, fieldState: { error } }) => (
         <>
           <StyledTextField
+            id={id}
             multiline={multiline || false}
             focused={focused || false}
             disabled={disabled || false}

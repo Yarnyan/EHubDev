@@ -18,4 +18,5 @@ export interface ControlledTextFieldProps {
   disabled?: boolean
   focused?: boolean
   multiline?: boolean
+  id?: string
 }

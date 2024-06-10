@@ -1,10 +1,11 @@
 import { ControlledTextField } from '../../../../components/controlled-text-field/Controlled-text-field.tsx'
 import { ControlledTextFieldProps } from '../../../../components/controlled-text-field/Controlled-text-field-props.ts'
 import styles from './input.module.scss'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface Input extends Pick<ControlledTextFieldProps, 'name' | 'rules' | 'label' | 'type' | 'multiline'> {
   enableEdit: boolean
+  sendForm: () => void
 }
 
 export const Input = (
@@ -14,9 +15,28 @@ export const Input = (
     label,
     type,
     enableEdit,
-    multiline
+    multiline,
+    sendForm
   }: Input) => {
   const [disabled, setDisabled] = useState(true)
+
+  useEffect(() => {
+    const input = document.getElementById(name)
+    if (input && !disabled) {
+      input.focus()
+      input.addEventListener('blur', onBlurCallback)
+    }
+    return () => {
+      if (input) {
+        input.removeEventListener('blur', onBlurCallback)
+      }
+    }
+  }, [disabled])
+
+  const onBlurCallback = () => {
+    setDisabled(true)
+    sendForm()
+  }
 
   const handleEditClick = () => {
     setDisabled(false)
@@ -34,13 +54,13 @@ export const Input = (
           width: '100%',
         }}
         multiline={multiline}
-        focused={!disabled}
         disabled={disabled}
         labelType='static'
         type={type}
         name={name}
         label={label}
         rules={rules}
+        id={name}
       />
     </div>
   )
