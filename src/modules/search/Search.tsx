@@ -3,8 +3,8 @@ import styles from './Search.module.scss';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Inputs } from '../authorization-form/types/Inputs.ts';
 import { ControlledTextField } from '../../components/controlled-text-field/Controlled-text-field.tsx';
-import Card from '../../components/Search/Card.tsx';
-import Order from '../../components/Search/Order.tsx';
+import Card from './components/Card.tsx';
+import Order from './components/Order.tsx';
 import { data } from './data/data.ts';
 import { orderData } from './data/data.ts';
 
