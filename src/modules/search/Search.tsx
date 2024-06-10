@@ -39,7 +39,7 @@ export const Search = () => {
                         labelType='static'
                         name='about'
                         label='Кого вы хотите найти?'
-                        onChange={handleSearch}
+                        changeHandler={handleSearch}
                     />
                 </div>
                 {user === 'seller' ? (

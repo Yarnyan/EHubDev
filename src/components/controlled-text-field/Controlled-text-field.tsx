@@ -18,21 +18,23 @@ const StyledTextField = styled(TextField)({
   },
 })
 
-export const ControlledTextField = ({
-  name,
-  rules,
-  label,
-  sx,
-  type,
-  InputProps,
-  labelType,
-  labelSx,
-  placeholder,
-  disabled,
-  focused,
-  multiline,
-  id
-}: ControlledTextFieldProps) => {
+export const ControlledTextField = (
+  {
+    name,
+    rules,
+    label,
+    sx,
+    type,
+    InputProps,
+    labelType,
+    labelSx,
+    placeholder,
+    disabled,
+    focused,
+    multiline,
+    id,
+    changeHandler,
+  }: ControlledTextFieldProps) => {
   return (
     <Controller
       name={name}
@@ -41,6 +43,7 @@ export const ControlledTextField = ({
         <>
           <StyledTextField
             id={id}
+            onInput={changeHandler}
             multiline={multiline || false}
             focused={focused || false}
             disabled={disabled || false}
