@@ -1,6 +1,7 @@
 import { Experience } from '../../../models/Experience.ts'
+import { User } from '../../../models/User.ts'
 
-export interface UserData {
+export interface UserData extends User{
   email: string
   name?: string
   phone?: string
@@ -8,5 +9,5 @@ export interface UserData {
   info?: string
   avatar?: string
   specialization?: 'Frontend' | 'Backend'
-  exp: Experience
+  exp?: Experience
 }

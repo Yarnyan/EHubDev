@@ -1,0 +1,43 @@
+.card {
+  width: 100%;
+  border-radius: 24px;
+  padding: 12px;
+  border: 2px solid #72C075;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22.6px;
+  color: rgba(136, 136, 136, 1);
+  cursor: pointer;
+
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+    color: #72C075;
+  }
+
+  .description {
+    margin-top: 12px;
+  }
+
+  .item {
+    margin-top: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #72C075;
+    display: flex;
+    gap: 8px;
+
+    p, a {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 22.6px;
+      color: rgba(136, 136, 136, 1);
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+}

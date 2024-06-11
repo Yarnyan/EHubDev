@@ -5,10 +5,8 @@ import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { EMAIL_PATTERN } from '../authorization-form/consts/consts.ts'
 import { Input } from './components/input/Input.tsx'
 import { useParams } from 'react-router-dom'
-import { useAppSelector } from '../../hooks/redux-hooks.ts'
 import { ControlledSelect } from '../../components/controlled-select/Controlled-select.tsx'
 import { Experience } from '../../models/Experience.ts'
-import { User } from '../../models/User.ts'
 
 interface Inputs extends Omit<UserData, 'avatar'> {
   avatar?: File
@@ -16,18 +14,27 @@ interface Inputs extends Omit<UserData, 'avatar'> {
 
 export const Profile = () => {
   //получаем из запроса информацию по id пользователя
+  // const userData: UserData = {
+  //   type: 'user',
+  //   id: 'egergerg2342r43',
+  //   email: 'hello11@mail.com',
+  //   name: 'ПОльЗоваТель Номер-один',
+  //   phone: '+78334516946',
+  //   exp: Experience.middle,
+  //   specialization: 'Backend'
+  // }
   const userData: UserData = {
-    email: 'hello11@mail.com',
-    name: 'ПОльЗоваТель Номер-один',
-    phone: '+78334516946',
-    exp: Experience.middle,
+    type: 'company',
+    id: 'egergerg2342r4efe3',
+    email: 'helweflo11@mail.com',
+    name: 'компания Номер-один',
+    phone: '+78334516911',
   }
 
   const { id } = useParams()
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<null | HTMLInputElement>(null)
   const [enableEdit, setEnableEdit] = useState(Boolean(!id))
-  const {type} = useAppSelector(state => state.userReducer.user as User)
   const formMethods = useForm<Inputs>({
     mode: 'onChange',
     defaultValues: {
@@ -36,6 +43,7 @@ export const Profile = () => {
       name: userData.name,
       phone: userData.phone,
       exp: userData.exp,
+      specialization: userData.specialization
     },
   })
 
@@ -76,7 +84,7 @@ export const Profile = () => {
             enableEdit={enableEdit}
             type='text'
             name='name'
-            label='Имя пользователя'
+            label={userData.type === 'user' ? 'Имя пользователя' : 'Название компании'}
             rules={{
               required: true,
             }}
@@ -86,7 +94,7 @@ export const Profile = () => {
             enableEdit={enableEdit}
             type='text'
             name='info'
-            label='О себе'
+            label={userData.type === 'user' ? 'О себе' : 'О компании'}
             multiline={true}
             rules={{
               required: false,
@@ -116,46 +124,50 @@ export const Profile = () => {
               required: false,
             }}
           />
-          <div className={styles.selectsContainer}>
-            <ControlledSelect
-              handleBlur={() => formRef.current?.requestSubmit()}
-              disabled={!enableEdit}
-              sx={{ width: '260px' }}
-              label='Специализация'
-              name='specialization'
-              options={
-                [{ value: 'frontend', content: 'Frontend' }, { value: 'backend', content: 'Backend' }]
-              } />
-            <ControlledSelect
-              handleBlur={() => formRef.current?.requestSubmit()}
-              disabled={!enableEdit}
-              sx={{ width: '260px' }}
-              label='Опыт работы'
-              name='exp'
-              options={
-                [
-                  { value: Experience.intern, content: Experience.intern },
-                  { value: Experience.junior, content: Experience.junior },
-                  { value: Experience.middle, content: Experience.middle },
-                  { value: Experience.senior, content: Experience.senior },
-                ]
-              } />
-          </div>
-          {!enableEdit &&
+          {userData.type === 'user' &&
+            <div className={styles.selectsContainer}>
+              <ControlledSelect
+                handleBlur={() => formRef.current?.requestSubmit()}
+                disabled={!enableEdit}
+                sx={{ width: '260px' }}
+                label='Специализация'
+                name='specialization'
+                options={
+                  [{ value: 'Frontend', content: 'Frontend' }, { value: 'Backend', content: 'Backend' }]
+                } />
+              <ControlledSelect
+                handleBlur={() => formRef.current?.requestSubmit()}
+                disabled={!enableEdit}
+                sx={{ width: '260px' }}
+                label='Опыт работы'
+                name='exp'
+                options={
+                  [
+                    { value: Experience.intern, content: Experience.intern },
+                    { value: Experience.junior, content: Experience.junior },
+                    { value: Experience.middle, content: Experience.middle },
+                    { value: Experience.senior, content: Experience.senior },
+                  ]
+                } />
+            </div>
+          }
+          {!enableEdit && userData.type === 'user' &&
             <button style={{ marginTop: '24px' }} className={styles.profileBtn} type='button'>
               Скачать резюме
             </button>
           }
         </form>
       </FormProvider>
-      <div className={styles.avatarContainer}>
-        <img src={userData.avatar || 'image/avatar.png'} alt='avatar' />
-        {enableEdit &&
-          <button className={styles.profileBtn} onClick={handleSelectAvatarClick}>
-            Загрузить фото
-          </button>
-        }
-      </div>
+      {userData.type === 'user' &&
+        <div className={styles.extraContainer}>
+          <img src={userData.avatar || 'image/avatar.png'} alt='avatar' />
+          {enableEdit &&
+            <button className={styles.profileBtn} onClick={handleSelectAvatarClick}>
+              Загрузить фото
+            </button>
+          }
+        </div>
+      }
     </div>
   )
 }

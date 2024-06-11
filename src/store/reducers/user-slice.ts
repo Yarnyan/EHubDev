@@ -9,7 +9,7 @@ interface UserSliceState {
 const initialState: UserSliceState = {
   user: {
     type: 'user',
-    id: 111
+    id: '111'
   }
 }
 

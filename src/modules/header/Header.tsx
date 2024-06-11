@@ -5,7 +5,7 @@ import { useRef, useState } from 'react'
 import { HeaderBurger } from './components/header-burger/Header-burger.tsx'
 import { IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import { RESUMEBUILDER_ROUTE } from '../../consts/routes.ts'
+import { PORTFOLIO_ROUTE, RESUMEBUILDER_ROUTE } from '../../consts/routes.ts'
 import { useNavigate } from 'react-router-dom'
 
 export const Header = () => {
@@ -40,9 +40,9 @@ export const Header = () => {
           <h1>EdevHub</h1>
         </div>
         <div className={styles.navigate}>
-          <button onClick={() => navigate('/')} className={styles.navigateItem}>
+          <button onClick={() => navigate(PORTFOLIO_ROUTE)} className={styles.navigateItem}>
             <img src="/icons/repo.png" alt="" />
-            <p>Репозитории</p>
+            <p>Портфолио</p>
           </button>
           <button onClick={() => navigate(RESUMEBUILDER_ROUTE)} className={styles.navigateItem}>
             <img src="/icons/edit.png" alt="" />
