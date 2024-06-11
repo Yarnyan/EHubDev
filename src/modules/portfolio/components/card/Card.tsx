@@ -1,5 +1,5 @@
 import styles from './card.module.scss'
-import { Experience } from '../../../models/Experience.ts'
+import { Experience } from '../../../../models/Experience.ts'
 
 interface CardProps {
   name: string

@@ -30,7 +30,6 @@ export const ControlledTextField = (
     labelSx,
     placeholder,
     disabled,
-    focused,
     multiline,
     id,
     changeHandler,
@@ -45,7 +44,6 @@ export const ControlledTextField = (
             id={id}
             onInput={changeHandler}
             multiline={multiline || false}
-            focused={focused || false}
             disabled={disabled || false}
             sx={{ ...sx, cursor: 'pointer' }}
             InputProps={InputProps}

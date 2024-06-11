@@ -1,10 +1,27 @@
 .container {
-  width: 90%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  min-height: 100vh;
+  margin: auto;
   padding: 20px;
+  border-radius: 16px;
+  background: white;
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  font-family: Inter;
+
+  form {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+
+    h3 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 29px;
+      color: #72C075;
+    }
+  }
 }
 
 .btn {
@@ -27,12 +44,4 @@
 .btn:hover {
   background-color: transparent;
   color: #000;
-}
-
-@media(max-width: 1023px) {
-  .container {
-    grid-template-columns: 1fr;
-    padding: 0;
-    margin-top: 20px;
-  }
 }
