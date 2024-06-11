@@ -14,6 +14,7 @@ interface ControlledSelectProps {
   >
   sx?: SxProps<Theme>
   label: string
+  disabled?: boolean
 }
 
 const StyledSelect = styled(Select)({
@@ -33,7 +34,7 @@ const StyledSelect = styled(Select)({
 
 export const ControlledSelect = (
   {
-    name, rules = { required: 'Поле не заполнено' }, options, label, sx
+    name, rules = { required: 'Поле не заполнено' }, options, label, sx, disabled
   }: ControlledSelectProps) => {
   return (
     <Controller
@@ -43,6 +44,7 @@ export const ControlledSelect = (
         <div>
           <InputLabel id={label}>{label}</InputLabel>
           <StyledSelect
+            disabled={disabled || false}
             sx={{...sx}}
             labelId={label}
             value={value}

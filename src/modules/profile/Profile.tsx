@@ -117,6 +117,7 @@ export const Profile = () => {
           />
           <div className={styles.selectsContainer}>
             <ControlledSelect
+              disabled={!enableEdit}
               sx={{ width: '260px' }}
               label='Специализация'
               name='specialization'
@@ -124,6 +125,7 @@ export const Profile = () => {
                 [{ value: 'frontend', content: 'Frontend' }, { value: 'backend', content: 'Backend' }]
               } />
             <ControlledSelect
+              disabled={!enableEdit}
               sx={{ width: '260px' }}
               label='Опыт работы'
               name='exp'
