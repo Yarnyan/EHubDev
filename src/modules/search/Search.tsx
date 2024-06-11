@@ -1,45 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Search.module.scss';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Inputs } from '../authorization-form/types/Inputs.ts';
 import { ControlledTextField } from '../../components/controlled-text-field/Controlled-text-field.tsx';
 import Card from './components/Card.tsx';
 import Order from './components/Order.tsx';
-import { data } from './data/data.ts';
-import { orderData } from './data/data.ts';
+import { data, orderData } from './data/data.ts';
+import { ControlledSelect } from '../../components/controlled-select/Controlled-select.tsx';
 
 export const Search = () => {
     const formMethods = useForm<Inputs>({ mode: 'onBlur' });
-    const {
-        handleSubmit,
-        getValues,
-        reset,
-        // setError,
-        formState: { },
-    } = formMethods;
+    const { handleSubmit, getValues, reset, formState: {} } = formMethods;
     const user = 'seller';
+
     const [searchQuery, setSearchQuery] = useState('');
+    const [specialization, setSpecialization] = useState('');
+    const [expertise, setExpertise] = useState('');
+
+    const handleSpecializationChange = (e) => {
+        setSpecialization(e.target.value);
+    };
+
+    const handleExpertiseChange = (e) => {
+        setExpertise(e.target.value);
+    };
 
     const filteredData = data.filter((item) => {
-        const description = item.description.toLowerCase();
-        const query = searchQuery.toLowerCase();
-        return description.includes(query);
+        return (
+            (specialization === '' || item.position === specialization) &&
+            (expertise === '' || item.expertise === expertise)
+        );
     });
 
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
-    };
+    const filteredOrderData = orderData.filter((item) => {
+        return (
+            (specialization === '' || item.position === specialization) &&
+            (expertise === '' || item.expertise === expertise)
+        );
+    });
 
     return (
         <FormProvider {...formMethods}>
             <div className={styles.container}>
                 <div className={styles.input}>
-                    <ControlledTextField
-                        sx={{ width: '100%', marginTop: '10px' }}
-                        labelType='static'
-                        name='about'
-                        label='Кого вы хотите найти?'
-                        changeHandler={handleSearch}
+                    <ControlledSelect
+                        sx={{ width: '260px', marginRight: '20px' }}
+                        label='Специализация'
+                        name='specialization'
+                        options={[
+                            { value: '', content: 'Любая' },
+                            { value: 'Frontend', content: 'Frontend' },
+                            { value: 'Backend', content: 'Backend' },
+                        ]}
+                        onChange={handleSpecializationChange}
+                    />
+                    <ControlledSelect
+                        sx={{ width: '260px' }}
+                        label='Опыт'
+                        name='expertise'
+                        options={[
+                            { value: '', content: 'Не важен' },
+                            { value: '5 лет', content: 'Более 5 лет' },
+                            { value: '10 лет', content: 'Более 10 лет' },
+                        ]}
+                        onChange={handleExpertiseChange}
                     />
                 </div>
                 {user === 'seller' ? (
@@ -49,19 +73,19 @@ export const Search = () => {
                             description={item.description}
                             position={item.position}
                             key={item.id}
+                            expertise={item.expertise}
                         />
                     ))
                 ) : (
-                    orderData.map((item) => {
-                        return (
-                            <Order
-                                title={item.title}
-                                description={item.description}
-                                price={item.price}
-                                key={item.id}
-                            />
-                        )
-                    })
+                    filteredOrderData.map((item) => (
+                        <Order
+                            title={item.title}
+                            description={item.description}
+                            position={item.position}
+                            key={item.id}
+                            expertise={item.expertise}
+                        />
+                    ))
                 )}
             </div>
         </FormProvider>

@@ -38,7 +38,33 @@
     color: rgba(136, 136, 136, 1);
 }
 
-// .container:hover {
-//     background-color: darken(#fff, 5);
-//     border: none
-// }
+.expertise {
+    display: flex;
+    align-items: center;
+}
+
+.expertise p {
+    color: #888888;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22.6px;
+}
+
+.indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.expertisePurple {
+    background-color: #729AC0;
+}
+
+.expertiseYellow {
+    background-color: #9E72C0;
+}
+
+.expertiseRed {
+    background-color: #8BC072;
+}

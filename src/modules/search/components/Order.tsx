@@ -1,9 +1,10 @@
 import React from 'react'
 import styles from './Card.module.scss'
-interface Order {
+interface  Order {
     title: string
     description: string
-    price: string
+    position: string
+    expertise: string
 }   
 
 const formatText = (text: string) => {
@@ -16,15 +17,29 @@ const formatText = (text: string) => {
     }
 }
 
-const Order: React.FC<Order> = ({title, description, price}) => {
+const getExpertiseClass = (years: string) => {
+    const numYears = parseInt(years.split(' ')[0]);
+    if (numYears < 5) {
+      return styles.expertisePurple;
+    } else if (numYears < 10) {
+      return styles.expertiseYellow;
+    } else {
+      return styles.expertiseRed;
+    }
+  }
+
+const Order: React.FC<Order> = ({title, description, position, expertise}) => {
   return (
     <div className={styles.container}>
         <div className={styles.subtitle}>
             <p>{title}</p>
-            <p>{price}</p>
         </div>
         <div className={styles.description}>
             <p>{formatText(description)}</p>
+        </div>
+        <div className={styles.expertise}>
+            <div className={`${styles.indicator} ${getExpertiseClass(expertise)}`}></div>
+            <p>{expertise}</p>
         </div>
     </div>
   )
