@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/redux-hooks.ts'
 import { ControlledSelect } from '../../components/controlled-select/Controlled-select.tsx'
 import { Experience } from '../../models/Experience.ts'
+import { User } from '../../models/User.ts'
 
 interface Inputs extends Omit<UserData, 'avatar'> {
   avatar?: File
@@ -26,7 +27,7 @@ export const Profile = () => {
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<null | HTMLInputElement>(null)
   const [enableEdit, setEnableEdit] = useState(Boolean(!id))
-  const user = useAppSelector(state => state.userReducer.user)
+  const {type} = useAppSelector(state => state.userReducer.user as User)
   const formMethods = useForm<Inputs>({
     mode: 'onChange',
     defaultValues: {
@@ -117,6 +118,7 @@ export const Profile = () => {
           />
           <div className={styles.selectsContainer}>
             <ControlledSelect
+              handleBlur={() => formRef.current?.requestSubmit()}
               disabled={!enableEdit}
               sx={{ width: '260px' }}
               label='Специализация'
@@ -125,6 +127,7 @@ export const Profile = () => {
                 [{ value: 'frontend', content: 'Frontend' }, { value: 'backend', content: 'Backend' }]
               } />
             <ControlledSelect
+              handleBlur={() => formRef.current?.requestSubmit()}
               disabled={!enableEdit}
               sx={{ width: '260px' }}
               label='Опыт работы'

@@ -15,6 +15,7 @@ interface ControlledSelectProps {
   sx?: SxProps<Theme>
   label: string
   disabled?: boolean
+  handleBlur?: () => void
 }
 
 const StyledSelect = styled(Select)({
@@ -34,7 +35,7 @@ const StyledSelect = styled(Select)({
 
 export const ControlledSelect = (
   {
-    name, rules = { required: 'Поле не заполнено' }, options, label, sx, disabled
+    name, rules = { required: 'Поле не заполнено' }, options, label, sx, disabled, handleBlur
   }: ControlledSelectProps) => {
   return (
     <Controller
@@ -49,7 +50,12 @@ export const ControlledSelect = (
             labelId={label}
             value={value}
             label={name}
-            onBlur={onBlur}
+            onBlur={() => {
+              if (handleBlur) {
+                handleBlur()
+              }
+              onBlur()
+            }}
             onChange={onChange}
           >
             {options.map(option => {
