@@ -4,6 +4,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 24px;
+    margin-bottom: 24px;
 }
 
 form {
@@ -25,28 +26,28 @@ form {
         border: 2px solid #72C075;
         border-radius: 24px;
     }
+}
 
-    .confirmBtn {
-        display: block;
-        margin: 12px auto;
-        border-radius: 10px;
-        padding: 8px 4px;
-        width: 290px;
-        height: 58px;
-        background-color: #72C075;
-        color: #fff;
-        font-size: 16px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        border: 2px solid #72C075;
-        transition: 1s background-color, .5s color;
-        cursor: pointer
-    }
+.profileBtn {
+    display: block;
+    margin: 12px auto;
+    border-radius: 10px;
+    padding: 8px 4px;
+    width: 290px;
+    height: 58px;
+    background-color: #72C075;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border: 2px solid #72C075;
+    transition: 1s background-color, .5s color;
+    cursor: pointer
+}
 
-    .confirmBtn:hover {
-        background-color: transparent;
-        color: #000;
-    }
+.profileBtn:hover {
+    background-color: transparent;
+    color: #000;
 }
 
 @media(max-width: 600px) {

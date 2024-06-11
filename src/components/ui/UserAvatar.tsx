@@ -7,7 +7,7 @@ const UserAvatar = () => {
 
   return (
     <Avatar
-      onClick={() => navigate(PROFILE_ROUTE)}
+      onClick={() => navigate('/profile')}
       sx={{cursor: 'pointer'}}
       alt="Remy Sharp"
       src="/static/images/avatar/1.jpg" />

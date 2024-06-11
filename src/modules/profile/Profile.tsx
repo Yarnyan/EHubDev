@@ -1,9 +1,11 @@
 import styles from './profile.module.scss'
 import { UserData } from './types/User-data.ts'
 import { SubmitHandler, useForm, FormProvider } from 'react-hook-form'
-import { useImperativeHandle, useRef, useState } from 'react'
+import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { EMAIL_PATTERN } from '../authorization-form/consts/consts.ts'
 import { Input } from './components/input/Input.tsx'
+import { useParams } from 'react-router-dom'
+import { useAppSelector } from '../../hooks/redux-hooks.ts'
 
 interface Inputs extends Omit<UserData, 'avatar'> {
   avatar?: File
@@ -16,8 +18,12 @@ export const Profile = () => {
     name: 'ПОльЗоваТель Номер-один',
     phone: '+78334516946',
   }
+
+  const { id } = useParams();
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<null | HTMLInputElement>(null)
+  const [enableEdit, setEnableEdit] = useState(Boolean(!id))
+  const user = useAppSelector(state => state.userReducer.user)
   const formMethods = useForm<Inputs>({
     mode: 'onChange',
     defaultValues: {
@@ -28,10 +34,13 @@ export const Profile = () => {
     },
   })
 
+  useEffect(() => {
+    id ? setEnableEdit(false) : setEnableEdit(true)
+  }, [id])
+
   const {
     handleSubmit,
     register,
-    formState: { isValid, dirtyFields },
   } = formMethods
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -59,7 +68,7 @@ export const Profile = () => {
           <input{...rest} ref={fileInputRef} type='file' hidden />
           <Input
             sendForm={() => formRef.current?.requestSubmit()}
-            enableEdit={true}
+            enableEdit={enableEdit}
             type='text'
             name='name'
             label='Имя пользователя'
@@ -69,7 +78,7 @@ export const Profile = () => {
           />
           <Input
             sendForm={() => formRef.current?.requestSubmit()}
-            enableEdit={true}
+            enableEdit={enableEdit}
             type='text'
             name='info'
             label='О себе'
@@ -80,7 +89,7 @@ export const Profile = () => {
           />
           <Input
             sendForm={() => formRef.current?.requestSubmit()}
-            enableEdit={true}
+            enableEdit={enableEdit}
             type='email'
             name='email'
             label='Электронная почта:'
@@ -94,7 +103,7 @@ export const Profile = () => {
           />
           <Input
             sendForm={() => formRef.current?.requestSubmit()}
-            enableEdit={true}
+            enableEdit={enableEdit}
             type='tel'
             name='phone'
             label='Телефон'
@@ -102,13 +111,20 @@ export const Profile = () => {
               required: false,
             }}
           />
+          {!enableEdit &&
+            <button style={{marginTop: '24px'}} className={styles.profileBtn} type='button'>
+              Скачать резюме
+            </button>
+          }
         </form>
       </FormProvider>
       <div className={styles.avatarContainer}>
-        <img src={userData.avatar || 'image/avatar.png'} alt='default avatar' />
-        <button className={styles.confirmBtn} onClick={handleSelectAvatarClick}>
-          Загрузить фото
-        </button>
+        <img src={userData.avatar || 'image/avatar.png'} alt='avatar' />
+        {enableEdit &&
+          <button className={styles.profileBtn} onClick={handleSelectAvatarClick}>
+            Загрузить фото
+          </button>
+        }
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 export const REGISTRATION_ROUTE = '/registration'
 export const AUTHORIZATION_ROUTE = '/authorization'
-export const PROFILE_ROUTE = '/profile'
+export const PROFILE_ROUTE = '/profile/:id?'
 export const MAIN_ROUTE = '/'
 export const RESUMEBUILDER_ROUTE = '/resume-builder'
 export const SEARCH_ROUTE = '/search'
