@@ -1,11 +1,13 @@
 import styles from './profile.module.scss'
 import { UserData } from './types/User-data.ts'
-import { SubmitHandler, useForm, FormProvider } from 'react-hook-form'
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { EMAIL_PATTERN } from '../authorization-form/consts/consts.ts'
 import { Input } from './components/input/Input.tsx'
 import { useParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/redux-hooks.ts'
+import { ControlledSelect } from '../../components/controlled-select/Controlled-select.tsx'
+import { Experience } from '../../models/Experience.ts'
 
 interface Inputs extends Omit<UserData, 'avatar'> {
   avatar?: File
@@ -17,9 +19,10 @@ export const Profile = () => {
     email: 'hello11@mail.com',
     name: 'ПОльЗоваТель Номер-один',
     phone: '+78334516946',
+    exp: Experience.middle,
   }
 
-  const { id } = useParams();
+  const { id } = useParams()
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<null | HTMLInputElement>(null)
   const [enableEdit, setEnableEdit] = useState(Boolean(!id))
@@ -30,7 +33,8 @@ export const Profile = () => {
       avatar: undefined,
       email: userData.email,
       name: userData.name,
-      phone: userData.phone
+      phone: userData.phone,
+      exp: userData.exp,
     },
   })
 
@@ -92,7 +96,7 @@ export const Profile = () => {
             enableEdit={enableEdit}
             type='email'
             name='email'
-            label='Электронная почта:'
+            label='Электронная почта'
             rules={{
               required: true,
               pattern: {
@@ -111,8 +115,29 @@ export const Profile = () => {
               required: false,
             }}
           />
+          <div className={styles.selectsContainer}>
+            <ControlledSelect
+              sx={{ width: '260px' }}
+              label='Специализация'
+              name='specialization'
+              options={
+                [{ value: 'frontend', content: 'Frontend' }, { value: 'backend', content: 'Backend' }]
+              } />
+            <ControlledSelect
+              sx={{ width: '260px' }}
+              label='Опыт работы'
+              name='exp'
+              options={
+                [
+                  { value: Experience.intern, content: Experience.intern },
+                  { value: Experience.junior, content: Experience.junior },
+                  { value: Experience.middle, content: Experience.middle },
+                  { value: Experience.senior, content: Experience.senior },
+                ]
+              } />
+          </div>
           {!enableEdit &&
-            <button style={{marginTop: '24px'}} className={styles.profileBtn} type='button'>
+            <button style={{ marginTop: '24px' }} className={styles.profileBtn} type='button'>
               Скачать резюме
             </button>
           }

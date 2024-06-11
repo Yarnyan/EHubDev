@@ -1,6 +1,6 @@
 import styles from './Header.module.scss'
 import { Link } from 'react-router-dom'
-import UserAvatar from '../../components/ui/UserAvatar'
+import UserAvatar from '../../components/user-avatar/User-avatar.tsx'
 import { useRef, useState } from 'react'
 import { HeaderBurger } from './components/header-burger/Header-burger.tsx'
 import { IconButton } from '@mui/material'
