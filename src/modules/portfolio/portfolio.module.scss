@@ -1,9 +1,9 @@
 .container {
   width: 90%;
   display: grid;
+  margin: auto;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  min-height: 100vh;
   padding: 20px;
 }
 

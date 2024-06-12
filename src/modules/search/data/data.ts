@@ -1,15 +1,15 @@
 export const data = [
     {
         id: 1,
-        title: 'Продавец',
+        title: 'user1',
         description: 'Опыт работы: Более 5 лет опыта в разработке и поддержке веб-приложений. Имею навыки работы с такими технологиями как HTML5, CSS3, JavaScript, TypeScript, React, Redux, Angular, Vue.js, Webpack, Gulp, Git и другими. Умею создавать адаптивные и кроссбраузерные веб-сайты, оптимизированные под высокую нагрузку и скорость загрузки. Имею опыт работы с REST API, GraphQL, AJAX, JSON.Опыт работы: Более 5 лет опыта в разработке и поддержке веб-приложений. Имею навыки работы с такими технологиями как HTML5, CSS3, JavaScript, TypeScript, React, Redux, Angular, Vue.js, Webpack, Gulp, Git и другими. Умею создавать адаптивные и кроссбраузерные веб-сайты, оптимизированные под высокую нагрузку и скорость загрузки. Имею опыт работы с REST API, GraphQL, AJAX, JSON.',
         position: 'frontend',
         expertise: '5 лет'
     },
     {
         id: 2,
-        title: 'Продавец',
-        description: 'хуй',
+        title: 'Иван Иванов',
+        description: 'Описание',
         position: 'frontend',
         expertise: '1 год'
     },

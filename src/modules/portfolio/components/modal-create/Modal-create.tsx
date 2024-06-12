@@ -93,7 +93,9 @@ export const ModalCreate = (
                 }}
               />
               <ControlledSelect
-                sx={{ width: '90%' }}
+                sx={{
+                  width: '320px',
+                }}
                 label='Требуемый опыт'
                 name='experience'
                 options={
