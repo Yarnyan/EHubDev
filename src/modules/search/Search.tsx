@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './Search.module.scss';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Inputs } from '../authorization-form/types/Inputs.ts';
-import { ControlledTextField } from '../../components/controlled-text-field/Controlled-text-field.tsx';
 import Card from './components/Card.tsx';
 import Order from './components/Order.tsx';
 import { data, orderData } from './data/data.ts';
@@ -52,7 +51,7 @@ export const Search = () => {
                             { value: 'Frontend', content: 'Frontend' },
                             { value: 'Backend', content: 'Backend' },
                         ]}
-                        onChange={handleSpecializationChange}
+                        handleChange={handleSpecializationChange}
                     />
                     <ControlledSelect
                         sx={{ width: '260px' }}
@@ -63,7 +62,7 @@ export const Search = () => {
                             { value: '5 лет', content: 'Более 5 лет' },
                             { value: '10 лет', content: 'Более 10 лет' },
                         ]}
-                        onChange={handleExpertiseChange}
+                        handleChange={handleExpertiseChange}
                     />
                 </div>
                 {user === 'seller' ? (

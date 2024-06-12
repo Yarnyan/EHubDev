@@ -14,22 +14,22 @@ interface Inputs extends Omit<UserData, 'avatar'> {
 
 export const Profile = () => {
   //получаем из запроса информацию по id пользователя
-  // const userData: UserData = {
-  //   type: 'user',
-  //   id: 'egergerg2342r43',
-  //   email: 'hello11@mail.com',
-  //   name: 'ПОльЗоваТель Номер-один',
-  //   phone: '+78334516946',
-  //   exp: Experience.middle,
-  //   specialization: 'Backend'
-  // }
   const userData: UserData = {
-    type: 'company',
-    id: 'egergerg2342r4efe3',
-    email: 'helweflo11@mail.com',
-    name: 'компания Номер-один',
-    phone: '+78334516911',
+    type: 'user',
+    id: 'egergerg2342r43',
+    email: 'hello11@mail.com',
+    name: 'ПОльЗоваТель Номер-один',
+    phone: '+78334516946',
+    exp: Experience.middle,
+    specialization: 'Backend'
   }
+  // const userData: UserData = {
+  //   type: 'company',
+  //   id: 'egergerg2342r4efe3',
+  //   email: 'helweflo11@mail.com',
+  //   name: 'компания Номер-один',
+  //   phone: '+78334516911',
+  // }
 
   const { id } = useParams()
   const formRef = useRef<HTMLFormElement>(null)
@@ -159,7 +159,7 @@ export const Profile = () => {
         </form>
       </FormProvider>
       {userData.type === 'user' &&
-        <div className={styles.extraContainer}>
+        <div className={styles.avatarContainer}>
           <img src={userData.avatar || 'image/avatar.png'} alt='avatar' />
           {enableEdit &&
             <button className={styles.profileBtn} onClick={handleSelectAvatarClick}>
