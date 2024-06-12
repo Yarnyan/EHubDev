@@ -28,18 +28,20 @@ export const Header = () => {
     <header className={styles.header} ref={headerRef}>
       <div className={styles.container}>
         {user !== null && user !== 'unknown' &&
-          <IconButton
-            size='large'
-            color='inherit'
-            aria-label='menu'
-            sx={{ mr: 2 }}
-            onClick={handleMenuButtonClick}
-            className={styles.burger}
-          >
-            <MenuIcon />
-          </IconButton>
+          <>
+            <IconButton
+              size='large'
+              color='inherit'
+              aria-label='menu'
+              sx={{ mr: 2 }}
+              onClick={handleMenuButtonClick}
+              className={styles.burger}
+            >
+              <MenuIcon />
+            </IconButton>
+            <HeaderBurger anchorEl={anchorEl} isMenuOpen={isMenuOpen} handleCloseMenu={handleCloseMenu} />
+          </>
         }
-        <HeaderBurger anchorEl={anchorEl} isMenuOpen={isMenuOpen} handleCloseMenu={handleCloseMenu} />
         <div className={styles.subtitle}>
           <h1>EdevHub</h1>
         </div>

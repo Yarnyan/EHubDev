@@ -7,10 +7,7 @@ interface UserSliceState {
 }
 
 const initialState: UserSliceState = {
-  user: {
-    type: 'user',
-    id: '111'
-  }
+  user: null
 }
 
 export const userSlice = createSlice({
