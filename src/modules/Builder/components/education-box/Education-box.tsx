@@ -2,11 +2,10 @@ import { ControlledTextField } from '../../../../components/controlled-text-fiel
 
 interface EducationBoxProps {
   index: number
-  appendEductionFields: () => void
-  removeEductionFields: (index: number) => void
+  removeFields: (index: number) => void
 }
 
-export const EducationBox = ({ index, appendEductionFields, removeEductionFields }: EducationBoxProps) => {
+export const EducationBox = ({ index, removeFields }: EducationBoxProps) => {
   return (
     <div style={{ border: '1px solid black' }}>
       <ControlledTextField name={`education.${index}.university`} label='Учебное заведение' labelType='moving' />
@@ -17,8 +16,7 @@ export const EducationBox = ({ index, appendEductionFields, removeEductionFields
                            labelType='moving' />
       <ControlledTextField name={`education.${index}.specialization`} label='Направление подготовки'
                            labelType='moving' />
-      <button type='button' onClick={appendEductionFields}>((+))</button>
-      <button type='button' onClick={() => removeEductionFields(index)}>((-))</button>
+      <button type='button' onClick={() => removeFields(index)}>((-))</button>
     </div>
   )
 }

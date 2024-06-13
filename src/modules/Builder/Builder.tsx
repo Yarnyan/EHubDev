@@ -3,8 +3,10 @@ import { ControlledTextField } from '../../components/controlled-text-field/Cont
 import styles from './Builder.module.scss'
 import jsPDF from 'jspdf'
 import { EducationBox } from './components/education-box/Education-box.tsx'
+import { ExperienceBox } from './components/experience-box/Experience-box.tsx'
+import { ProjectsBox } from './components/projects-box/Projects-box.tsx'
 
-interface Inputs {
+export interface Inputs {
   name: string
   phone: string
   email: string
@@ -16,6 +18,22 @@ interface Inputs {
     universityEnd: string
     specialization: string
   }[]
+  experience: {
+    organization: string
+    experienceStart: string
+    experienceEnd: string
+    task1: string
+  }[]
+  projects: {
+    projectName: string
+    stack: string
+    projectStart: string
+    projectEnd: string
+    task1: string
+  }[]
+  languages: string
+  frameworks: string
+  libraries: string
 }
 
 export const Builder = () => {
@@ -28,16 +46,44 @@ export const Builder = () => {
         universityStart: '',
         universityEnd: '',
         specialization: ''
+      }],
+      experience: [{
+        organization: '',
+        experienceStart: '',
+        experienceEnd: '',
+        task1: '',
+      }],
+      projects: [{
+        projectName: '',
+        stack: '',
+        projectStart: '',
+        projectEnd: '',
+        task1: '',
       }]
     },
   })
   const {
     handleSubmit,
     control,
+    resetField,
+    getValues,
+    formState: {}
   } = formMethods
 
   const educationFields = useFieldArray({
     name: 'education',
+    control,
+    rules: { maxLength: 3 },
+  })
+
+  const experienceFields = useFieldArray({
+    name: 'experience',
+    control,
+    rules: { maxLength: 3 },
+  })
+
+  const projectsFields = useFieldArray({
+    name: 'projects',
     control,
     rules: { maxLength: 3 },
   })
@@ -58,6 +104,33 @@ export const Builder = () => {
 
   const removeEducationFields = (index: number) => {
     educationFields.remove(index)
+  }
+
+  const appendExperienceFields = () => {
+    experienceFields.append({
+      organization: '',
+      experienceStart: '',
+      experienceEnd: '',
+      task1: '',
+    })
+  }
+
+  const removeExperienceFields = (index: number) => {
+    experienceFields.remove(index)
+  }
+
+  const appendProjectsFields = () => {
+    projectsFields.append({
+      projectName: '',
+      stack: '',
+      projectStart: '',
+      projectEnd: '',
+      task1: '',
+    })
+  }
+
+  const removeProjectsFields = (index: number) => {
+    projectsFields.remove(index)
   }
   // const generatePDF = () => {
   //     const doc = new jsPDF()
@@ -84,10 +157,38 @@ export const Builder = () => {
           return <EducationBox
             index={index}
             key={field.id}
-            appendEductionFields={appendEductionFields}
-            removeEductionFields={removeEducationFields}
+            removeFields={removeEducationFields}
           />
         })}
+        {getValues('education').length < 3 &&
+          <button type='button' onClick={appendEductionFields}>((+))</button>
+        }
+        {experienceFields.fields.map((field, index) => {
+          return <ExperienceBox
+            resetField={resetField}
+            index={index}
+            key={field.id}
+            removeFields={removeExperienceFields}
+          />
+        })}
+        {getValues('experience').length < 3 &&
+          <button type='button' onClick={appendExperienceFields}>((+))</button>
+        }
+        {projectsFields.fields.map((field, index) => {
+          return <ProjectsBox
+            resetField={resetField}
+            index={index}
+            key={field.id}
+            removeFields={removeProjectsFields}
+          />
+        })}
+        {getValues('projects').length < 3 &&
+          <button type='button' onClick={appendProjectsFields}>((+))</button>
+        }
+        <p>Навыки</p>
+        <ControlledTextField name='languages' label='Языки программирования' labelType='moving' />
+        <ControlledTextField name='frameworks' label='Фреймворки' labelType='moving' />
+        <ControlledTextField name='libraries' label='Библиотеки' labelType='moving' />
         <button type='submit'>принять</button>
       </form>
     </FormProvider>
