@@ -45,7 +45,7 @@ export const Builder = () => {
         universityLocation: '',
         universityStart: '',
         universityEnd: '',
-        specialization: ''
+        specialization: '',
       }],
       experience: [{
         organization: '',
@@ -59,7 +59,7 @@ export const Builder = () => {
         projectStart: '',
         projectEnd: '',
         task1: '',
-      }]
+      }],
     },
   })
   const {
@@ -67,7 +67,6 @@ export const Builder = () => {
     control,
     resetField,
     getValues,
-    formState: {}
   } = formMethods
 
   const educationFields = useFieldArray({
@@ -98,7 +97,7 @@ export const Builder = () => {
       universityLocation: '',
       universityStart: '',
       universityEnd: '',
-      specialization: ''
+      specialization: '',
     })
   }
 
@@ -146,51 +145,66 @@ export const Builder = () => {
   //     doc.save('resume.pdf')
   // }
   return (
-    <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <p>Общая информация</p>
-        <ControlledTextField name='name' label='ФИО' labelType='moving' />
-        <ControlledTextField name='phone' label='Номер телефона' labelType='moving' type='tel' />
-        <ControlledTextField name='email' label='E-mail' labelType='moving' type='email' />
-        <ControlledTextField name='github' label='Ссылка на gitHub' labelType='moving' />
-        {educationFields.fields.map((field, index) => {
-          return <EducationBox
-            index={index}
-            key={field.id}
-            removeFields={removeEducationFields}
-          />
-        })}
-        {getValues('education').length < 3 &&
-          <button type='button' onClick={appendEductionFields}>((+))</button>
-        }
-        {experienceFields.fields.map((field, index) => {
-          return <ExperienceBox
-            resetField={resetField}
-            index={index}
-            key={field.id}
-            removeFields={removeExperienceFields}
-          />
-        })}
-        {getValues('experience').length < 3 &&
-          <button type='button' onClick={appendExperienceFields}>((+))</button>
-        }
-        {projectsFields.fields.map((field, index) => {
-          return <ProjectsBox
-            resetField={resetField}
-            index={index}
-            key={field.id}
-            removeFields={removeProjectsFields}
-          />
-        })}
-        {getValues('projects').length < 3 &&
-          <button type='button' onClick={appendProjectsFields}>((+))</button>
-        }
-        <p>Навыки</p>
-        <ControlledTextField name='languages' label='Языки программирования' labelType='moving' />
-        <ControlledTextField name='frameworks' label='Фреймворки' labelType='moving' />
-        <ControlledTextField name='libraries' label='Библиотеки' labelType='moving' />
-        <button type='submit'>принять</button>
-      </form>
-    </FormProvider>
+    <div className={styles.container}>
+      <FormProvider {...formMethods}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <h3>Общая информация</h3>
+          <div className={styles.formBlock}>
+            <ControlledTextField name='name' label='ФИО' labelType='moving' />
+            <ControlledTextField name='phone' label='Номер телефона' labelType='moving' type='tel' />
+            <ControlledTextField name='email' label='E-mail' labelType='moving' type='email' />
+            <ControlledTextField name='github' label='Ссылка на gitHub' labelType='moving' />
+          </div>
+          <h3>Образование</h3>
+          {educationFields.fields.map((field, index) => {
+            return <EducationBox
+              index={index}
+              key={field.id}
+              removeFields={removeEducationFields}
+            />
+          })}
+          {getValues('education').length < 3 &&
+            <button className={styles.addBtn} type='button' onClick={appendEductionFields}>
+              <img src='/icons/plus.png' alt='#' />
+            </button>
+          }
+          <h3>Опыт работы</h3>
+          {experienceFields.fields.map((field, index) => {
+            return <ExperienceBox
+              resetField={resetField}
+              index={index}
+              key={field.id}
+              removeFields={removeExperienceFields}
+            />
+          })}
+          {getValues('experience').length < 3 &&
+            <button className={styles.addBtn} type='button' onClick={appendExperienceFields}>
+              <img src='/icons/plus.png' alt='#' />
+            </button>
+          }
+          <h3>Собственные проекты</h3>
+          {projectsFields.fields.map((field, index) => {
+            return <ProjectsBox
+              resetField={resetField}
+              index={index}
+              key={field.id}
+              removeFields={removeProjectsFields}
+            />
+          })}
+          {getValues('projects').length < 3 &&
+            <button className={styles.addBtn} type='button' onClick={appendProjectsFields}>
+              <img src='/icons/plus.png' alt='#' />
+            </button>
+          }
+          <h3>Навыки</h3>
+          <div className={styles.formBlock}>
+            <ControlledTextField name='languages' label='Языки программирования' labelType='moving' />
+            <ControlledTextField name='frameworks' label='Фреймворки' labelType='moving' />
+            <ControlledTextField name='libraries' label='Библиотеки' labelType='moving' />
+          </div>
+          <button type='submit'>принять</button>
+        </form>
+      </FormProvider>
+    </div>
   )
 }

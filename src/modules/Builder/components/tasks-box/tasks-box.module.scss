@@ -1,0 +1,13 @@
+.container {
+    grid-area: tasks;
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+
+    p {
+        text-align: left;
+        color: #72C075;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}

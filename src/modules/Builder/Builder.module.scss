@@ -1,10 +1,58 @@
+.container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
 
+.form {
+    width: 1200px;
+    padding: 24px;
+    gap: 24px;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-.container p {
-    color: #72C075;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 400;
-    position: relative;
-    display: inline-block; 
+    .formBlock {
+        width: 100%;
+        display: grid;
+        gap: 20px;
+        grid-template-areas:
+            "a b c"
+            "a b c"
+            "tasks _  rm";
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .addBtn, .rmBtn {
+        width: 56px;
+        height: 56px;
+        margin: auto;
+        cursor: pointer;
+        border-radius: 12px;
+        transition: all 400ms;
+        transition-delay: 100ms;
+    }
+
+    .addBtn {
+        background: #72C075;
+    }
+
+    .rmBtn {
+        background: #f67272;
+    }
+
+    .addBtn:hover, .rmBtn:hover {
+        scale: 1.2;
+    }
+
+    h3 {
+        color: #72C075;
+        font-size: 18px;
+        font-weight: 400;
+        width: fit-content;
+        display: block;
+        border-bottom:2px solid  #72C075;
+    }
 }

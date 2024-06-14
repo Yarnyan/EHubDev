@@ -1,4 +1,5 @@
 import { ControlledTextField } from '../../../../components/controlled-text-field/Controlled-text-field.tsx'
+import styles from '../../Builder.module.scss'
 
 interface EducationBoxProps {
   index: number
@@ -7,7 +8,7 @@ interface EducationBoxProps {
 
 export const EducationBox = ({ index, removeFields }: EducationBoxProps) => {
   return (
-    <div style={{ border: '1px solid black' }}>
+    <div className={styles.formBlock}>
       <ControlledTextField name={`education.${index}.university`} label='Учебное заведение' labelType='moving' />
       <ControlledTextField name={`education.${index}.universityLocation`} label='Где находится' labelType='moving' />
       <ControlledTextField name={`education.${index}.universityStart`} label='Дата начала обучения'
@@ -16,7 +17,9 @@ export const EducationBox = ({ index, removeFields }: EducationBoxProps) => {
                            labelType='moving' />
       <ControlledTextField name={`education.${index}.specialization`} label='Направление подготовки'
                            labelType='moving' />
-      <button type='button' onClick={() => removeFields(index)}>((-))</button>
+      <button className={styles.rmBtn} type='button' onClick={() => removeFields(index)}>
+        <img src='/icons/minus.png' alt='#' />
+      </button>
     </div>
   )
 }
