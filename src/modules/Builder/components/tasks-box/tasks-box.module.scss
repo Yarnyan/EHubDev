@@ -10,4 +10,29 @@
         font-size: 14px;
         font-weight: 400;
     }
+
+    .addBtn, .rmBtn {
+        display: block;
+        margin: auto;
+        border-radius: 10px;
+        width: 180px;
+        height: 40px;
+        background-color: #72C075;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 400;
+        border: 2px solid #72C075;
+        transition: 1s background-color, .5s color;
+        cursor: pointer
+    }
+
+    .rmBtn {
+        background-color: #f67272;
+        border: 2px solid #f67272;
+    }
+
+    .addBtn:hover, .rmBtn:hover {
+        background-color: transparent;
+        color: #000;
+    }
 }

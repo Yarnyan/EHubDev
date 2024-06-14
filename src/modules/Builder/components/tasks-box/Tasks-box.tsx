@@ -20,8 +20,8 @@ export const TasksBox = ({ taskNames, handleTaskAdd, handleTaskRemove }: TasksBo
         key={taskName}
         sx={{width: '100%'}}
       />)}
-      {taskNames.length <= 3 && <button type='button' onClick={handleTaskAdd}>Добавить задачу</button>}
-      {taskNames.length > 1 && <button type='button' onClick={handleTaskRemove}>Убрать задачу</button>}
+      {taskNames.length <= 3 && <button className={styles.addBtn} type='button' onClick={handleTaskAdd}>Добавить задачу</button>}
+      {taskNames.length > 1 && <button className={styles.rmBtn} type='button' onClick={handleTaskRemove}>Убрать задачу</button>}
     </div>
   )
 }
