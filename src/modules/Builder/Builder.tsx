@@ -155,6 +155,7 @@ export const Builder = () => {
             <ControlledTextField name='email' label='E-mail' labelType='moving' type='email' />
             <ControlledTextField name='github' label='Ссылка на gitHub' labelType='moving' />
           </div>
+          <span className={styles.divider}></span>
           <h3>Образование</h3>
           {educationFields.fields.map((field, index) => {
             return <EducationBox
@@ -168,6 +169,7 @@ export const Builder = () => {
               <img src='/icons/plus.png' alt='#' />
             </button>
           }
+          <span className={styles.divider}></span>
           <h3>Опыт работы</h3>
           {experienceFields.fields.map((field, index) => {
             return <ExperienceBox
@@ -182,6 +184,7 @@ export const Builder = () => {
               <img src='/icons/plus.png' alt='#' />
             </button>
           }
+          <span className={styles.divider}></span>
           <h3>Собственные проекты</h3>
           {projectsFields.fields.map((field, index) => {
             return <ProjectsBox
@@ -196,13 +199,14 @@ export const Builder = () => {
               <img src='/icons/plus.png' alt='#' />
             </button>
           }
+          <span className={styles.divider}></span>
           <h3>Навыки</h3>
           <div className={styles.formBlock}>
             <ControlledTextField name='languages' label='Языки программирования' labelType='moving' />
             <ControlledTextField name='frameworks' label='Фреймворки' labelType='moving' />
             <ControlledTextField name='libraries' label='Библиотеки' labelType='moving' />
           </div>
-          <button type='submit'>принять</button>
+          <button className={styles.submitBtn} type='submit'>принять</button>
         </form>
       </FormProvider>
     </div>

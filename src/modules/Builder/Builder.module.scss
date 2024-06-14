@@ -55,4 +55,33 @@
         display: block;
         border-bottom:2px solid  #72C075;
     }
+
+    .submitBtn {
+        display: block;
+        margin: auto;
+        border-radius: 10px;
+        width: 290px;
+        height: 58px;
+        background-color: #72C075;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        border: 2px solid #72C075;
+        transition: 1s background-color, .5s color;
+        cursor: pointer
+    }
+
+    .submitBtn:hover {
+        background-color: transparent;
+        color: #000;
+    }
+
+    .divider {
+        display: block;
+        margin: auto;
+        width: 80%;
+        border: 1px solid #72C075;
+    }
+
 }
