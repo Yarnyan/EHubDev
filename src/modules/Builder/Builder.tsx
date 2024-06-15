@@ -1,10 +1,12 @@
 import { useForm, FormProvider, SubmitHandler, useFieldArray } from 'react-hook-form'
 import { ControlledTextField } from '../../components/controlled-text-field/Controlled-text-field.tsx'
 import styles from './Builder.module.scss'
-import jsPDF from 'jspdf'
 import { EducationBox } from './components/education-box/Education-box.tsx'
 import { ExperienceBox } from './components/experience-box/Experience-box.tsx'
 import { ProjectsBox } from './components/projects-box/Projects-box.tsx'
+import { ResumeTemplate } from './templates/Resume-template.tsx'
+import {  useRef } from 'react'
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 
 export interface Inputs {
   name: string
@@ -23,6 +25,9 @@ export interface Inputs {
     experienceStart: string
     experienceEnd: string
     task1: string
+    task2?: string
+    task3?: string
+    task4?: string
   }[]
   projects: {
     projectName: string
@@ -30,6 +35,9 @@ export interface Inputs {
     projectStart: string
     projectEnd: string
     task1: string
+    task2?: string
+    task3?: string
+    task4?: string
   }[]
   languages: string
   frameworks: string
@@ -37,6 +45,8 @@ export interface Inputs {
 }
 
 export const Builder = () => {
+  const templateRef = useRef(null)
+
   const formMethods = useForm<Inputs>({
     mode: 'onBlur',
     defaultValues: {
@@ -67,6 +77,7 @@ export const Builder = () => {
     control,
     resetField,
     getValues,
+    formState: {isSubmitted}
   } = formMethods
 
   const educationFields = useFieldArray({
@@ -131,21 +142,16 @@ export const Builder = () => {
   const removeProjectsFields = (index: number) => {
     projectsFields.remove(index)
   }
-  // const generatePDF = () => {
-  //     const doc = new jsPDF()
-  //
-  //     doc.text('Education', 10, 10)
-  //     doc.text(`About: `, 10, 20)
-  //     doc.text(`Email: `, 10, 30)
-  //
-  //     doc.text('Experience', 10, 50)
-  //
-  //     doc.text('Project', 10, 70)
-  //
-  //     doc.save('resume.pdf')
-  // }
+
   return (
     <div className={styles.container}>
+      <div style={{position: 'absolute', left: '4000px'}}>
+        <div ref={templateRef}>
+          <PDFViewer>
+            <ResumeTemplate {...getValues()}/>
+          </PDFViewer>
+        </div>
+      </div>
       <FormProvider {...formMethods}>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <h3>Общая информация</h3>
@@ -207,6 +213,12 @@ export const Builder = () => {
             <ControlledTextField name='libraries' label='Библиотеки' labelType='moving' />
           </div>
           <button className={styles.submitBtn} type='submit'>принять</button>
+          <button type='button'>template</button>
+          <div>
+            <PDFDownloadLink document={<ResumeTemplate {...getValues()}/>} fileName="somename.pdf">
+              {({ loading }) => (loading ? 'Loading document...' : 'Download now!')}
+            </PDFDownloadLink>
+          </div>
         </form>
       </FormProvider>
     </div>
