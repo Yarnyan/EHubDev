@@ -43,8 +43,9 @@ export const ControlledSelect = (
       rules={rules}
       render={({ field: { value = [options[0].value], onBlur, onChange } }) => (
         <div>
-          <InputLabel id={label}>{label}</InputLabel>
+          <InputLabel style={{margin: '0 5px'}} id={label}>{label}</InputLabel>
           <StyledSelect
+            style={{margin: '0 5px'}}
             disabled={disabled || false}
             sx={{...sx}}
             labelId={label}
@@ -56,7 +57,7 @@ export const ControlledSelect = (
               }
               onBlur()
             }}
-            onChange={onChange}
+            onChange={(e) => onChange(e.target.value)}
           >
             {options.map(option => {
               return <MenuItem key={option.content} value={option.value}>{option.content}</MenuItem>

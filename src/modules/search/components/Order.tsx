@@ -3,8 +3,8 @@ import styles from './Card.module.scss'
 interface  Order {
     title: string
     description: string
-    position: string
     expertise: string
+    pay: number
 }   
 
 const formatText = (text: string) => {
@@ -28,11 +28,13 @@ const getExpertiseClass = (years: string) => {
     }
   }
 
-const Order: React.FC<Order> = ({title, description, position, expertise}) => {
+const Order: React.FC<Order> = ({title, description, expertise, pay}) => {
+  console.log(pay)
   return (
     <div className={styles.container}>
         <div className={styles.subtitle}>
             <p>{title}</p>
+            <p>{pay}$</p>
         </div>
         <div className={styles.description}>
             <p>{formatText(description)}</p>

@@ -9,7 +9,6 @@ interface Card {
 
 const formatText = (text: string) => {
     const maxLength = 400
-    console.log(text.length)
     if (text.length > maxLength) {
         return text.substring(0, maxLength) + '...';
     } else {

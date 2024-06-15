@@ -1,49 +1,32 @@
-import { useState } from 'react';
+import { } from 'react';
 import styles from './Search.module.scss';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Inputs } from '../authorization-form/types/Inputs.ts';
 import Card from './components/Card.tsx';
 import Order from './components/Order.tsx';
+import { useAppSelector } from '../../hooks/redux-hooks.ts'
 import { data, orderData } from './data/data.ts';
+import { User } from '../../models/User.ts'
 import { ControlledSelect } from '../../components/controlled-select/Controlled-select.tsx';
 
+import { useGetVacancyQuery, useGetUserByIdQuery } from '../../api/vacancy-api.ts';
 export const Search = () => {
     const formMethods = useForm<Inputs>({ mode: 'onBlur' });
-    const { handleSubmit, getValues, reset, formState: {} } = formMethods;
-    const user = 'seller';
+    const { handleSubmit, getValues, reset, formState: { } } = formMethods;
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [specialization, setSpecialization] = useState('');
-    const [expertise, setExpertise] = useState('');
+    const { isLoading, vacancyData, error } = useGetVacancyQuery();
 
-    const handleSpecializationChange = (e) => {
-        setSpecialization(e.target.value);
-    };
+    // const { isData: userId  } = useGetUserByIdQuery(2 as number);
 
-    const handleExpertiseChange = (e) => {
-        setExpertise(e.target.value);
-    };
+    const { type } = useAppSelector(state => state.userReducer.user as User)
 
-    const filteredData = data.filter((item) => {
-        return (
-            (specialization === '' || item.position === specialization) &&
-            (expertise === '' || item.expertise === expertise)
-        );
-    });
-
-    const filteredOrderData = orderData.filter((item) => {
-        return (
-            (specialization === '' || item.position === specialization) &&
-            (expertise === '' || item.expertise === expertise)
-        );
-    });
 
     return (
         <FormProvider {...formMethods}>
             <div className={styles.container}>
                 <div className={styles.input}>
                     <ControlledSelect
-                        sx={{ width: '260px', marginRight: '20px' }}
+                        sx={{ width: '260px' }}
                         label='Специализация'
                         name='specialization'
                         options={[
@@ -51,7 +34,6 @@ export const Search = () => {
                             { value: 'Frontend', content: 'Frontend' },
                             { value: 'Backend', content: 'Backend' },
                         ]}
-                        handleChange={handleSpecializationChange}
                     />
                     <ControlledSelect
                         sx={{ width: '260px' }}
@@ -62,11 +44,10 @@ export const Search = () => {
                             { value: '5 лет', content: 'Более 5 лет' },
                             { value: '10 лет', content: 'Более 10 лет' },
                         ]}
-                        handleChange={handleExpertiseChange}
                     />
                 </div>
-                {user === 'seller' ? (
-                    filteredData.map((item) => (
+                {type === 'user' ? (
+                    data.map((item) => (
                         <Card
                             title={item.title}
                             description={item.description}
@@ -76,13 +57,13 @@ export const Search = () => {
                         />
                     ))
                 ) : (
-                    filteredOrderData.map((item) => (
+                    orderData.map((item) => (
                         <Order
                             title={item.title}
                             description={item.description}
-                            position={item.position}
                             key={item.id}
                             expertise={item.expertise}
+                            pay={item.pay}
                         />
                     ))
                 )}

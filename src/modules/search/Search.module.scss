@@ -11,5 +11,10 @@
 @media only screen and (max-width: 768px) {
     .input {
         width: 90%;
+        display: flex;
+        flex-direction: column;
+    }
+    .select_1 {
+        margin-right: 0 !important;
     }
 }
