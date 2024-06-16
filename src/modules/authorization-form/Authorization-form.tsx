@@ -7,6 +7,7 @@ import { useRegistrationMutation, useAuthorizationMutation } from './api/authori
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { AUTHORIZATION_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE } from '../../consts/routes.ts'
+import Checkbox from '@mui/material/Checkbox';
 // import { handleFieldError } from './helpers/handle-field-error.ts'
 import styles from './authorization-form.module.scss'
 import { Inputs } from './types/Inputs.ts'
@@ -62,7 +63,7 @@ export const AuthorizationForm = () => {
     }
     reset()
   }, [pathname, isSubmitSuccessful])
-
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   return (
     <FormProvider {...formMethods}>
       <Box
@@ -86,6 +87,24 @@ export const AuthorizationForm = () => {
         <ControlledTextField
           sx={{
             width: '100%',
+          }}
+          labelType='moving'
+          type='login'
+          name='login'
+          label='Login'
+          InputProps={{
+            sx: {
+              borderRadius: '12px',
+            },
+          }}
+          rules={{
+            required: 'Поле не заполнено',
+          }}
+        />
+        <ControlledTextField
+          sx={{
+            width: '100%',
+            mt: 3,
           }}
           labelType='moving'
           type='email'
@@ -139,6 +158,13 @@ export const AuthorizationForm = () => {
               }}
             />
           </>
+        )}
+
+        {isRegistration && (
+          <div className={styles.checkbox}>
+            <Checkbox {...label} defaultChecked />
+            <p>Компания</p>
+          </div>
         )}
 
         <button

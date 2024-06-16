@@ -13,7 +13,7 @@ interface ControlledSelectProps {
     'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
   >
   sx?: SxProps<Theme>
-  label: string
+  label?: string
   disabled?: boolean
   handleBlur?: () => void
 }

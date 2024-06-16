@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from './reducers/user-slice.ts'
+import chatReducer from './reducers/chat-slise.ts'
 
-import { vacancyApi } from '../api/vacancy-api.ts'
+import { vacancyApi } from '../modules/search/api/vacancy-api.ts'
 
 const rootReducer = combineReducers({
   userReducer,
+  chatReducer,
   [vacancyApi.reducerPath]: vacancyApi.reducer
 })
 

@@ -8,7 +8,7 @@ interface UserSliceState {
 
 const initialState: UserSliceState = {
   user: {
-    type: 'user',
+    type: 'company',
     id: '111'
   }
 }

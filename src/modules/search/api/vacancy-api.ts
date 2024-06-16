@@ -1,8 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { baseQuery } from './base-query-instance.ts'
-import { jsonRequestHeaders } from './request-headers.ts'
+import { baseQuery } from '../../../api/base-query-instance.ts'
+import { jsonRequestHeaders } from '../../../api/request-headers.ts'
 
-import { IVacancy } from '../models/Vacancy.ts'
+import { IVacancy } from '../../../models/Vacancy.ts'
 
 export const vacancyApi = createApi({
   reducerPath: 'vacancyApi',

@@ -28,3 +28,8 @@ p {
 .css-7r1cz2-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline {
     border: 1px solid rgba(0, 0, 0, 0.23) !important;
 }
+
+.css-14hozr8-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, .css-14hozr8-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+    color: rgba(0, 0, 0, 0.6) !important;
+    padding: 2px !important;
+}

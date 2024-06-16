@@ -1,15 +1,16 @@
 import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router-dom'
 
-const UserAvatar = () => {
-  const navigate = useNavigate()
+interface Avatar {
+  avatar: string | undefined;
+}
+const UserAvatar: React.FC<Avatar> = ({avatar}) => {
 
   return (
     <Avatar
-      onClick={() => navigate('/profile')}
       sx={{cursor: 'pointer'}}
       alt="Remy Sharp"
-      src="/static/images/avatar/1.jpg" />
+      src={avatar} />
   )
 }
 
