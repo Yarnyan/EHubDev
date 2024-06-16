@@ -21,6 +21,7 @@ export interface Inputs {
     specialization: string
   }[]
   experience: {
+    position: string
     organization: string
     experienceStart: string
     experienceEnd: string
@@ -58,6 +59,7 @@ export const Builder = () => {
         specialization: '',
       }],
       experience: [{
+        position: '',
         organization: '',
         experienceStart: '',
         experienceEnd: '',
@@ -118,6 +120,7 @@ export const Builder = () => {
 
   const appendExperienceFields = () => {
     experienceFields.append({
+      position: '',
       organization: '',
       experienceStart: '',
       experienceEnd: '',
@@ -215,7 +218,7 @@ export const Builder = () => {
           <button className={styles.submitBtn} type='submit'>принять</button>
           <button type='button'>template</button>
           <div>
-            <PDFDownloadLink document={<ResumeTemplate {...getValues()}/>} fileName="somename.pdf">
+            <PDFDownloadLink document={<ResumeTemplate {...getValues()}/>} fileName="resume.pdf">
               {({ loading }) => (loading ? 'Loading document...' : 'Download now!')}
             </PDFDownloadLink>
           </div>

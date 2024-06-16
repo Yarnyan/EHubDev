@@ -27,6 +27,7 @@ export const ExperienceBox = ({ index, removeFields, resetField }: EducationBoxP
 
   return (
     <div className={styles.formBlock}>
+      <ControlledTextField name={`experience.${index}.position`} label='Кем работали' labelType='moving' />
       <ControlledTextField name={`experience.${index}.organization`} label='Название организации' labelType='moving' />
       <ControlledTextField name={`experience.${index}.experienceStart`} label='Дата начала работы' labelType='moving' />
       <ControlledTextField name={`experience.${index}.experienceEnd`} label='Дата окончания работы'
