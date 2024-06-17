@@ -33,6 +33,7 @@ export const ControlledTextField = (
     multiline,
     id,
     changeHandler,
+    inputProps
   }: ControlledTextFieldProps) => {
   return (
     <Controller
@@ -70,6 +71,7 @@ export const ControlledTextField = (
             inputProps={{
               maxLength: multiline ? 600 : 50,
               autoComplete: 'new-password',
+              ...inputProps
             }}
           />
         </>

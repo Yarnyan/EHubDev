@@ -27,11 +27,15 @@ export const ProjectsBox = ({ index, removeFields, resetField }: EducationBoxPro
 
   return (
     <div className={styles.formBlock}>
-      <ControlledTextField name={`projects.${index}.projectName`} label='Название проекта' labelType='moving' />
-      <ControlledTextField name={`projects.${index}.stack`} label='Стек технологий' labelType='moving' />
-      <ControlledTextField name={`projects.${index}.projectStart`} label='Дата начал работы'
+      <ControlledTextField name={`projects.${index}.projectName`} label='Название проекта' labelType='moving'
+                           rules={{ required: 'Поле не заполнено' }} />
+      <ControlledTextField name={`projects.${index}.stack`} label='Стек технологий' labelType='moving'
+                           rules={{ required: 'Поле не заполнено' }} />
+      <ControlledTextField name={`projects.${index}.projectStart`} label='Дата начал работы(месяц, год)'
+                           rules={{ required: 'Поле не заполнено' }}
                            labelType='moving' />
-      <ControlledTextField name={`projects.${index}.projectEnd`} label='Дата окончания работы'
+      <ControlledTextField name={`projects.${index}.projectEnd`} label='Дата окончания работы(месяц, год)'
+                           rules={{ required: 'Поле не заполнено' }}
                            labelType='moving' />
       <TasksBox taskNames={taskNames} handleTaskAdd={handleTaskAdd} handleTaskRemove={handleTaskRemove} />
       <button style={{ gridArea: 'rm' }} className={styles.rmBtn} type='button'

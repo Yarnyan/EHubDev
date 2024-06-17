@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
   },
   section: {
     padding: '0 10px',
-    marginBottom: '8px'
+    marginBottom: '8px',
   },
   sectionTop: {
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginBottom: '4px'
+    marginBottom: '4px',
   },
   dateBox: {
     display: 'flex',
@@ -69,8 +69,10 @@ const styles = StyleSheet.create({
   },
   task: {
     margin: '4px 0 0 12px',
-    textDecoration: 'underline'
-  }
+    textDecoration: 'underline',
+    maxWidth: '100%',
+    wordBreak: 'break-all',
+  },
 })
 
 export const ResumeTemplate = (props: Inputs) => {
@@ -89,20 +91,21 @@ export const ResumeTemplate = (props: Inputs) => {
           {props.education.map(item => {
             return <EducationBox university={item.university} universityLocation={item.universityLocation}
                                  universityStart={item.universityStart} universityEnd={item.universityEnd}
-                                 specialization={item.specialization} />
+                                 specialization={item.specialization}
+                                 key={item.specialization + item.universityStart} />
           })}
           <Text style={styles.subheading}>Опыт работы</Text>
           {props.experience.map(item => {
             return <ExperienceBox organization={item.organization} experienceStart={item.experienceStart}
                                   experienceEnd={item.experienceEnd} position={item.position} task1={item.task1}
                                   task2={item.task2}
-                                  task3={item.task3} task4={item.task4} />
+                                  task3={item.task3} task4={item.task4} key={item.organization + item.task1} />
           })}
           <Text style={styles.subheading}>Мои проекты</Text>
           {props.projects.map(item => {
             return <ProjectsBox projectName={item.projectName} stack={item.stack} projectStart={item.projectStart}
                                 projectEnd={item.projectEnd} task1={item.task1} task2={item.task2} task3={item.task3}
-                                task4={item.task4} />
+                                task4={item.task4} key={item.projectName + item.task1} />
           })}
           <Text style={styles.subheading}>Технические навыки</Text>
           <View style={styles.dateBox}>
@@ -111,11 +114,11 @@ export const ResumeTemplate = (props: Inputs) => {
           </View>
           <View style={styles.dateBox}>
             <Text style={styles.sectionHeading}>Фреймворки: </Text>
-            <Text style={styles.textL}>{props.languages}</Text>
+            <Text style={styles.textL}>{props.frameworks}</Text>
           </View>
           <View style={styles.dateBox}>
             <Text style={styles.sectionHeading}>Библиотеки: </Text>
-            <Text style={styles.textL}>{props.languages}</Text>
+            <Text style={styles.textL}>{props.libraries}</Text>
           </View>
         </View>
       </Page>
@@ -145,7 +148,7 @@ const EducationBox = (
         <Text style={styles.sectionHeading}>{university}</Text>
         <Text style={styles.textL}>{universityLocation}</Text>
       </View>
-      <View style={{...styles.sectionTop, marginBottom: '0'}}>
+      <View style={{ ...styles.sectionTop, marginBottom: '0' }}>
         <Text>{specialization}</Text>
         <View style={styles.dateBox}>
           <Text>{universityStart + ' -'}</Text>
@@ -190,8 +193,8 @@ const ExperienceBox = (
         </View>
       </View>
       <Text>{organization}</Text>
-      {tasks.map(task => {
-        return <Text style={styles.task}>{task}</Text>
+      {tasks.map((task, index) => {
+        return <Text key={index} style={styles.task}>{task}</Text>
       })}
     </View>
   )
@@ -233,7 +236,7 @@ const ProjectsBox = (
           <Text style={styles.textL}>{' ' + projectEnd}</Text>
         </View>
       </View>
-      {tasks.map(task => <Text style={styles.task}>{task}</Text>)}
+      {tasks.map((task, index) => <Text key={index} style={styles.task}>{task}</Text>)}
     </View>
   )
 }

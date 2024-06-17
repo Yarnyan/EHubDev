@@ -1,6 +1,7 @@
 import { FieldValues, RegisterOptions } from 'react-hook-form'
 import { FilledInputProps, OutlinedInputProps, SxProps, Theme } from '@mui/material'
 import React, { HTMLInputTypeAttribute } from 'react'
+import { InputBaseProps } from '@mui/material/InputBase'
 
 export interface ControlledTextFieldProps {
   name: string
@@ -20,4 +21,5 @@ export interface ControlledTextFieldProps {
   multiline?: boolean
   id?: string
   changeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  inputProps?: InputBaseProps['inputProps']
 }

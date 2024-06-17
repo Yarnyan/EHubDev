@@ -5,7 +5,7 @@ import { EducationBox } from './components/education-box/Education-box.tsx'
 import { ExperienceBox } from './components/experience-box/Experience-box.tsx'
 import { ProjectsBox } from './components/projects-box/Projects-box.tsx'
 import { ResumeTemplate } from './templates/Resume-template.tsx'
-import {  useRef } from 'react'
+import { useRef } from 'react'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 
 export interface Inputs {
@@ -46,7 +46,7 @@ export interface Inputs {
 }
 
 export const Builder = () => {
-  const templateRef = useRef(null)
+  const downloadTemplateRef = useRef<HTMLElement>(null)
 
   const formMethods = useForm<Inputs>({
     mode: 'onBlur',
@@ -79,7 +79,7 @@ export const Builder = () => {
     control,
     resetField,
     getValues,
-    formState: {isSubmitted}
+    formState: { isSubmitted },
   } = formMethods
 
   const educationFields = useFieldArray({
@@ -102,6 +102,9 @@ export const Builder = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data)
+    if (downloadTemplateRef.current) {
+      downloadTemplateRef.current.click()
+    }
   }
 
   const appendEductionFields = () => {
@@ -148,21 +151,22 @@ export const Builder = () => {
 
   return (
     <div className={styles.container}>
-      <div style={{position: 'absolute', left: '4000px'}}>
-        <div ref={templateRef}>
-          <PDFViewer>
-            <ResumeTemplate {...getValues()}/>
-          </PDFViewer>
-        </div>
+      <div style={{ display: 'none' }}>
+        <PDFViewer>
+          <ResumeTemplate {...getValues()} />
+        </PDFViewer>
       </div>
       <FormProvider {...formMethods}>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <h3>Общая информация</h3>
           <div className={styles.formBlock}>
-            <ControlledTextField name='name' label='ФИО' labelType='moving' />
-            <ControlledTextField name='phone' label='Номер телефона' labelType='moving' type='tel' />
-            <ControlledTextField name='email' label='E-mail' labelType='moving' type='email' />
-            <ControlledTextField name='github' label='Ссылка на gitHub' labelType='moving' />
+            <ControlledTextField name='name' label='ФИО' labelType='moving' rules={{ required: 'Поле не заполнено' }} />
+            <ControlledTextField name='phone' label='Номер телефона' labelType='moving' type='tel'
+                                 rules={{ required: 'Поле не заполнено' }} />
+            <ControlledTextField name='email' label='E-mail' labelType='moving' type='email'
+                                 rules={{ required: 'Поле не заполнено' }} />
+            <ControlledTextField name='github' label='Ссылка на gitHub' labelType='moving'
+                                 rules={{ required: 'Поле не заполнено' }} />
           </div>
           <span className={styles.divider}></span>
           <h3>Образование</h3>
@@ -211,17 +215,17 @@ export const Builder = () => {
           <span className={styles.divider}></span>
           <h3>Навыки</h3>
           <div className={styles.formBlock}>
-            <ControlledTextField name='languages' label='Языки программирования' labelType='moving' />
-            <ControlledTextField name='frameworks' label='Фреймворки' labelType='moving' />
-            <ControlledTextField name='libraries' label='Библиотеки' labelType='moving' />
+            <ControlledTextField name='languages' label='Языки программирования' labelType='moving'
+                                 rules={{ required: 'Поле не заполнено' }} />
+            <ControlledTextField name='frameworks' label='Фреймворки' labelType='moving'
+                                 rules={{ required: 'Поле не заполнено' }} />
+            <ControlledTextField name='libraries' label='Библиотеки' labelType='moving'
+                                 rules={{ required: 'Поле не заполнено' }} />
           </div>
-          <button className={styles.submitBtn} type='submit'>принять</button>
-          <button type='button'>template</button>
-          <div>
-            <PDFDownloadLink document={<ResumeTemplate {...getValues()}/>} fileName="resume.pdf">
-              {({ loading }) => (loading ? 'Loading document...' : 'Download now!')}
+          <button className={styles.submitBtn} type='submit'>Сохранить</button>
+            <PDFDownloadLink document={<ResumeTemplate {...getValues()} />} fileName='resume.pdf'>
+              <div ref={downloadTemplateRef}></div>
             </PDFDownloadLink>
-          </div>
         </form>
       </FormProvider>
     </div>

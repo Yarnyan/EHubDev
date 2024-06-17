@@ -27,10 +27,14 @@ export const ExperienceBox = ({ index, removeFields, resetField }: EducationBoxP
 
   return (
     <div className={styles.formBlock}>
-      <ControlledTextField name={`experience.${index}.position`} label='Кем работали' labelType='moving' />
-      <ControlledTextField name={`experience.${index}.organization`} label='Название организации' labelType='moving' />
-      <ControlledTextField name={`experience.${index}.experienceStart`} label='Дата начала работы' labelType='moving' />
-      <ControlledTextField name={`experience.${index}.experienceEnd`} label='Дата окончания работы'
+      <ControlledTextField name={`experience.${index}.position`} label='Кем работали' labelType='moving'
+                           rules={{ required: 'Поле не заполнено' }} />
+      <ControlledTextField name={`experience.${index}.organization`} label='Название организации' labelType='moving'
+                           rules={{ required: 'Поле не заполнено' }} />
+      <ControlledTextField name={`experience.${index}.experienceStart`} label='Дата начала работы(месяц, год)'
+                           labelType='moving' rules={{ required: 'Поле не заполнено' }} />
+      <ControlledTextField name={`experience.${index}.experienceEnd`} label='Дата окончания работы(месяц, год)'
+                           rules={{ required: 'Поле не заполнено' }}
                            labelType='moving' />
       <TasksBox taskNames={taskNames} handleTaskAdd={handleTaskAdd} handleTaskRemove={handleTaskRemove} />
       <button style={{ gridArea: 'rm' }} className={styles.rmBtn} type='button'

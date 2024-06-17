@@ -18,10 +18,14 @@ export const TasksBox = ({ taskNames, handleTaskAdd, handleTaskRemove }: TasksBo
         label='Задача'
         labelType='moving'
         key={taskName}
-        sx={{width: '100%'}}
+        sx={{ width: '100%' }}
+        inputProps={{ maxLength: 150 }}
+        rules={{ required: 'Поле не заполнено' }}
       />)}
-      {taskNames.length <= 3 && <button className={styles.addBtn} type='button' onClick={handleTaskAdd}>Добавить задачу</button>}
-      {taskNames.length > 1 && <button className={styles.rmBtn} type='button' onClick={handleTaskRemove}>Убрать задачу</button>}
+      {taskNames.length <= 3 &&
+        <button className={styles.addBtn} type='button' onClick={handleTaskAdd}>Добавить задачу</button>}
+      {taskNames.length > 1 &&
+        <button className={styles.rmBtn} type='button' onClick={handleTaskRemove}>Убрать задачу</button>}
     </div>
   )
 }
