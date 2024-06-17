@@ -8,7 +8,6 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { AUTHORIZATION_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE } from '../../consts/routes.ts'
 import Checkbox from '@mui/material/Checkbox';
-// import { handleFieldError } from './helpers/handle-field-error.ts'
 import styles from './authorization-form.module.scss'
 import { Inputs } from './types/Inputs.ts'
 
@@ -26,23 +25,21 @@ export const AuthorizationForm = () => {
     handleSubmit,
     getValues,
     reset,
-    // setError,
+    register,
     formState: { isValid, isSubmitSuccessful },
   } = formMethods
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (isRegistration) {
-      const { email, password } = data
-      await registration({ email, password }).unwrap()
-      //   .catch((error) => {
-      //   handleFieldError(error, setError)
-      // })
+      const { email, password, login, userType } = data
+      const body = 'Email=' + encodeURIComponent(email) +
+        '&Password=' + encodeURIComponent(password) +
+        '&Login=' + encodeURIComponent(login) +
+        '&userType=' + encodeURIComponent(userType ? 1 : 0)
+      await registration(body).unwrap()
     } else {
-      const { email, password } = data
-      await authorization({ email, password }).unwrap()
-      //   .catch((error) => {
-      //   handleFieldError(error, setError)
-      // })
+      const { email, password, login } = data
+      await authorization({ email, password, login }).unwrap()
     }
   }
 
@@ -63,6 +60,7 @@ export const AuthorizationForm = () => {
     }
     reset()
   }, [pathname, isSubmitSuccessful])
+
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   return (
     <FormProvider {...formMethods}>
@@ -162,8 +160,8 @@ export const AuthorizationForm = () => {
 
         {isRegistration && (
           <div className={styles.checkbox}>
-            <Checkbox {...label} defaultChecked />
-            <p>Компания</p>
+            <Checkbox {...register('userType')} {...label} defaultChecked />
+            <p>Я работодатель</p>
           </div>
         )}
 

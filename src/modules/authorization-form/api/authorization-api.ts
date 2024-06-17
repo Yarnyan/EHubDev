@@ -6,16 +6,16 @@ export const authorizationApi = createApi({
   reducerPath: 'authorizationApi',
   baseQuery: baseQuery(jsonRequestHeaders),
   endpoints: (build) => ({
-    registration: build.mutation<string, UserData>({
+    registration: build.mutation<string, string>({
       query: (registrationData) => ({
-        url: `users/registration`,
+        url: `api/Auth/signUp`,
         method: 'POST',
         body: registrationData,
       }),
     }),
-    authorization: build.mutation<string, UserData>({
+    authorization: build.mutation<string, Omit<UserData, 'userType'>>({
       query: (authorizationData) => ({
-        url: `users/login`,
+        url: `api/Auth/signIn`,
         method: 'POST',
         body: authorizationData,
       }),
