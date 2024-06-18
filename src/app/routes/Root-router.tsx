@@ -21,7 +21,7 @@ export const RootRouter = () => {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
-        <Route index element={<Navigate to={REGISTRATION_ROUTE} replace />} />
+        <Route index element={<Navigate to={PROFILE_ROUTE} replace />} />
         <Route path={PROFILE_ROUTE} element={<ProtectedRoute>
           <ProfilePage />
         </ProtectedRoute>} />

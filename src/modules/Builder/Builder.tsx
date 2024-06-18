@@ -5,13 +5,14 @@ import { EducationBox } from './components/education-box/Education-box.tsx'
 import { ExperienceBox } from './components/experience-box/Experience-box.tsx'
 import { ProjectsBox } from './components/projects-box/Projects-box.tsx'
 import { ResumeTemplate } from './templates/Resume-template.tsx'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 
 export interface Inputs {
   name: string
   phone: string
   email: string
+  location: string
   github: string
   education: {
     university: string
@@ -79,7 +80,7 @@ export const Builder = () => {
     control,
     resetField,
     getValues,
-    formState: { isSubmitted },
+    formState: {  isSubmitSuccessful },
   } = formMethods
 
   const educationFields = useFieldArray({
@@ -102,10 +103,15 @@ export const Builder = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data)
-    if (downloadTemplateRef.current) {
-      downloadTemplateRef.current.click()
-    }
   }
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      if (downloadTemplateRef.current) {
+        downloadTemplateRef.current.click()
+      }
+    }
+  }, [isSubmitSuccessful])
 
   const appendEductionFields = () => {
     educationFields.append({
@@ -166,6 +172,8 @@ export const Builder = () => {
             <ControlledTextField name='email' label='E-mail' labelType='moving' type='email'
                                  rules={{ required: 'Поле не заполнено' }} />
             <ControlledTextField name='github' label='Ссылка на gitHub' labelType='moving'
+                                 rules={{ required: 'Поле не заполнено' }} />
+            <ControlledTextField name='location' label='Город проживания' labelType='moving'
                                  rules={{ required: 'Поле не заполнено' }} />
           </div>
           <span className={styles.divider}></span>

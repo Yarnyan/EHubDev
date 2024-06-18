@@ -6,16 +6,14 @@ export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQuery(jsonRequestHeaders),
   endpoints: (build) => ({
-    refreshToken: build.mutation<string, void>({
-      query: () => ({
-        url: 'users/refresh',
-        method: 'POST',
+    getCurrentUserData: build.query<any, string | null>({
+      query: (token) => ({
+        url: 'api/User/getUser',
+        headers: { 'auth-token': `bearer ${token}` },
+        method: 'GET',
       }),
-      transformResponse: (response: AuthResponse) => {
-        return response.accessToken
-      },
     }),
   }),
 })
 
-export const { useRefreshTokenMutation } = userApi
+export const { useGetCurrentUserDataQuery } = userApi
