@@ -2,10 +2,12 @@ import { RootRouter } from './routes/Root-router.tsx'
 import './app.css'
 import { theme } from './theme/theme.ts'
 import { ThemeProvider } from '@mui/material'
+import { useGetCurrentUserDataQuery } from '../api/user-api.ts'
 import { createSignalRContext } from "react-signalr/signalr";
 
-const SignalRContext = createSignalRContext();
+const SignalRContext = createSignalRContext()
 export const App = () => {
+  useGetCurrentUserDataQuery(localStorage.getItem('token'))
 
   const { token } = '11'
   
