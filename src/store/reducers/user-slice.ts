@@ -8,7 +8,7 @@ interface UserSliceState {
 }
 
 const initialState: UserSliceState = {
-  user: {id: '1', type: 'user'}
+  user: 'unknown'
 }
 
 export const userSlice = createSlice({
@@ -27,9 +27,9 @@ export const userSlice = createSlice({
     builder.addMatcher(userApi.endpoints.getCurrentUserData.matchFulfilled, (state, action) => {
       state.user = action.payload
     })
-    // builder.addMatcher(userApi.endpoints.getCurrentUserData.matchRejected, (state) => {
-    //   state.user = null
-    // })
+    builder.addMatcher(userApi.endpoints.getCurrentUserData.matchRejected, (state) => {
+      state.user = null
+    })
   },
 })
 
