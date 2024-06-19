@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles'
 
 interface ControlledSelectProps {
   name: string
-  options: { value: string, content: string }[]
+  options: { value: any, content: string }[]
   rules?: Omit<
     RegisterOptions<FieldValues, string>,
     'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'

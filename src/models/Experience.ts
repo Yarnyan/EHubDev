@@ -1,6 +1,6 @@
 export enum Experience {
-  intern,
-  junior,
-  middle ,
-  senior
+  Intern,
+  Junior,
+  Middle ,
+  Senior
 }

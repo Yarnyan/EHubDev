@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { User } from '../../models/User.ts'
 import { authorizationApi } from '../../modules/authorization-form'
 import { userApi } from '../../api'
+import { profileApi } from '../../modules/profile/api/profile-api.ts'
 
 interface UserSliceState {
   user: User | null | 'unknown'
@@ -25,6 +26,9 @@ export const userSlice = createSlice({
       localStorage.setItem('token', action.payload.token)
     })
     builder.addMatcher(userApi.endpoints.getCurrentUserData.matchFulfilled, (state, action) => {
+      state.user = action.payload
+    })
+    builder.addMatcher(profileApi.endpoints.putCurrentUserData.matchFulfilled, (state, action) => {
       state.user = action.payload
     })
     builder.addMatcher(userApi.endpoints.getCurrentUserData.matchRejected, (state) => {

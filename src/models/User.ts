@@ -7,8 +7,10 @@ export interface User {
     username: string
     avatar: string
     phone: string
+    description: string
     specialization: Specialization
     experience: Experience
     email: string
     login: string
+    hashPassword: string
 }

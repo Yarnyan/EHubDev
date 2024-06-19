@@ -1,5 +1,5 @@
 import styles from './profile.module.scss'
-import { UserData } from './types/User-data.ts'
+import { UserProfileData } from './types/User-data.ts'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { EMAIL_PATTERN } from '../authorization-form/consts/consts.ts'
@@ -7,29 +7,18 @@ import { Input } from './components/input/Input.tsx'
 import { useParams } from 'react-router-dom'
 import { ControlledSelect } from '../../components/controlled-select/Controlled-select.tsx'
 import { Experience } from '../../models/Experience.ts'
+import { useAppSelector } from '../../hooks/redux-hooks.ts'
+import { User } from '../../models/User.ts'
+import { Specialization } from '../../models/Specialization.ts'
+import { usePutCurrentUserDataMutation } from './api/profile-api.ts'
 
-interface Inputs extends Omit<UserData, 'avatar'> {
-  avatar?: File
+interface Inputs extends Omit<UserProfileData, 'avatar'> {
+  avatar?: FileList
 }
 
 export const Profile = () => {
-  //получаем из запроса информацию по id пользователя
-  const userData: UserData = {
-    type: 'user',
-    id: 'egergerg2342r43',
-    email: 'hello11@mail.com',
-    name: 'ПОльЗоваТель Номер-один',
-    phone: '+78334516946',
-    exp: Experience.middle,
-    specialization: 'Backend'
-  }
-  // const userData: UserData = {
-  //   type: 'company',
-  //   id: 'egergerg2342r4efe3',
-  //   email: 'helweflo11@mail.com',
-  //   name: 'компания Номер-один',
-  //   phone: '+78334516911',
-  // }
+  const userData = useAppSelector(state => state.userReducer.user as User)
+  const [putUserData] = usePutCurrentUserDataMutation()
 
   const { id } = useParams()
   const formRef = useRef<HTMLFormElement>(null)
@@ -39,11 +28,12 @@ export const Profile = () => {
     mode: 'onChange',
     defaultValues: {
       avatar: undefined,
-      email: userData.email,
-      name: userData.name,
-      phone: userData.phone,
-      exp: userData.exp,
-      specialization: userData.specialization
+      email: userData.email || '',
+      username: userData.username || '',
+      phone: userData.phone || '',
+      description: userData.description,
+      experience: Experience[userData.experience] || 1,
+      specialization: Specialization[userData.specialization] || 1
     },
   })
 
@@ -57,7 +47,25 @@ export const Profile = () => {
   } = formMethods
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
+    // let avatar: string = ''
+    // if (data.avatar) {
+    //   avatar = data.avatar[0].
+    // }
+
+    console.log(Array.from(data.avatar)[0])
+    const body =
+      'Id=' + encodeURIComponent(userData.id) +
+      '&Username=' + encodeURIComponent(data.username) +
+      '&Description=' + encodeURIComponent(data.description) +
+      '&Phone=' + encodeURIComponent(data.phone) +
+      '&Email=' + encodeURIComponent(data.email) +
+      '&Login=' + encodeURIComponent(userData.login) +
+      '&HashPassword=' + encodeURIComponent(userData.hashPassword) +
+      '&UserType=' + encodeURIComponent(userData.userType) +
+      '&Specialization=' + encodeURIComponent(data.specialization) +
+      '&Experience=' + encodeURIComponent(data.experience) +
+      '&Avatar=' + encodeURIComponent(Array.from(data.avatar)[0])
+    putUserData({body, token: localStorage.getItem('token')!})
   }
 
   const { ref, ...rest } = register('avatar', {
@@ -83,18 +91,18 @@ export const Profile = () => {
             sendForm={() => formRef.current?.requestSubmit()}
             enableEdit={enableEdit}
             type='text'
-            name='name'
-            label={userData.type === 'user' ? 'Имя пользователя' : 'Название компании'}
+            name='username'
+            label={userData.userType === 'Default' ? 'Имя пользователя' : 'Название компании'}
             rules={{
-              required: true,
+              required: false,
             }}
           />
           <Input
             sendForm={() => formRef.current?.requestSubmit()}
             enableEdit={enableEdit}
             type='text'
-            name='info'
-            label={userData.type === 'user' ? 'О себе' : 'О компании'}
+            name='description'
+            label={userData.userType === 'Default' ? 'О себе' : 'О компании'}
             multiline={true}
             rules={{
               required: false,
@@ -124,7 +132,7 @@ export const Profile = () => {
               required: false,
             }}
           />
-          {userData.type === 'user' &&
+          {userData.userType === 'Default' &&
             <div className={styles.selectsContainer}>
               <ControlledSelect
                 handleBlur={() => formRef.current?.requestSubmit()}
@@ -133,32 +141,36 @@ export const Profile = () => {
                 label='Специализация'
                 name='specialization'
                 options={
-                  [{ value: 'Frontend', content: 'Frontend' }, { value: 'Backend', content: 'Backend' }]
+                  [
+                    { value: Specialization.Frontend, content: 'Frontend' },
+                    { value: Specialization.Backend, content: 'Backend' },
+                    { value: Specialization.Fullstack, content: 'Fullstack' }
+                  ]
                 } />
               <ControlledSelect
                 handleBlur={() => formRef.current?.requestSubmit()}
                 disabled={!enableEdit}
                 sx={{ width: '260px' }}
                 label='Опыт работы'
-                name='exp'
+                name='experience'
                 options={
                   [
-                    { value: Experience.intern, content: Experience.intern },
-                    { value: Experience.junior, content: Experience.junior },
-                    { value: Experience.middle, content: Experience.middle },
-                    { value: Experience.senior, content: Experience.senior },
+                    { value: Experience.Intern, content: 'Нет опыта' },
+                    { value: Experience.Junior, content: 'До года' },
+                    { value: Experience.Middle, content: 'От 1 года до трех' },
+                    { value: Experience.Senior, content: '3 и более лет' },
                   ]
                 } />
             </div>
           }
-          {!enableEdit && userData.type === 'user' &&
+          {!enableEdit && userData.userType === 'Default' &&
             <button style={{ marginTop: '24px' }} className={styles.profileBtn} type='button'>
               Скачать резюме
             </button>
           }
         </form>
       </FormProvider>
-      {userData.type === 'user' &&
+      {userData.userType === 'Default' &&
         <div className={styles.avatarContainer}>
           <img src={userData.avatar || 'image/avatar.png'} alt='avatar' />
           {enableEdit &&
