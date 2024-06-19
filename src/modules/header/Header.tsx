@@ -47,7 +47,7 @@ export const Header = () => {
         </div>
         {user !== null && user !== 'unknown' &&
           <div className={styles.navigate}>
-            <button onClick={() => navigate(user.userType === 'Default' ? PORTFOLIO_ROUTE : JOBS_ROUTE)} className={styles.navigateItem}>
+            <button onClick={() => navigate(user.userType === 'Default' ? '/portfolio' : '/jobs')} className={styles.navigateItem}>
               <img src='/icons/repo.png' alt='' />
               <p>{user.userType === 'Default' ? 'Портфолио' : 'Вакансии'}</p>
             </button>

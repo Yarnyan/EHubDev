@@ -3,14 +3,15 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { Experience } from '../../../../models/Experience.ts'
 import { ControlledTextField } from '../../../../components/controlled-text-field/Controlled-text-field.tsx'
 import { ControlledSelect } from '../../../../components/controlled-select/Controlled-select.tsx'
+import { useCreatePortfolioCardMutation } from '../../api/portfolio-api.ts'
 
 interface Inputs {
   name: string
   description: string
   stack?: string
   experience?: Experience
-  salary?: string
-  repositoryLink?: string
+  pay?: string
+  repoLink?: string
 }
 
 interface ModalCreateProps {
@@ -21,6 +22,7 @@ export const ModalCreate = (
   {
     isVacancy,
   }: ModalCreateProps) => {
+  const [createCard] = useCreatePortfolioCardMutation()
   const formMethods = useForm<Inputs>({ mode: 'onChange' })
 
   const {
@@ -28,7 +30,17 @@ export const ModalCreate = (
   } = formMethods
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
+    let body: string = ''
+    Object.entries(data).forEach(([key, value], index) => {
+      if (index === 0) {
+        body += key.charAt(0).toUpperCase() + key.slice(1) + '=' + encodeURIComponent(value)
+      } else {
+        body += '&' + key.charAt(0).toUpperCase() + key.slice(1) + '=' + encodeURIComponent(value)
+      }
+    })
+    console.log(body)
+    //для вакансий
+    createCard({body, token: localStorage.getItem('token')})
   }
 
   return (
@@ -81,7 +93,7 @@ export const ModalCreate = (
                 }}
                 labelType='moving'
                 type='text'
-                name='salary'
+                name='pay'
                 label='Зарплата'
                 InputProps={{
                   sx: {
@@ -100,10 +112,10 @@ export const ModalCreate = (
                 name='experience'
                 options={
                   [
-                    { value: Experience.intern, content: Experience.intern },
-                    { value: Experience.junior, content: Experience.junior },
-                    { value: Experience.middle, content: Experience.middle },
-                    { value: Experience.senior, content: Experience.senior },
+                    { value: Experience.Intern, content: 'Нет опыта' },
+                    { value: Experience.Junior, content: 'До года' },
+                    { value: Experience.Middle, content: 'От 1 года до трех' },
+                    { value: Experience.Senior, content: '3 и более лет' },
                   ]
                 }
                 rules={{
@@ -136,7 +148,7 @@ export const ModalCreate = (
                 }}
                 labelType='moving'
                 type='text'
-                name='repositoryLink'
+                name='repoLink'
                 label='Ссылка на репозиторий'
                 InputProps={{
                   sx: {

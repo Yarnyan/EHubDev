@@ -1,5 +1,6 @@
 import styles from './card.module.scss'
 import { Experience } from '../../../../models/Experience.ts'
+import { experienceConverter } from '../../../../utils/helpers/experience-converter.ts'
 
 interface CardProps {
   name: string
@@ -11,6 +12,7 @@ interface CardProps {
 }
 
 export const Card = ({ name, salary, description, experience, repositoryLink, stack }: CardProps) => {
+
   return (
     <div className={styles.card}>
       <h3>{name}</h3>
@@ -20,7 +22,7 @@ export const Card = ({ name, salary, description, experience, repositoryLink, st
         <a href={repositoryLink}>{repositoryLink}</a>
       </div>}
       {experience && <div className={styles.item}>Требуемый опыт:
-        <p>{experience}</p>
+        <p>{experienceConverter(Experience[experience])}</p>
       </div>
       }
       {salary && <div className={styles.item}>Зарплата:
