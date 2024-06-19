@@ -86,6 +86,7 @@ export const ResumeTemplate = (props: Inputs) => {
             <Text>{props.phone}</Text>
             <Text>{props.email}</Text>
             <Link src={props.github}>GitHub</Link>
+            <Text>{props.location}</Text>
           </View>
           <Text style={styles.subheading}>Образование</Text>
           {props.education.map(item => {

@@ -1,21 +1,20 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from './base-query-instance.ts'
 import { jsonRequestHeaders } from './request-headers.ts'
+import { User } from '../models/User.ts'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQuery(jsonRequestHeaders),
   endpoints: (build) => ({
-    refreshToken: build.mutation<string, void>({
-      query: () => ({
-        url: 'users/refresh',
-        method: 'POST',
+    getCurrentUserData: build.query<User, string | null>({
+      query: (token) => ({
+        url: 'api/User/getUser',
+        headers: { 'Authorization': `bearer ${token}` },
+        method: 'GET',
       }),
-      transformResponse: (response: AuthResponse) => {
-        return response.accessToken
-      },
     }),
   }),
 })
 
-export const { useRefreshTokenMutation } = userApi
+export const { useGetCurrentUserDataQuery, useLazyGetCurrentUserDataQuery } = userApi

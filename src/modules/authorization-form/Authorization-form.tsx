@@ -7,9 +7,11 @@ import { useRegistrationMutation, useAuthorizationMutation } from './api/authori
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { AUTHORIZATION_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE } from '../../consts/routes.ts'
-import Checkbox from '@mui/material/Checkbox';
+import Checkbox from '@mui/material/Checkbox'
 import styles from './authorization-form.module.scss'
 import { Inputs } from './types/Inputs.ts'
+import { createBody } from './helpers/create-body.ts'
+import { useLazyGetCurrentUserDataQuery } from '../../api/user-api.ts'
 
 export const AuthorizationForm = () => {
   const { pathname } = useLocation()
@@ -17,6 +19,7 @@ export const AuthorizationForm = () => {
   const [isSendingForm, setIsSendingForm] = useState(false)
   const [registration, registrationRequestData] = useRegistrationMutation()
   const [authorization, authorizationRequestData] = useAuthorizationMutation()
+  const [getCurrentUser] = useLazyGetCurrentUserDataQuery()
   const navigate = useNavigate()
 
   const formMethods = useForm<Inputs>({ mode: 'onBlur' })
@@ -32,14 +35,12 @@ export const AuthorizationForm = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (isRegistration) {
       const { email, password, login, userType } = data
-      const body = 'Email=' + encodeURIComponent(email) +
-        '&Password=' + encodeURIComponent(password) +
-        '&Login=' + encodeURIComponent(login) +
-        '&userType=' + encodeURIComponent(userType ? 1 : 0)
-      await registration(body).unwrap()
+      const body = createBody(email, login, password, userType)
+      await registration(body).unwrap().then(() => getCurrentUser(localStorage.getItem('token')))
     } else {
       const { email, password, login } = data
-      await authorization({ email, password, login }).unwrap()
+      const body = createBody(email, login, password)
+      await authorization(body).unwrap().then(() => getCurrentUser(localStorage.getItem('token')))
     }
   }
 
@@ -56,12 +57,12 @@ export const AuthorizationForm = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      navigate(MAIN_ROUTE)
+      navigate('/profile')
     }
     reset()
   }, [pathname, isSubmitSuccessful])
 
-  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
   return (
     <FormProvider {...formMethods}>
       <Box
@@ -76,7 +77,7 @@ export const AuthorizationForm = () => {
           borderRadius: '24px',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <h5 className={styles.authSubTitle}>
@@ -179,8 +180,11 @@ export const AuthorizationForm = () => {
           )}
         </button>
         {isRegistration ?
-          <p className={styles.authTitle}>Уже есть аккаунт? <NavLink to={AUTHORIZATION_ROUTE} className={styles.authLink}>Войти</NavLink></p> :
-          <p className={styles.authTitle}>Нет аккаунта? <NavLink to={REGISTRATION_ROUTE} className={styles.authLink}>Зарегистрироваться</NavLink></p>
+          <p className={styles.authTitle}>Уже есть аккаунт? <NavLink to={AUTHORIZATION_ROUTE}
+                                                                     className={styles.authLink}>Войти</NavLink></p> :
+          <p className={styles.authTitle}>Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}
+                                                                 className={styles.authLink}>Зарегистрироваться</NavLink>
+          </p>
         }
       </Box>
     </FormProvider>

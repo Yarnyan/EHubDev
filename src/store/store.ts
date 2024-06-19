@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from './reducers/user-slice.ts'
 import chatReducer from './reducers/chat-slise.ts'
-
 import { vacancyApi } from '../modules/search/api/vacancy-api.ts'
 import { authorizationApi } from '../modules/authorization-form'
 import { chatApi } from '../modules/chat/api/chat-api.ts'

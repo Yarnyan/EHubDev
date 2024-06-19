@@ -49,9 +49,9 @@ export const Header = () => {
           <div className={styles.navigate}>
             <button onClick={() => navigate(PORTFOLIO_ROUTE)} className={styles.navigateItem}>
               <img src='/icons/repo.png' alt='' />
-              <p>{user.type === 'user' ? 'Портфолио' : 'Вакансии'}</p>
+              <p>{user.userType === 'Default' ? 'Портфолио' : 'Вакансии'}</p>
             </button>
-            {user.type === 'user' &&
+            {user.userType === 'Default' &&
               <button onClick={() => navigate(RESUMEBUILDER_ROUTE)} className={styles.navigateItem}>
                 <img src='/icons/edit.png' alt='' />
                 <p>Конструктор резюме</p>
@@ -63,7 +63,7 @@ export const Header = () => {
             </button>
             <button onClick={() => navigate(SEARCH_ROUTE)} className={styles.navigateItem}>
               <img src='/icons/Rowing.svg' alt='' />
-              <p>{user.type === 'user' ? 'Вакансии' : 'Исполнители'}</p>
+              <p>{user.userType === 'Default' ? 'Вакансии' : 'Исполнители'}</p>
             </button>
           </div>
         }
