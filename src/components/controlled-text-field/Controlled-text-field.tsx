@@ -33,6 +33,7 @@ export const ControlledTextField = (
     multiline,
     id,
     changeHandler,
+    handleSearchChange,
     inputProps
   }: ControlledTextFieldProps) => {
   return (
@@ -54,7 +55,7 @@ export const ControlledTextField = (
             helperText={error ? error.message : null}
             error={!!error}
             value={value}
-            onChange={onChange}
+            onChange={handleSearchChange || onChange}
             onBlur={onBlur}
             InputLabelProps={labelType === 'static' ? {
               shrink: false, sx: {

@@ -8,6 +8,8 @@ import './style/style.scss'
 
 const store = setupStore()
 
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>

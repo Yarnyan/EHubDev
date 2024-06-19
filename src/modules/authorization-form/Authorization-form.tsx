@@ -181,9 +181,9 @@ export const AuthorizationForm = () => {
         </button>
         {isRegistration ?
           <p className={styles.authTitle}>Уже есть аккаунт? <NavLink to={AUTHORIZATION_ROUTE}
-                                                                     className={styles.authLink}>Войти</NavLink></p> :
+            className={styles.authLink}>Войти</NavLink></p> :
           <p className={styles.authTitle}>Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}
-                                                                 className={styles.authLink}>Зарегистрироваться</NavLink>
+            className={styles.authLink}>Зарегистрироваться</NavLink>
           </p>
         }
       </Box>

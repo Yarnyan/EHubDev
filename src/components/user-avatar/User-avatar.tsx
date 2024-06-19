@@ -1,7 +1,10 @@
 import Avatar from '@mui/material/Avatar'
 import { useNavigate } from 'react-router-dom'
 
-const UserAvatar = () => {
+interface avatar {
+  avatar?: string
+}
+const UserAvatar: React.FC<avatar> = ({avatar}) => {
   const navigate = useNavigate()
 
   return (
@@ -9,7 +12,7 @@ const UserAvatar = () => {
       onClick={() => navigate('/profile')}
       sx={{ cursor: 'pointer' }}
       alt='Remy Sharp'
-      src='/static/images/avatar/1.jpg' />
+      src={avatar ? avatar : '/static/images/avatar/1.jpg'} />
   )
 }
 

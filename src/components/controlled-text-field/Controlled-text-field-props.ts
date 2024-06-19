@@ -5,7 +5,7 @@ import { InputBaseProps } from '@mui/material/InputBase'
 
 export interface ControlledTextFieldProps {
   name: string
-  label: string
+  label?: string
   labelType: 'static' | 'moving'
   placeholder?: string
   rules?: Omit<
@@ -21,5 +21,7 @@ export interface ControlledTextFieldProps {
   multiline?: boolean
   id?: string
   changeHandler?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleSearchChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   inputProps?: InputBaseProps['inputProps']
+  onChange?: (event: any) => void;
 }

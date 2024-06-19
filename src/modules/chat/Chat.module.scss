@@ -24,7 +24,19 @@
     padding: 10px;
     border-bottom: 1px solid #E3E3E3;
     justify-content: space-between;
-    
+}
+
+.header svg {
+    fill: #888888;
+}
+
+.header label {
+    transform: translate(90px, 12px) scale(1) !important;
+}
+
+.header input {
+    height: auto !important; 
+    padding: 6px 10px !important;
 }
 
 .chatBody {
@@ -37,6 +49,63 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #E3E3E3;
+}
+
+.messages {
+    padding: 30px 10px;
+    height: 525px;
+    overflow-y: auto;
+}
+
+.message:not(:first-child) {
+    margin-top: 14px;
+}
+
+.chatFooter {
+    border-top: 1px solid #E3E3E3;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatFooter svg {
+    fill: #888888;
+    cursor: pointer;
+}
+
+.tools {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.tools input {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.36px;
+    text-align: left;
+    width: 100%;
+    color: rgb(59, 59, 59);
+}
+
+.buttons {
+    margin-left: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.buttons svg {
+    margin: 0 6px;
+}
+
+.tools input::placeholder {
+    margin-left: 14px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.36px;
+    text-align: left;
+    color: #A8A8A8;
 }
 
 .ff {

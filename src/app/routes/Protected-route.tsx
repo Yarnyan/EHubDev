@@ -7,7 +7,7 @@ import { CircularProgress } from '@mui/material'
 export const ProtectedRoute = (props: { children: ReactNode }) => {
   const  user  = useAppSelector((state) => state.userReducer.user)
 
-  if (user === 'unknown') {
+  if (user != 'unknown') {
     return <CircularProgress size={56} color='secondary' sx={{margin: 'auto'}}/>
   }
 
