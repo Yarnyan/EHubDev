@@ -4,20 +4,22 @@ import chatReducer from './reducers/chat-slise.ts'
 import { vacancyApi } from '../modules/search/api/vacancy-api.ts'
 import { authorizationApi } from '../modules/authorization-form'
 import { chatApi } from '../modules/chat/api/chat-api.ts'
+import { userApi } from '../api/user-api.ts'
 
 const rootReducer = combineReducers({
   userReducer,
   chatReducer,
   [vacancyApi.reducerPath]: vacancyApi.reducer,
   [authorizationApi.reducerPath]: authorizationApi.reducer,
-  [chatApi.reducerPath]: chatApi.reducer
+  [chatApi.reducerPath]: chatApi.reducer,
+  [userApi.reducerPath]: userApi.reducer
 })
 
 export const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat([vacancyApi.middleware, authorizationApi.middleware, chatApi.middleware])
+      return getDefaultMiddleware().concat([vacancyApi.middleware, authorizationApi.middleware, chatApi.middleware, userApi.middleware])
     },
   })
 }
