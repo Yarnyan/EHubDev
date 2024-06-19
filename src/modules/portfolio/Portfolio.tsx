@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { ModalCreate } from './components/modal-create/Modal-create.tsx'
 
 export const Portfolio = () => {
-  const { type } = useAppSelector(state => state.userReducer.user as User)
+  const { userType } = useAppSelector(state => state.userReducer.user as User)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
@@ -27,14 +27,14 @@ export const Portfolio = () => {
         })}
       </div>
       <button className={styles.btn} onClick={() => setIsModalOpen(true)}>
-        {type === 'user' ? 'Добавить проект' : 'Создать вакансию'}
+        {userType === 'Default' ? 'Добавить проект' : 'Создать вакансию'}
       </button>
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div
           style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh'}}
           onClick={() => setIsModalOpen(false)}
         >
-          <ModalCreate isVacancy={type === 'company'}/>
+          <ModalCreate isVacancy={userType === 'Company'}/>
         </div>
       </Modal>
     </>
