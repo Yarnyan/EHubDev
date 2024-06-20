@@ -185,7 +185,6 @@ export const Chat = () => {
                     <div className={styles.navbar}>
                         <div className={styles.header}>
                             <ControlledTextField name='поиск' labelType='static' sx={{ width: '240px' }} onChange={handleSearchChange} />
-                            <AddIcon fontSize='large' onClick={handleOpenModal} style={{ cursor: 'pointer' }} />
                         </div>
                         <div className={styles.users}>
                             {isChatsLoading ? (
