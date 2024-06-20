@@ -24,6 +24,11 @@
   cursor: pointer
 }
 
+.empty {
+  display: block;
+  margin: auto;
+}
+
 .btn:hover {
   background-color: transparent;
   color: #000;

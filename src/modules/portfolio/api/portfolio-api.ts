@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery, jsonRequestHeaders } from '../../../api'
-import { CardData } from '../types/Card-data.ts'
+import { CardData } from '../../../models/Card-data.ts'
 
 export const portfolioApi = createApi({
   reducerPath: 'portfolioApi',
@@ -26,4 +26,4 @@ export const portfolioApi = createApi({
   })
 })
 
-export const {useCreatePortfolioCardMutation, useGetPortfolioByIdQuery} = portfolioApi
+export const {useCreatePortfolioCardMutation, useLazyGetPortfolioByIdQuery} = portfolioApi

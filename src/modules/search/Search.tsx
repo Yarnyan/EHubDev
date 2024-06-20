@@ -1,4 +1,3 @@
-import { } from 'react';
 import styles from './Search.module.scss';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Inputs } from '../authorization-form/types/Inputs.ts';
@@ -9,7 +8,7 @@ import { data, orderData } from './data/data.ts';
 import { User } from '../../models/User.ts'
 import { ControlledSelect } from '../../components/controlled-select/Controlled-select.tsx';
 
-import { useGetVacancyQuery, useGetUserByIdQuery } from './api/vacancy-api.ts';
+// import { useGetVacancyQuery, useGetUserByIdQuery } from './api/vacancy-api.ts';
 export const Search = () => {
     const formMethods = useForm<Inputs>({ mode: 'onBlur' });
     const { handleSubmit, getValues, reset, formState: { } } = formMethods;

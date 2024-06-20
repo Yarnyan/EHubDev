@@ -4,6 +4,7 @@ import { Experience } from '../../../../models/Experience.ts'
 import { ControlledTextField } from '../../../../components/controlled-text-field/Controlled-text-field.tsx'
 import { ControlledSelect } from '../../../../components/controlled-select/Controlled-select.tsx'
 import { useCreatePortfolioCardMutation } from '../../api/portfolio-api.ts'
+import { useCreateVacancyCardMutation } from '../../../../api/vacancy-api.ts'
 
 interface Inputs {
   name: string
@@ -22,7 +23,8 @@ export const ModalCreate = (
   {
     isVacancy,
   }: ModalCreateProps) => {
-  const [createCard] = useCreatePortfolioCardMutation()
+  const [createPortfolioCard] = useCreatePortfolioCardMutation()
+  const [createVacancyCard] = useCreateVacancyCardMutation()
   const formMethods = useForm<Inputs>({ mode: 'onChange' })
 
   const {
@@ -38,9 +40,11 @@ export const ModalCreate = (
         body += '&' + key.charAt(0).toUpperCase() + key.slice(1) + '=' + encodeURIComponent(value)
       }
     })
-    console.log(body)
-    //для вакансий
-    createCard({body, token: localStorage.getItem('token')})
+    if (isVacancy) {
+      createVacancyCard({body, token: localStorage.getItem('token')})
+    } else {
+      createPortfolioCard({body, token: localStorage.getItem('token')})
+    }
   }
 
   return (

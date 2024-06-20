@@ -1,5 +1,5 @@
-import { Experience } from '../../../models/Experience.ts'
-import { User } from '../../../models/User.ts'
+import { Experience } from './Experience.ts'
+import { User } from './User.ts'
 
 export interface CardData {
   id: number
