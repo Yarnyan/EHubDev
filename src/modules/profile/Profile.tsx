@@ -11,6 +11,7 @@ import { useAppSelector } from '../../hooks/redux-hooks.ts'
 import { User } from '../../models/User.ts'
 import { Specialization } from '../../models/Specialization.ts'
 import { usePutCurrentUserDataMutation, useUploadAvatarMutation } from './api/profile-api.ts'
+import { useLazyGetCurrentUserDataQuery } from '../../api/user-api.ts'
 
 interface Inputs extends Omit<UserProfileData, 'avatar'> {
   avatar?: FileList
@@ -20,10 +21,12 @@ export const Profile = () => {
   const userData = useAppSelector(state => state.userReducer.user as User)
   const [putUserData] = usePutCurrentUserDataMutation()
   const [uploadAvatar] = useUploadAvatarMutation()
+  const [getUserData] = useLazyGetCurrentUserDataQuery()
 
   const { id } = useParams()
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<null | HTMLInputElement>(null)
+  const [avatar, setAvatar] = useState<string>('image/avatar.png')
   const [enableEdit, setEnableEdit] = useState(Boolean(!id))
   const formMethods = useForm<Inputs>({
     mode: 'onChange',
@@ -40,7 +43,11 @@ export const Profile = () => {
 
   useEffect(() => {
     id ? setEnableEdit(false) : setEnableEdit(true)
-  }, [id])
+    const image = new Image()
+    image.src = import.meta.env.VITE_API_URL + '/' + userData.avatar
+    image.onload = () => setAvatar(image.src)
+    image.onerror = () => setAvatar('image/avatar.png')
+  }, [id, userData.avatar])
 
   const {
     handleSubmit,
@@ -48,15 +55,6 @@ export const Profile = () => {
   } = formMethods
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data.avatar)
-    console.log(data.avatar?.item(0))
-
-    if (data.avatar) {
-      const formData = new FormData()
-      formData.append('file', data.avatar[0])
-      uploadAvatar({body: formData, token: localStorage.getItem('token')!})
-    }
-
     const body =
       'Id=' + encodeURIComponent(userData.id) +
       '&Username=' + encodeURIComponent(data.username) +
@@ -69,6 +67,12 @@ export const Profile = () => {
       '&Specialization=' + encodeURIComponent(data.specialization) +
       '&Experience=' + encodeURIComponent(data.experience)
     putUserData({body, token: localStorage.getItem('token')!})
+
+    if (data.avatar) {
+      const formData = new FormData()
+      formData.append('file', data.avatar[0])
+      uploadAvatar({body: formData, token: localStorage.getItem('token')!}).unwrap().then(() => getUserData(localStorage.getItem('token')))
+    }
   }
 
   const { ref, ...rest } = register('avatar', {
@@ -175,7 +179,7 @@ export const Profile = () => {
       </FormProvider>
       {userData.userType === 'Default' &&
         <div className={styles.avatarContainer}>
-          <img src={userData.avatar || 'image/avatar.png'} alt='avatar' />
+          <img src={avatar} alt='avatar' />
           {enableEdit &&
             <button className={styles.profileBtn} onClick={handleSelectAvatarClick}>
               Загрузить фото
