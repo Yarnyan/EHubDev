@@ -6,10 +6,12 @@ import { profileApi } from '../../modules/profile/api/profile-api.ts'
 
 interface UserSliceState {
   user: User | null | 'unknown'
+  otherUsers: User[]
 }
 
 const initialState: UserSliceState = {
-  user: 'unknown'
+  user: 'unknown',
+  otherUsers: []
 }
 
 export const userSlice = createSlice({

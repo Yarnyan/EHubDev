@@ -4,7 +4,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { EMAIL_PATTERN } from '../authorization-form/consts/consts.ts'
 import { Input } from './components/input/Input.tsx'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ControlledSelect } from '../../components/controlled-select/Controlled-select.tsx'
 import { Experience } from '../../models/Experience.ts'
 import { useAppSelector } from '../../hooks/redux-hooks.ts'
@@ -18,12 +18,16 @@ interface Inputs extends Omit<UserProfileData, 'avatar'> {
 }
 
 export const Profile = () => {
+  const { id } = useParams()
+  const navigate = useNavigate()
   const userData = useAppSelector(state => state.userReducer.user as User)
+  const visitedUserData = useAppSelector(state => {
+    return state.userReducer.otherUsers.find(user => `${user.id}` === id)
+  })
   const [putUserData] = usePutCurrentUserDataMutation()
   const [uploadAvatar] = useUploadAvatarMutation()
   const [getUserData] = useLazyGetCurrentUserDataQuery()
 
-  const { id } = useParams()
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<null | HTMLInputElement>(null)
   const [avatar, setAvatar] = useState<string>('image/avatar.png')
@@ -32,19 +36,23 @@ export const Profile = () => {
     mode: 'onChange',
     defaultValues: {
       avatar: undefined,
-      email: userData.email || '',
-      username: userData.username || '',
-      phone: userData.phone || '',
-      description: userData.description,
-      experience: Experience[userData.experience] || 1,
-      specialization: Specialization[userData.specialization] || 1
+      email: visitedUserData ? visitedUserData.email : userData.email || '',
+      username: visitedUserData ? visitedUserData.username :  userData.username || '',
+      phone: visitedUserData ? visitedUserData.phone :  userData.phone || '',
+      description: visitedUserData ? visitedUserData.description :  userData.description,
+      experience: visitedUserData ? Experience[visitedUserData.experience] || 1 :  Experience[userData.experience] || 1,
+      specialization: visitedUserData ? Experience[visitedUserData.specialization] || 1 :  Specialization[userData.specialization] || 1
     },
   })
 
   useEffect(() => {
     id ? setEnableEdit(false) : setEnableEdit(true)
     const image = new Image()
-    image.src = import.meta.env.VITE_API_URL + '/' + userData.avatar
+    if (visitedUserData) {
+      image.src = import.meta.env.VITE_API_URL + '/' + visitedUserData.avatar
+    } else {
+      image.src = import.meta.env.VITE_API_URL + '/' + userData.avatar
+    }
     image.onload = () => setAvatar(image.src)
     image.onerror = () => setAvatar('image/avatar.png')
   }, [id, userData.avatar])
@@ -87,6 +95,14 @@ export const Profile = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click()
     }
+  }
+
+  const navigateToVacancy = () => {
+    navigate('/jobs/' + visitedUserData!.id)
+  }
+
+  const navigateToPortfolio = () => {
+    navigate('/portfolio/' + visitedUserData!.id)
   }
 
   return (
@@ -174,6 +190,11 @@ export const Profile = () => {
             <button style={{ marginTop: '24px' }} className={styles.profileBtn} type='button'>
               Скачать резюме
             </button>
+          }
+          {!enableEdit && userData.userType === 'Default' ?
+            <button type='button' onClick={navigateToPortfolio} className={styles.profileBtn}>Портфолио</button>
+            :
+            <button type='button' onClick={navigateToVacancy} className={styles.profileBtn}>Вакансии</button>
           }
         </form>
       </FormProvider>
