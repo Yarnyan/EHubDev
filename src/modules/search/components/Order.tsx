@@ -7,7 +7,6 @@ import { IVacancy } from '../../../models/Vacancy.ts'
 import { experienceConverter } from '../../../utils/helpers/experience-converter.ts'
 import { Experience } from '../../../models/Experience.ts'
 import { useLazyGetUserByIdQuery } from '../../../api/user-api.ts'
-
 const Order = ({ name, description, experience, pay, userId }: IVacancy) => {
   const [getUserById] = useLazyGetUserByIdQuery()
 
@@ -24,13 +23,12 @@ const Order = ({ name, description, experience, pay, userId }: IVacancy) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const handleButtonClick = () => {
-    dispatch(setActiveId(userId))
-    navigate('/chat')
-  }
-
   const handleRedirect = () => {
     getUserById({ token: localStorage.getItem('token')!, params: 'Id=' + encodeURIComponent(userId) }).unwrap().then(() => navigate('/profile/' + userId))
+  }
+
+  const a = () => {
+    getUserById({ token: localStorage.getItem('token')!, params: 'Id=' + encodeURIComponent(userId) }).unwrap().then((user) => user.id)
   }
 
   return (
@@ -46,9 +44,6 @@ const Order = ({ name, description, experience, pay, userId }: IVacancy) => {
         <div className={styles.ff}>
           <div className={`${styles.indicator} ${getExpertiseClass(experience)}`}></div>
           <p>{experienceConverter(Experience[experience])}</p>
-        </div>
-        <div>
-          <button className={styles.btn} onClick={handleButtonClick}>написать</button>
         </div>
       </div>
     </div>

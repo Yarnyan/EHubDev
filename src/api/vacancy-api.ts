@@ -34,7 +34,16 @@ export const vacancyApi = createApi({
       }),
       providesTags: ['Vacancy'],
     }),
+    deleteVacancy: build.mutation<void, void>({
+      query: (data, id) => ({
+        url: `api/Vacancy/removeById`,
+        method: 'DELETE',
+        headers: { 'Authorization': `bearer ${data.token}` },
+        params: data.params
+      }),
+      invalidatesTags: ['Vacancy'],
+    }),
   })
 })
 
-export const {useCreateVacancyCardMutation, useLazyGetVacancyByIdQuery, useLazyGetAllVacancyQuery} = vacancyApi
+export const { useCreateVacancyCardMutation, useLazyGetVacancyByIdQuery, useLazyGetAllVacancyQuery, useDeleteVacancyMutation } = vacancyApi

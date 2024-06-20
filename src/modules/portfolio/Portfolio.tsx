@@ -46,13 +46,15 @@ export const Portfolio = () => {
       <div className={styles.container}>
         {cardsData && cardsData.length > 0 && cardsData.map(el => {
           return <Card
-            key={el.id}
+            enableEdit={!id}
+            id={el.id}
             name={el.name}
             description={el.description}
             stack={el?.stack}
             repositoryLink={el?.repoLink}
             Pay={el?.pay}
             experience={el?.experience}
+            userType={userType}
           />
         })}
       </div>

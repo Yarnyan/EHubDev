@@ -15,7 +15,7 @@ export const chatApi = createApi({
       }),
     }),
     getAllMessages: build.query<IMessage, void>({
-      query: ( chatId ) => {
+      query: (chatId) => {
         const token = localStorage.getItem('token');
         console.log('chatId:', chatId)
         return {
@@ -27,21 +27,21 @@ export const chatApi = createApi({
     }),
     sendMessage: build.mutation<void, { activeId: string; message: string; token: string }>({
       query: ({ activeId, message, token }) => {
-          const formData = new URLSearchParams();
-          formData.append('ToUserId', activeId);
-          formData.append('text', message);
-  
-          return {
-              url: '/chat/messages/send',
-              method: 'POST',
-              headers: { 
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: formData.toString(),
-          };
+        const formData = new URLSearchParams();
+        formData.append('ToUserId', activeId);
+        formData.append('text', message);
+
+        return {
+          url: '/chat/messages/send',
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString(),
+        };
       },
-  })
+    })
   }),
 })
 

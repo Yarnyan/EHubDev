@@ -4,7 +4,7 @@ import { formatText } from '../helpers/format-text.ts'
 import { Experience } from '../../../models/Experience.ts'
 import { experienceConverter } from '../../../utils/helpers/experience-converter.ts'
 import { Specialization } from '../../../models/Specialization.ts'
-
+import { useLazyGetUserByIdQuery } from '../../../api/user-api.ts'
 interface Card {
   name: string
   description: string | null
@@ -15,7 +15,7 @@ interface Card {
 
 const Card = ({ name, description, experience, specialization, userId }: Card) => {
   const navigate = useNavigate()
-
+  const [getUserById] = useLazyGetUserByIdQuery()
   const getExpertiseClass = (exp: Experience) => {
     if (exp <= 1) {
       return styles.expertisePurple
@@ -26,10 +26,7 @@ const Card = ({ name, description, experience, specialization, userId }: Card) =
     }
   }
 
-  const handleButtonClick = () => {
-    dispatch(setActiveId(userId))
-    navigate('/chat')
-  }
+
 
   const handleRedirect = () => {
     navigate('/profile/' + userId)
@@ -48,9 +45,6 @@ const Card = ({ name, description, experience, specialization, userId }: Card) =
         <div className={styles.ff}>
           <div className={`${styles.indicator} ${getExpertiseClass(experience)}`}></div>
           <p>{experienceConverter(Experience[experience])}</p>
-        </div>
-        <div>
-          <button className={styles.btn} onClick={handleButtonClick}>написать</button>
         </div>
       </div>
     </div>

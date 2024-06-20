@@ -23,14 +23,16 @@ export const portfolioApi = createApi({
       }),
       providesTags: ['Portfolio'],
     }),
-    deletePortfolioById: build.mutation<number, void>({
-      query: (id) => ({
-        url: `api/Portfolio/getByUserId?id=${id}`,
+    deletePortfolioById: build.mutation<void, void>({
+      query: (data) => ({
+        url: `api/Portfolio/removeById`,
         method: 'DELETE',
+        headers: { 'Authorization': `bearer ${data.token}` },
+        params: data.params
       }),
-      providesTags: ['Portfolio'],
+      invalidatesTags: ['Portfolio'],
     })
   })
 })
 
-export const {useCreatePortfolioCardMutation, useLazyGetPortfolioByIdQuery} = portfolioApi
+export const {useCreatePortfolioCardMutation, useLazyGetPortfolioByIdQuery, useDeletePortfolioByIdMutation } = portfolioApi
