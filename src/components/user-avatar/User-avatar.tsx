@@ -7,7 +7,6 @@ interface avatar {
 const UserAvatar: React.FC<avatar> = ({avatar}) => {
 
   const navigate = useNavigate()
-  console.log(avatar)
   return (
     <Avatar
       onClick={() => navigate('/profile')}

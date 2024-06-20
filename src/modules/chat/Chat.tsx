@@ -12,7 +12,7 @@ import styles from './Chat.module.scss';
 import { useGetAllMessagesQuery, useGetChatsQuery, useSendMessageMutation } from './api/chat-api';
 import AddIcon from '@mui/icons-material/Add';
 import Modal from './components/Modal';
-import { CircularProgress } from '@mui/material'
+
 interface Message {
     text: string;
     fromId: number;
@@ -26,7 +26,6 @@ export const Chat = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
     const [searchValue, setSearchValue] = useState<string>('');
-    const [newMessageReceived, setNewMessageReceived] = useState(false);
     const activeUser = useAppSelector((state) => state.chatReducer.activeUser);
     const activeChatId = useAppSelector((state) => state.chatReducer.activeChatId);
     const [id, setId] = useState<number | null>(null);
@@ -40,10 +39,7 @@ export const Chat = () => {
 
     const token = localStorage.getItem('token');
 
-    const { data: chats, isLoading: isChatsLoading, refetch } = useGetChatsQuery(token, {
-        refetchOnMountOrArgChange: newMessageReceived
-    });
-
+    const { data: chats } = useGetChatsQuery(token);
 
     const { data: gg } = useGetAllMessagesQuery(id, {
         skip: !id,
@@ -67,7 +63,7 @@ export const Chat = () => {
 
     useEffect(() => {
         const connection = new HubConnectionBuilder()
-            .withUrl('http://31.28.113.222:8443/chat/hub', {
+            .withUrl(import.meta.env.VITE_API_CHAT_URL + '/chat/hub', {
                 accessTokenFactory: () => Promise.resolve(token || '')
             })
             .configureLogging(LogLevel.Information)
@@ -88,7 +84,7 @@ export const Chat = () => {
                     timeSpan: extractTime(timeSpan)
                 }
             ]);
-            setNewMessageReceived(true);
+            console.log(message, userId, chatId, timeSpan);
         });
 
         connectionRef.current = connection;
@@ -98,16 +94,10 @@ export const Chat = () => {
         };
     }, [activeUser, token]);
 
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages, gg]);
 
     useEffect(() => {
-        if (newMessageReceived) {
-            setNewMessageReceived(false);
-            refetch();
-        }
-    }, [chats, newMessageReceived, refetch]);
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
     const extractTime = (timeSpan: string): string => {
         const parts = timeSpan.split('.');
@@ -185,32 +175,28 @@ export const Chat = () => {
                     <div className={styles.navbar}>
                         <div className={styles.header}>
                             <ControlledTextField name='поиск' labelType='static' sx={{ width: '240px' }} onChange={handleSearchChange} />
+                            <AddIcon fontSize='large' onClick={handleOpenModal} style={{ cursor: 'pointer' }} />
                         </div>
                         <div className={styles.users}>
-                            {isChatsLoading ? (
-                                <CircularProgress size={56} color='secondary' sx={{margin: 'auto', marginTop: '80%', marginLeft: '40%'}} />
+                            {chats && Array.isArray(chats) ? (
+                                chats.map((chat) => {
+                                    const user = chat.user2;
+                                    const displayStyle = user ? 'block' : 'flex';
+                                    return (
+                                        <div onClick={() => handleUserClick(chat)} key={chat.id} style={{ display: displayStyle }}>
+                                            {user && (
+                                                <User
+                                                    title={user.username}
+                                                    message={user.hashPassword}
+                                                    time={user.lastMessageTime}
+                                                    avatar={user.avatar}
+                                                />
+                                            )}
+                                        </div>
+                                    );
+                                })
                             ) : (
-                                chats && Array.isArray(chats) ? (
-                                    chats.map((chat) => {
-                                        console.log(chat);
-                                        const user = chat.user1 || chat.user2;
-                                        const displayStyle = user ? 'block' : 'flex';
-                                        return (
-                                            <div onClick={() => handleUserClick(chat)} key={chat.id} style={{ display: displayStyle }}>
-                                                {user && (
-                                                    <User
-                                                        title={user.username}
-                                                        message={user.hashPassword}
-                                                        time={user.lastMessageTime}
-                                                        avatar={user.avatar !== null ? 'http://31.28.113.222:8444/' + user.avatar : '/image/avatar.png'}
-                                                    />
-                                                )}
-                                            </div>
-                                        );
-                                    })
-                                ) : (
-                                    <div className={styles.noUsers}>Пока что нет активных чатов</div>
-                                )
+                                <div className={styles.noUsers}>Пока что нет активных чатов</div>
                             )}
                         </div>
                     </div>
@@ -220,50 +206,46 @@ export const Chat = () => {
                                 <div className={styles.ff}>
                                     <UserAvatar
                                         avatar={
-                                            `http://31.28.113.222:8444/${activeUser.user1?.avatar || activeUser.user2?.avatar}`
+                                            import.meta.env.VITE_API_CHAT_URL + activeUser.user2?.avatar
                                         }
                                     />
                                     <div className={styles.info}>
-                                        <p>{activeUser.user1?.username ? activeUser.user1?.username : activeUser.user2.username}</p>
+                                        <p>{activeUser.user2.username}</p>
+                                        <p>{activeUser.status}</p>
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.messages}>
-                                {gg && gg.map((msg, index) => {
-                                    return (
-
-                                        <div key={index} className={styles.message}>
-                                            <div className={styles.avatar}>
-                                                {activeUser && (
-                                                    <UserAvatar
-                                                        avatar={
-                                                            msg.fromId === activeUser.user1?.id
-                                                                ? `http://31.28.113.222:8444/${activeUser.user1?.avatar || activeUser.user2?.avatar}`
-                                                                : `http://31.28.113.222:8444/${userData.avatar}`
-                                                        }
-                                                    />
-                                                )}
+                                {gg && gg.map((msg, index) => (
+                                    <div key={index} className={styles.message}>
+                                        <div className={styles.avatar}>
+                                            {activeUser && (
+                                                <UserAvatar
+                                                    avatar={
+                                                        import.meta.env.VITE_API_CHAT_URL + (msg.fromId == activeUser.user1.id ? activeUser.user1.avatar : activeUser.user2.avatar)
+                                                    }
+                                                />
+                                            )}
+                                        </div>
+                                        <div style={{ width: '100%' }}>
+                                            <div className={styles.infoUser}>
+                                                <p>
+                                                    {activeUser && (
+                                                        msg.fromId === activeUser.user1?.id
+                                                            ? activeUser.user1?.username
+                                                            : msg.fromId === activeUser.user2?.id
+                                                                ? activeUser.user2?.username
+                                                                : userData?.username
+                                                    )}
+                                                </p>
+                                                <p>{extractTime(msg.timeSpan)}</p>
                                             </div>
-                                            <div style={{ width: '100%' }}>
-                                                <div className={styles.infoUser}>
-                                                    <p>
-                                                        {activeUser && (
-                                                            msg.fromId === activeUser.user1?.id
-                                                                ? activeUser.user1?.username
-                                                                : msg.fromId === activeUser.user2?.id
-                                                                    ? activeUser.user2?.username
-                                                                    : userData?.username
-                                                        )}
-                                                    </p>
-                                                    <p>{extractTime(msg.timeSpan)}</p>
-                                                </div>
-                                                <div className={styles.infoMessage}>
-                                                    <p>{msg.text}</p>
-                                                </div>
+                                            <div className={styles.infoMessage}>
+                                                <p>{msg.text}</p>
                                             </div>
                                         </div>
-                                    )
-                                })}
+                                    </div>
+                                ))}
                                 {messages.map((msg, index) => {
                                     return (
                                         <div key={index} className={styles.message}>
@@ -271,8 +253,8 @@ export const Chat = () => {
                                                 <UserAvatar
                                                     avatar={
                                                         msg.fromId === userData?.id
-                                                            ? '/image/avatar'
-                                                            : '/image/avatar'
+                                                            ? userData?.avatar
+                                                            : activeUser.user1?.avatar
                                                     }
                                                 />
                                             </div>
