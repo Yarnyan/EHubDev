@@ -49,6 +49,26 @@
     align-items: center;
 }
 
+.btn {
+    display: block;
+    border-radius: 6px;
+    width: 120px;
+    height: 30px;
+    background-color: #72C075;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    border: 2px solid #72C075;
+    transition: 1s background-color, .5s color;
+    cursor: pointer
+}
+
+.btn:hover {
+    background-color: transparent;
+    color: #000;
+}
+
 .expertise p {
     color: #888888;
     margin-left: 10px;

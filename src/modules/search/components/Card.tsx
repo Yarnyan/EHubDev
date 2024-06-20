@@ -1,56 +1,56 @@
-import React from 'react'
 import styles from './Card.module.scss'
 import { useNavigate } from 'react-router-dom'
+import { formatText } from '../helpers/format-text.ts'
+import { Experience } from '../../../models/Experience.ts'
+import { experienceConverter } from '../../../utils/helpers/experience-converter.ts'
+import { Specialization } from '../../../models/Specialization.ts'
+
 interface Card {
-  title: string
-  description: string
-  position: string
-  expertise: string
+  name: string
+  description: string | null
+  experience: Experience
   userId: number
+  specialization: Specialization
 }
 
+const Card = ({ name, description, experience, specialization, userId }: Card) => {
+  const navigate = useNavigate()
 
-const Card: React.FC<Card> = ({ title, description, position, expertise, userId }) => {
-  const formatText = (text: string) => {
-    const maxLength = 400
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
+  const getExpertiseClass = (exp: Experience) => {
+    if (exp <= 1) {
+      return styles.expertisePurple
+    } else if (exp === 2) {
+      return styles.expertiseYellow
     } else {
-      return text
+      return styles.expertiseRed
     }
   }
-  
-  const getExpertiseClass = (years: string) => {
-    const numYears = parseInt(years.split(' ')[0]);
-    if (numYears < 5) {
-      return styles.expertisePurple;
-    } else if (numYears < 10) {
-      return styles.expertiseYellow;
-    } else {
-      return styles.expertiseRed;
-    }
-  }
-  const navigate = useNavigate();
+
   const handleButtonClick = () => {
-    dispatch(setActiveId(userId)); 
+    dispatch(setActiveId(userId))
     navigate('/chat')
   }
+
+  const handleRedirect = () => {
+    navigate('/profile/' + userId)
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.subtitle}>
-        <p>{title}</p>
-        <p>{position}</p>
+        <p onClick={handleRedirect}>{name}</p>
+        <p>{specialization}</p>
       </div>
       <div className={styles.description}>
         <p>{formatText(description)}</p>
       </div>
       <div className={styles.expertise}>
-        <div>
-          <div className={`${styles.indicator} ${getExpertiseClass(expertise)}`}></div>
-          <p>{expertise}</p>
+        <div className={styles.ff}>
+          <div className={`${styles.indicator} ${getExpertiseClass(experience)}`}></div>
+          <p>{experienceConverter(Experience[experience])}</p>
         </div>
         <div>
-          <button onClick={handleButtonClick}>написать</button>
+          <button className={styles.btn} onClick={handleButtonClick}>написать</button>
         </div>
       </div>
     </div>

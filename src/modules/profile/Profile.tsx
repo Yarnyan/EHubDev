@@ -32,16 +32,17 @@ export const Profile = () => {
   const fileInputRef = useRef<null | HTMLInputElement>(null)
   const [avatar, setAvatar] = useState<string>('image/avatar.png')
   const [enableEdit, setEnableEdit] = useState(Boolean(!id))
+  const [currentFileName, setCurrentFileName] = useState<string>('')
   const formMethods = useForm<Inputs>({
     mode: 'onChange',
     defaultValues: {
       avatar: undefined,
       email: visitedUserData ? visitedUserData.email : userData.email || '',
-      username: visitedUserData ? visitedUserData.username :  userData.username || '',
-      phone: visitedUserData ? visitedUserData.phone :  userData.phone || '',
-      description: visitedUserData ? visitedUserData.description :  userData.description,
-      experience: visitedUserData ? Experience[visitedUserData.experience] || 1 :  Experience[userData.experience] || 1,
-      specialization: visitedUserData ? Experience[visitedUserData.specialization] || 1 :  Specialization[userData.specialization] || 1
+      username: visitedUserData ? visitedUserData.username : userData.username || '',
+      phone: visitedUserData ? visitedUserData.phone : userData.phone || '',
+      description: visitedUserData ? visitedUserData.description : userData.description,
+      experience: visitedUserData ? Experience[visitedUserData.experience] || 1 : Experience[userData.experience] || 1,
+      specialization: visitedUserData ? Experience[visitedUserData.specialization] || 1 : Specialization[userData.specialization] || 1,
     },
   })
 
@@ -74,12 +75,13 @@ export const Profile = () => {
       '&UserType=' + encodeURIComponent(userData.userType) +
       '&Specialization=' + encodeURIComponent(data.specialization) +
       '&Experience=' + encodeURIComponent(data.experience)
-    putUserData({body, token: localStorage.getItem('token')!})
+    putUserData({ body, token: localStorage.getItem('token')! })
 
-    if (data.avatar) {
+    if (data.avatar !== undefined && data.avatar[0].name !== currentFileName) {
       const formData = new FormData()
       formData.append('file', data.avatar[0])
-      uploadAvatar({body: formData, token: localStorage.getItem('token')!}).unwrap().then(() => getUserData(localStorage.getItem('token')))
+      uploadAvatar({ body: formData, token: localStorage.getItem('token')! }).unwrap().then(() => getUserData(localStorage.getItem('token')))
+      setCurrentFileName(data.avatar[0].name)
     }
   }
 
@@ -98,11 +100,11 @@ export const Profile = () => {
   }
 
   const navigateToVacancy = () => {
-    navigate('/jobs/' + visitedUserData!.id)
+    navigate('/jobs/' + visitedUserData!.id, { state: { userType: visitedUserData!.userType } })
   }
 
   const navigateToPortfolio = () => {
-    navigate('/portfolio/' + visitedUserData!.id)
+    navigate('/portfolio/' + visitedUserData!.id, { state: { userType: visitedUserData!.userType } })
   }
 
   return (
@@ -155,7 +157,7 @@ export const Profile = () => {
               required: false,
             }}
           />
-          {userData.userType === 'Default' &&
+          {((userData.userType === 'Default' && !visitedUserData) || (visitedUserData && visitedUserData.userType === 'Default')) &&
             <div className={styles.selectsContainer}>
               <ControlledSelect
                 handleBlur={() => formRef.current?.requestSubmit()}
@@ -167,7 +169,7 @@ export const Profile = () => {
                   [
                     { value: Specialization.Frontend, content: 'Frontend' },
                     { value: Specialization.Backend, content: 'Backend' },
-                    { value: Specialization.Fullstack, content: 'Fullstack' }
+                    { value: Specialization.Fullstack, content: 'Fullstack' },
                   ]
                 } />
               <ControlledSelect
@@ -186,19 +188,20 @@ export const Profile = () => {
                 } />
             </div>
           }
-          {!enableEdit && userData.userType === 'Default' &&
+          {!enableEdit && ((userData.userType === 'Default' && !visitedUserData) || (visitedUserData && visitedUserData.userType === 'Default')) &&
             <button style={{ marginTop: '24px' }} className={styles.profileBtn} type='button'>
               Скачать резюме
             </button>
           }
-          {!enableEdit && userData.userType === 'Default' ?
+          {!enableEdit && ((userData.userType === 'Default' && !visitedUserData) || (visitedUserData && visitedUserData.userType === 'Default')) &&
             <button type='button' onClick={navigateToPortfolio} className={styles.profileBtn}>Портфолио</button>
-            :
+          }
+          {!enableEdit && ((userData.userType === 'Default' && !visitedUserData) || (visitedUserData && visitedUserData.userType === 'Company')) &&
             <button type='button' onClick={navigateToVacancy} className={styles.profileBtn}>Вакансии</button>
           }
         </form>
       </FormProvider>
-      {userData.userType === 'Default' &&
+      {((userData.userType === 'Default' && !visitedUserData) || (visitedUserData && visitedUserData.userType === 'Default')) &&
         <div className={styles.avatarContainer}>
           <img src={avatar} alt='avatar' />
           {enableEdit &&
