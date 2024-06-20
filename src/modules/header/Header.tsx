@@ -68,7 +68,7 @@ export const Header = () => {
           </div>
         }
         <div className={styles.tools}>
-          <Link to={'/'} className={styles.toolLink}>
+          <Link to={'/profile'} className={styles.toolLink}>
             <img src='/icons/setting.png' alt='' className={styles.toolIcon} />
           </Link>
           <UserAvatar />

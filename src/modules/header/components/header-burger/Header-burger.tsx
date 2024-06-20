@@ -1,7 +1,7 @@
 import { Menu, MenuItem } from '@mui/material'
 import { Link } from 'react-router-dom'
 import styles from './header-burger.module.scss'
-import { PORTFOLIO_ROUTE, RESUMEBUILDER_ROUTE, SEARCH_ROUTE } from '../../../../consts/routes'
+import { CHAT_ROUTE, PORTFOLIO_ROUTE, RESUMEBUILDER_ROUTE, SEARCH_ROUTE } from '../../../../consts/routes'
 import { useAppSelector } from '../../../../hooks/redux-hooks.ts'
 import { User } from '../../../../models/User.ts'
 export const HeaderBurger = (props: {
@@ -26,7 +26,7 @@ export const HeaderBurger = (props: {
         </MenuItem>
       }
       <MenuItem onClick={props.handleCloseMenu}>
-        <Link className={styles.link} to={'/'}>Мессенджер</Link>
+        <Link className={styles.link} to={CHAT_ROUTE}>Мессенджер</Link>
       </MenuItem>
       <MenuItem onClick={props.handleCloseMenu}>
         <Link className={styles.link} to={SEARCH_ROUTE}>{user.userType === 'Default' ? 'Вакансии' : 'Исполнители'}</Link>

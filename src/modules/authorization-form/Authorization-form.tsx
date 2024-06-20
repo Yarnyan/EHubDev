@@ -19,6 +19,7 @@ export const AuthorizationForm = () => {
   const [isSendingForm, setIsSendingForm] = useState(false)
   const [registration, registrationRequestData] = useRegistrationMutation()
   const [authorization, authorizationRequestData] = useAuthorizationMutation()
+  console.log(authorizationRequestData)
   const [getCurrentUser] = useLazyGetCurrentUserDataQuery()
   const navigate = useNavigate()
 
@@ -202,6 +203,12 @@ export const AuthorizationForm = () => {
             'Авторизироваться'
           )}
         </button>
+        {authorizationRequestData.isError && (
+          <p className={styles.error}>Неверен логин или пароль</p>
+        )}
+        {registrationRequestData.isError && (
+          <p className={styles.error}>Почта или логин уже заняты</p>
+        )}
         {isRegistration ?
           <p className={styles.authTitle}>Уже есть аккаунт? <NavLink to={AUTHORIZATION_ROUTE}
             className={styles.authLink}>Войти</NavLink></p> :

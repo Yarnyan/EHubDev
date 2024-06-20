@@ -4,6 +4,7 @@ import { experienceConverter } from '../../../../utils/helpers/experience-conver
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDeleteVacancyMutation } from '../../../../api/vacancy-api.ts';
 import { useDeletePortfolioByIdMutation } from '../../api/portfolio-api.ts';
+import { useGetCurrentUserDataQuery } from '../../../../api/user-api.ts';
 interface CardProps {
   id: number
   name: string
@@ -20,6 +21,8 @@ export const Card = ({ name, Pay, description, experience, repositoryLink, stack
   const token = localStorage.getItem('token');
   const [deleteVacancy, { }] = useDeleteVacancyMutation(); 
   const [deletePortfolio, { }] = useDeletePortfolioByIdMutation();
+  const { data, isLoading, isError } = useGetCurrentUserDataQuery(token);
+  console.log(data)
   const handleDelete = async (token, id) => {
     try {
       await deleteVacancy({ token, params: { vacancyId: id } });
