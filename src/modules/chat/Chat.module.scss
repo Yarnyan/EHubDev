@@ -53,8 +53,28 @@
 
 .messages {
     padding: 30px 10px;
-    height: 525px;
+    height: 543px;
     overflow-y: auto;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: thin; /* for Firefox */
+}
+
+.messages::-webkit-scrollbar {
+    width: 6px; /* for vertical scrollbars */
+    height: 6px; /* for horizontal scrollbars */
+}
+
+.messages::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .message:not(:first-child) {
@@ -151,8 +171,7 @@
 .ff {
     display: flex;
     align-items: center;
-    padding: 10px;
-    height: 77px;
+    padding: 7.5px 10px;
 }
 
 .info {

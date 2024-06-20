@@ -1,15 +1,17 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { baseQuery, jsonRequestHeaders } from '../../../api'
 import { User } from '../../../models/User.ts'
+import { fetchBaseQuery } from '@reduxjs/toolkit/query'
 
 export const profileApi = createApi({
   reducerPath: 'profileApi',
-  baseQuery: baseQuery(jsonRequestHeaders),
+  baseQuery: fetchBaseQuery({
+    baseUrl: import.meta.env.VITE_API_URL, credentials: 'include'
+  }),
   endpoints: (build) => ({
     putCurrentUserData: build.mutation<User, {body: string, token: string}>({
       query: (data) => ({
         url: 'api/User/updateUser',
-        headers: { 'Authorization': `bearer ${data.token}` },
+        headers: { 'Authorization': `bearer ${data.token}`, 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
         method: 'PUT',
         body: data.body,
       }),

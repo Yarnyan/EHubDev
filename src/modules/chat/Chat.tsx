@@ -25,7 +25,9 @@ export const Chat = () => {
     const [fromUserId, setFromUserId] = useState<number | null>(null);
     const activeUser = useAppSelector((state) => state.chatReducer.activeUser);
     const activeChatId = useAppSelector((state) => state.chatReducer.activeChatId);
+    const [id, setId] = useState<number | null>(null);
     const dispatch = useAppDispatch();
+    const userData = useAppSelector(state => state.userReducer.user as User)
 
     const formMethods = useForm<Inputs>({ mode: 'onBlur' });
 
@@ -36,15 +38,17 @@ export const Chat = () => {
 
     const { data: chats } = useGetChatsQuery(token);
 
-    console.log(chats)
+    const { data: gg } = useGetAllMessagesQuery(id, {
+        skip: !id,
+    }); // норм вариант
 
-    const { data: gg } = useGetAllMessagesQuery(activeChatId);  
-
-    const [sendMessage, { isLoading, error }] = useSendMessageMutation();
+    const [sendMessage] = useSendMessageMutation();
 
     const handleUserClick = (user: any) => {
-      dispatch(setActiveUser(user));
-      dispatch(setActiveChatId(user.id))
+        console.log(user)
+        dispatch(setActiveUser(user));
+        dispatch(setActiveChatId(user.id))
+        setId(user.id);
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,30 +92,20 @@ export const Chat = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    // const handleSendMessage = () => {
-    //     // if (fileName.trim() && activeUser) {
-    //     //     const message = { text: fileName };
-    //     //     connectionRef.current?.invoke('Send', fileName)
-    //     //         .catch(err => console.error('Error sending message:', err));
-    //     //     setMessages(prevMessages => [...prevMessages, message]);
-    //     //     setFileName('');
-    //     // }
-        
-    // };
     const handleSendMessage = async () => {
         if (fileName.trim() && activeUser) {
-          try {
-            await sendMessage({
-              activeId: 20,
-              message: fileName,
-              token: localStorage.getItem('token') || '',
-            });
-            setFileName('');
-          } catch (err) {
-            console.error('Error sending message:', err);
-          }
+            try {
+                await sendMessage({
+                    activeId: 20,
+                    message: fileName,
+                    token: localStorage.getItem('token') || '',
+                });
+                setFileName('');
+            } catch (err) {
+                console.error('Error sending message:', err);
+            }
         }
-      };
+    };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -128,13 +122,14 @@ export const Chat = () => {
         setIsModalOpen(false);
     };
 
-    useEffect(() => {
-        if (gg && gg.length > 0) {
-            const latestMessage = gg[gg.length - 1];
-            setFromUserId(latestMessage.fromId);
-        }
-    }, [gg]);
+    function extractTime(timeSpan: string): string {
+        const parts = timeSpan.split('.');
+        const timePart = parts[1];
+        const [hours, minutes, seconds] = timePart.split(':');
+        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    }
 
+    console.log(activeUser)
 
     return (
         <FormProvider {...formMethods}>
@@ -147,38 +142,80 @@ export const Chat = () => {
                         </div>
                         <div className={styles.users}>
                             {chats && Array.isArray(chats) ? (
-                                chats.map((chat) =>
-                                (
-                                    <div onClick={() => handleUserClick(chat)} key={chat.id}>
-                                        <User title={chat.user1?.username} message={chat.user1?.hashPassword} time={chat.lastMessageTime} avatar={chat.avatar} />
-                                    </div>
-                                ))
+                                chats.map((chat) => {
+                                    const user = chat.user1 || chat.user2;
+                                    const displayStyle = user ? 'block' : 'flex';
+                                    console.log(chat)
+                                    return (
+                                        <div onClick={() => handleUserClick(chat)} key={chat.id} style={{ display: displayStyle }}>
+                                            {user && (
+                                                <User
+                                                    title={user.username}
+                                                    message={user.hashPassword}
+                                                    time={user.lastMessageTime}
+                                                    avatar={user.avatar}
+                                                />
+                                            )}
+                                        </div>
+                                    );
+                                })
                             ) : (
                                 <div className={styles.noUsers}>Пока что нет активных чатов</div>
                             )}
                         </div>
+
                     </div>
                     {activeUser && (
                         <div className={styles.chatBody}>
                             <div className={styles.chatHeader}>
                                 <div className={styles.ff}>
-                                    <UserAvatar avatar={activeUser.avatar} />
+                                    <UserAvatar
+                                        avatar={
+                                            activeUser.user1?.avatar !== null && activeUser.user1?.avatar !== 'null'
+                                                ? 'http://31.28.113.222:8444/' + activeUser.user1?.avatar
+                                                : activeUser.user2?.avatar !== null && activeUser.user2?.avatar !== 'null'
+                                                    ? 'http://31.28.113.222:8444/' + activeUser.user2?.avatar
+                                                    : null
+                                        }
+                                    />
                                     <div className={styles.info}>
-                                        <p>{activeUser.title}</p>
+                                        <p>{activeUser.user1?.username ? activeUser.user1?.username : activeUser.user2.username}</p>
                                         <p>{activeUser.status}</p>
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.messages}>
-                                {gg.map((msg, index) => (
+                                {gg && gg.map((msg, index) => (
                                     <div key={index} className={styles.message}>
                                         <div className={styles.avatar}>
-                                            <UserAvatar avatar='' />
+                                            {activeUser && (
+                                                <UserAvatar
+                                                    avatar={
+                                                        msg.fromId === activeUser.user1?.id
+                                                            ? activeUser.user1?.avatar
+                                                                ? 'http://31.28.113.222:8444/' + activeUser.user1.avatar
+                                                                : null
+                                                            : msg.fromId === activeUser.user2?.id
+                                                                ? activeUser.user2?.avatar
+                                                                    ? 'http://31.28.113.222:8444/' + activeUser.user2.avatar
+                                                                    : null
+                                                                : userData?.avatar
+                                                    }
+                                                />
+                                            )}
                                         </div>
-                                        <div>
+                                        <div style={{ width: '100%' }}>
                                             <div className={styles.infoUser}>
-                                                <p>{msg.user}</p>
-                                                <p>19:20</p>
+                                                <p>
+                                                    {activeUser && (
+                                                        msg.fromId === activeUser.user1?.id
+                                                            ? activeUser.user1?.username
+                                                            : msg.fromId === activeUser.user2?.id
+                                                                ? activeUser.user2?.username
+                                                                : userData?.username
+                                                    )}
+                                                </p>
+                                                <p>{extractTime(msg.timeSpan)}</p>
                                             </div>
                                             <div className={styles.infoMessage}>
                                                 <p>{msg.text}</p>
