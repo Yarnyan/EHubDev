@@ -22,6 +22,13 @@ export const portfolioApi = createApi({
         method: 'GET',
       }),
       providesTags: ['Portfolio'],
+    }),
+    deletePortfolioById: build.mutation<number, void>({
+      query: (id) => ({
+        url: `api/Portfolio/getByUserId?id=${id}`,
+        method: 'DELETE',
+      }),
+      providesTags: ['Portfolio'],
     })
   })
 })

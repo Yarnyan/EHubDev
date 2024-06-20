@@ -8,7 +8,6 @@
   font-weight: 500;
   line-height: 22.6px;
   color: rgba(136, 136, 136, 1);
-  cursor: pointer;
   height: fit-content;
 
   h3 {
@@ -41,4 +40,20 @@
       text-decoration: underline;
     }
   }
+}
+
+.trashContainer {
+  display: flex;
+  justify-content: end;
+}
+
+.delete {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer;
+}
+
+.delete svg {
+  fill: rgb(231, 122, 122);
 }

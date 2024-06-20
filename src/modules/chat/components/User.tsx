@@ -20,11 +20,10 @@ const User: React.FC<User> = ({title, message, time, avatar}) => {
       return text;
     }
   }
-  const urlAvatar = 'http://31.28.113.222:8444/' + avatar
   return (
     <div className={styles.container}>
       <div>
-        <UserAvatar avatar={urlAvatar}/> 
+        <UserAvatar avatar={avatar}/> 
       </div>
       <div className={styles.containerInfo}>
         <div className={styles.header}>
@@ -32,7 +31,7 @@ const User: React.FC<User> = ({title, message, time, avatar}) => {
           <p>{time}</p>
         </div>
         <div className={styles.message}>
-          <p>{formatText(message)}</p>
+          {/* <p>{formatText(message)}</p> */}
         </div>
       </div>
     </div>

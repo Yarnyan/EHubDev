@@ -9,7 +9,7 @@ import { useLazyGetPortfolioByIdQuery } from './api/portfolio-api.ts'
 import { useParams } from 'react-router-dom'
 import { useGetVacancyByIdQuery, useLazyGetVacancyByIdQuery } from '../../api/vacancy-api.ts'
 import { CardData } from '../../models/Card-data.ts'
-
+import DeleteIcon from '@mui/icons-material/Delete';
 export const Portfolio = () => {
   const { userType, id } = useAppSelector(state => state.userReducer.user as User)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -50,7 +50,7 @@ export const Portfolio = () => {
             description={el.description}
             stack={el?.stack}
             repositoryLink={el?.repoLink}
-            salary={el?.pay}
+            Pay={el?.pay}
             experience={el?.experience}
           />
         })}
