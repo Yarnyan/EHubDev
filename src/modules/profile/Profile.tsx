@@ -10,7 +10,7 @@ import { Experience } from '../../models/Experience.ts'
 import { useAppSelector } from '../../hooks/redux-hooks.ts'
 import { User } from '../../models/User.ts'
 import { Specialization } from '../../models/Specialization.ts'
-import { usePutCurrentUserDataMutation } from './api/profile-api.ts'
+import { usePutCurrentUserDataMutation, useUploadAvatarMutation } from './api/profile-api.ts'
 
 interface Inputs extends Omit<UserProfileData, 'avatar'> {
   avatar?: FileList
@@ -19,6 +19,7 @@ interface Inputs extends Omit<UserProfileData, 'avatar'> {
 export const Profile = () => {
   const userData = useAppSelector(state => state.userReducer.user as User)
   const [putUserData] = usePutCurrentUserDataMutation()
+  const [uploadAvatar] = useUploadAvatarMutation()
 
   const { id } = useParams()
   const formRef = useRef<HTMLFormElement>(null)
@@ -47,12 +48,15 @@ export const Profile = () => {
   } = formMethods
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // let avatar: string = ''
-    // if (data.avatar) {
-    //   avatar = data.avatar[0].
-    // }
+    console.log(data.avatar)
+    console.log(data.avatar?.item(0))
 
-    console.log(Array.from(data.avatar)[0])
+    if (data.avatar) {
+      const formData = new FormData()
+      formData.append('file', data.avatar[0])
+      uploadAvatar({body: formData, token: localStorage.getItem('token')!})
+    }
+
     const body =
       'Id=' + encodeURIComponent(userData.id) +
       '&Username=' + encodeURIComponent(data.username) +
@@ -63,8 +67,7 @@ export const Profile = () => {
       '&HashPassword=' + encodeURIComponent(userData.hashPassword) +
       '&UserType=' + encodeURIComponent(userData.userType) +
       '&Specialization=' + encodeURIComponent(data.specialization) +
-      '&Experience=' + encodeURIComponent(data.experience) +
-      '&Avatar=' + encodeURIComponent(Array.from(data.avatar)[0])
+      '&Experience=' + encodeURIComponent(data.experience)
     putUserData({body, token: localStorage.getItem('token')!})
   }
 

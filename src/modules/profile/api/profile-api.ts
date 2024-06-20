@@ -14,7 +14,15 @@ export const profileApi = createApi({
         body: data.body,
       }),
     }),
+    uploadAvatar: build.mutation<User, {body: FormData, token: string}>({
+      query: (data) => ({
+        url: 'api/User/uploadAvatar',
+        headers: { 'Authorization': `bearer ${data.token}`, 'Content-Type': 'multipart/form-data' },
+        method: 'PUT',
+        body: data.body,
+      }),
+    }),
   }),
 })
 
-export const { usePutCurrentUserDataMutation } = profileApi
+export const { usePutCurrentUserDataMutation, useUploadAvatarMutation } = profileApi

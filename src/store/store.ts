@@ -30,6 +30,7 @@ export const setupStore = () => {
         chatApi.middleware,
         userApi.middleware,
         portfolioApi.middleware,
+        profileApi.middleware
       ])
     },
   })
