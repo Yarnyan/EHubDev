@@ -1,59 +1,54 @@
-import React from 'react'
 import { useDispatch } from 'react-redux'
 import { setActiveId } from '../../../store/reducers/chat-slise'
 import styles from './Card.module.scss'
 import { useNavigate } from 'react-router-dom'
-interface Order {
-  title: string
-  description: string
-  expertise: string
-  pay: number
-  userId: number
-}
+import { formatText } from '../helpers/format-text.ts'
+import { IVacancy } from '../../../models/Vacancy.ts'
+import { experienceConverter } from '../../../utils/helpers/experience-converter.ts'
+import { Experience } from '../../../models/Experience.ts'
+import { useLazyGetUserByIdQuery } from '../../../api/user-api.ts'
 
-const Order: React.FC<Order> = ({ title, description, expertise, pay, userId }) => {
-  const formatText = (text: string) => {
-    const maxLength = 400
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
-    } else {
-      return text
-    }
-  }
-  
+const Order = ({ name, description, experience, pay, userId }: IVacancy) => {
+  const [getUserById] = useLazyGetUserByIdQuery()
+
   const getExpertiseClass = (years: string) => {
-    const numYears = parseInt(years.split(' ')[0]);
+    const numYears = parseInt(years.split(' ')[0])
     if (numYears < 5) {
-      return styles.expertisePurple;
+      return styles.expertisePurple
     } else if (numYears < 10) {
-      return styles.expertiseYellow;
+      return styles.expertiseYellow
     } else {
-      return styles.expertiseRed;
+      return styles.expertiseRed
     }
   }
-  const dispatch = useDispatch(); 
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const handleButtonClick = () => {
-    dispatch(setActiveId(userId)); 
+    dispatch(setActiveId(userId))
     navigate('/chat')
   }
-  
+
+  const handleRedirect = () => {
+    getUserById({ token: localStorage.getItem('token')!, params: 'Id=' + encodeURIComponent(userId) }).unwrap().then(() => navigate('/profile/' + userId))
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.subtitle}>
-        <p>{title}</p>
-        <p>{pay}$</p>
+        <p onClick={handleRedirect}>{name}</p>
+        <p>{pay} р.</p>
       </div>
       <div className={styles.description}>
         <p>{formatText(description)}</p>
       </div>
       <div className={styles.expertise}>
         <div className={styles.ff}>
-          <div className={`${styles.indicator} ${getExpertiseClass(expertise)}`}></div>
-          <p>{expertise}</p>
+          <div className={`${styles.indicator} ${getExpertiseClass(experience)}`}></div>
+          <p>{experienceConverter(Experience[experience])}</p>
         </div>
         <div>
-          <button onClick={handleButtonClick}>написать</button>
+          <button className={styles.btn} onClick={handleButtonClick}>написать</button>
         </div>
       </div>
     </div>

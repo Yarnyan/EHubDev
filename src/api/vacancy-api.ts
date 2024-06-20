@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from './base-query-instance.ts'
 import { jsonRequestHeaders } from './request-headers.ts'
 import { CardData } from '../models/Card-data.ts'
+import { IVacancy } from '../models/Vacancy.ts'
 
 export const vacancyApi = createApi({
   reducerPath: 'vacancyApi',
@@ -23,8 +24,17 @@ export const vacancyApi = createApi({
         method: 'GET',
       }),
       providesTags: ['Vacancy'],
-    })
+    }),
+    getAllVacancy: build.query<IVacancy[], {token: string, params: string}>({
+      query: (data) => ({
+        url: `api/Vacancy/getAll`,
+        method: 'GET',
+        headers: { 'Authorization': `bearer ${data.token}` },
+        params: data.params
+      }),
+      providesTags: ['Vacancy'],
+    }),
   })
 })
 
-export const {useCreateVacancyCardMutation, useLazyGetVacancyByIdQuery} = vacancyApi
+export const {useCreateVacancyCardMutation, useLazyGetVacancyByIdQuery, useLazyGetAllVacancyQuery} = vacancyApi

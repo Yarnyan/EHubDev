@@ -14,7 +14,23 @@ export const userApi = createApi({
         method: 'GET',
       }),
     }),
+    getAllUsers: build.query<User[], { token: string, params: string }>({
+      query: (data) => ({
+        url: `api/User/getUsers`,
+        method: 'GET',
+        headers: { 'Authorization': `bearer ${data.token}` },
+        params: data.params,
+      }),
+    }),
+    getUserById: build.query<User, { token: string, params: string }>({
+      query: (data) => ({
+        url: `api/User/getUserById`,
+        method: 'GET',
+        headers: { 'Authorization': `bearer ${data.token}` },
+        params: data.params,
+      }),
+    }),
   }),
 })
 
-export const { useGetCurrentUserDataQuery, useLazyGetCurrentUserDataQuery } = userApi
+export const { useGetCurrentUserDataQuery, useLazyGetCurrentUserDataQuery, useLazyGetAllUsersQuery, useLazyGetUserByIdQuery } = userApi

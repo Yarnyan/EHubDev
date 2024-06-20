@@ -20,9 +20,11 @@ export const HeaderBurger = (props: {
       <MenuItem onClick={props.handleCloseMenu}>
         <Link className={styles.link} to={PORTFOLIO_ROUTE}>{user.userType === 'Default' ? 'Портфолио' : 'Вакансии'}</Link>
       </MenuItem>
-      <MenuItem onClick={props.handleCloseMenu}>
-        <Link className={styles.link} to={RESUMEBUILDER_ROUTE}>Конструктор резюме</Link>
-      </MenuItem>
+      {user.userType === 'Default' &&
+        <MenuItem onClick={props.handleCloseMenu}>
+          <Link className={styles.link} to={RESUMEBUILDER_ROUTE}>Конструктор резюме</Link>
+        </MenuItem>
+      }
       <MenuItem onClick={props.handleCloseMenu}>
         <Link className={styles.link} to={'/'}>Мессенджер</Link>
       </MenuItem>

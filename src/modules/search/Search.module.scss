@@ -3,6 +3,14 @@
     min-height: 100vh;
 }
 
+.filters {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
 .input {
     display: flex;
     align-items: center;

@@ -3,15 +3,19 @@ import { User } from '../../models/User.ts'
 import { authorizationApi } from '../../modules/authorization-form'
 import { userApi } from '../../api'
 import { profileApi } from '../../modules/profile/api/profile-api.ts'
+import { IVacancy } from '../../models/Vacancy.ts'
+import { vacancyApi } from '../../api/vacancy-api.ts'
 
 interface UserSliceState {
   user: User | null | 'unknown'
   otherUsers: User[]
+  vacancyList: IVacancy[]
 }
 
 const initialState: UserSliceState = {
   user: 'unknown',
-  otherUsers: []
+  otherUsers: [],
+  vacancyList: []
 }
 
 export const userSlice = createSlice({
@@ -35,6 +39,16 @@ export const userSlice = createSlice({
     })
     builder.addMatcher(userApi.endpoints.getCurrentUserData.matchRejected, (state) => {
       state.user = null
+    })
+    builder.addMatcher(userApi.endpoints.getAllUsers.matchFulfilled, (state, action) => {
+      state.otherUsers = action.payload
+    })
+    builder.addMatcher(vacancyApi.endpoints.getAllVacancy.matchFulfilled, (state, action) => {
+      state.vacancyList = action.payload
+    })
+    builder.addMatcher(userApi.endpoints.getUserById.matchFulfilled, (state, action) => {
+      state.otherUsers = []
+      state.otherUsers.push(action.payload)
     })
   },
 })
