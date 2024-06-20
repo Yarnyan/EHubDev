@@ -19,7 +19,6 @@ export const Input = (
     sendForm
   }: Input) => {
   const [disabled, setDisabled] = useState(true)
-
   useEffect(() => {
     const input = document.getElementById(name)
     if (input && !disabled) {

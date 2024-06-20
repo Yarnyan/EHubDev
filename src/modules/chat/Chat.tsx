@@ -84,7 +84,6 @@ export const Chat = () => {
                     timeSpan: extractTime(timeSpan)
                 }
             ]);
-            console.log(message, userId, chatId, timeSpan);
         });
 
         connectionRef.current = connection;
@@ -167,7 +166,7 @@ export const Chat = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-
+    console.log(import.meta.env.VITE_API_URL)
     return (
         <FormProvider {...formMethods}>
             <div className={styles.container}>
@@ -175,7 +174,6 @@ export const Chat = () => {
                     <div className={styles.navbar}>
                         <div className={styles.header}>
                             <ControlledTextField name='поиск' labelType='static' sx={{ width: '240px' }} onChange={handleSearchChange} />
-                            <AddIcon fontSize='large' onClick={handleOpenModal} style={{ cursor: 'pointer' }} />
                         </div>
                         <div className={styles.users}>
                             {chats && Array.isArray(chats) ? (
@@ -189,7 +187,7 @@ export const Chat = () => {
                                                     title={user.username}
                                                     message={user.hashPassword}
                                                     time={user.lastMessageTime}
-                                                    avatar={user.avatar}
+                                                    avatar={import.meta.env.VITE_API_URL + '/' + user.avatar}
                                                 />
                                             )}
                                         </div>
@@ -206,7 +204,7 @@ export const Chat = () => {
                                 <div className={styles.ff}>
                                     <UserAvatar
                                         avatar={
-                                            import.meta.env.VITE_API_CHAT_URL + activeUser.user2?.avatar
+                                            import.meta.env.VITE_API_URL + activeUser.user2?.avatar
                                         }
                                     />
                                     <div className={styles.info}>
@@ -222,7 +220,7 @@ export const Chat = () => {
                                             {activeUser && (
                                                 <UserAvatar
                                                     avatar={
-                                                        import.meta.env.VITE_API_CHAT_URL + (msg.fromId == activeUser.user1.id ? activeUser.user1.avatar : activeUser.user2.avatar)
+                                                        import.meta.env.VITE_API_URL + '/' + (msg.fromId == activeUser.user1.id ? activeUser.user1.avatar : activeUser.user2.avatar)
                                                     }
                                                 />
                                             )}

@@ -27,10 +27,6 @@ const Order = ({ name, description, experience, pay, userId }: IVacancy) => {
     getUserById({ token: localStorage.getItem('token')!, params: 'Id=' + encodeURIComponent(userId) }).unwrap().then(() => navigate('/profile/' + userId))
   }
 
-  const a = () => {
-    getUserById({ token: localStorage.getItem('token')!, params: 'Id=' + encodeURIComponent(userId) }).unwrap().then((user) => user.id)
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.subtitle}>
