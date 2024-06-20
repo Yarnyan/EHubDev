@@ -5,7 +5,7 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query'
 export const profileApi = createApi({
   reducerPath: 'profileApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_URL,
+    baseUrl: import.meta.env.VITE_API_URL, credentials: 'include'
   }),
   endpoints: (build) => ({
     putCurrentUserData: build.mutation<User, {body: string, token: string}>({
@@ -19,7 +19,7 @@ export const profileApi = createApi({
     uploadAvatar: build.mutation<User, {body: FormData, token: string}>({
       query: (data) => ({
         url: 'api/User/uploadAvatar',
-        headers: { 'Authorization': `bearer ${data.token}`, 'Content-Type': 'multipart/form-data' },
+        headers: { 'Authorization': `bearer ${data.token}`},
         method: 'PUT',
         body: data.body,
       }),
