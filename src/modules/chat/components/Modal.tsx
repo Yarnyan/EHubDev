@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     const handleSubmit = async () => {
         try {
             console.log(message);
-            await sendMessage({ activeId, message, token }).unwrap();
+            await sendMessage({ activeId: 18, message, token }).unwrap();
             onClose();
         } catch (error) {
             console.error('Failed to send message:', error);
@@ -37,10 +37,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     <input
                         type="text"
                         id="input1"
-                        value={activeId || ''}
+                        // value={activeId || ''}
                         onChange={(e) => setName(e.target.value)}
                         placeholder='Введите имя'
-                        disabled
                     />
                 </div>
                 <div className={styles.inputContainer}>
