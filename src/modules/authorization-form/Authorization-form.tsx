@@ -38,8 +38,8 @@ export const AuthorizationForm = () => {
       const body = createBody(email, login, password, userType)
       await registration(body).unwrap().then(() => getCurrentUser(localStorage.getItem('token')))
     } else {
-      const { email, password, login } = data
-      const body = createBody(email, login, password)
+      const { password, emailOrLogin } = data
+      const body = createBody(emailOrLogin!, emailOrLogin!, password)
       await authorization(body).unwrap().then(() => getCurrentUser(localStorage.getItem('token')))
     }
   }
@@ -83,45 +83,68 @@ export const AuthorizationForm = () => {
         <h5 className={styles.authSubTitle}>
           {isRegistration ? 'Регистрация' : 'Авторизация'}
         </h5>
-        <ControlledTextField
-          sx={{
-            width: '100%',
-          }}
-          labelType='moving'
-          type='login'
-          name='login'
-          label='Login'
-          InputProps={{
-            sx: {
-              borderRadius: '12px',
-            },
-          }}
-          rules={{
-            required: 'Поле не заполнено',
-          }}
-        />
-        <ControlledTextField
-          sx={{
-            width: '100%',
-            mt: 3,
-          }}
-          labelType='moving'
-          type='email'
-          name='email'
-          label='Email'
-          InputProps={{
-            sx: {
-              borderRadius: '12px',
-            },
-          }}
-          rules={{
-            required: 'Поле не заполнено',
-            pattern: {
-              value: EMAIL_PATTERN,
-              message: 'Неверно указан email',
-            },
-          }}
-        />
+        {isRegistration ?
+          <>
+            <ControlledTextField
+              sx={{
+                width: '100%',
+              }}
+              labelType='moving'
+              type='login'
+              name='login'
+              label='Login'
+              InputProps={{
+                sx: {
+                  borderRadius: '12px',
+                },
+              }}
+              rules={{
+                required: 'Поле не заполнено',
+              }}
+            />
+            <ControlledTextField
+              sx={{
+                width: '100%',
+                mt: 3,
+              }}
+              labelType='moving'
+              type='email'
+              name='email'
+              label='Email'
+              InputProps={{
+                sx: {
+                  borderRadius: '12px',
+                },
+              }}
+              rules={{
+                required: 'Поле не заполнено',
+                pattern: {
+                  value: EMAIL_PATTERN,
+                  message: 'Неверно указан email',
+                },
+              }}
+            />
+          </>
+          :
+          <ControlledTextField
+            sx={{
+              width: '100%',
+              mt: 3,
+            }}
+            labelType='moving'
+            type='text'
+            name='emailOrLogin'
+            label='Email или Логин'
+            InputProps={{
+              sx: {
+                borderRadius: '12px',
+              },
+            }}
+            rules={{
+              required: 'Поле не заполнено',
+            }}
+          />
+        }
         <ControlledTextField
           sx={{
             width: '100%',

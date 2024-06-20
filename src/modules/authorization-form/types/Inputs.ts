@@ -4,4 +4,5 @@ export interface Inputs {
   password: string
   confirmPassword?: string
   userType?: boolean
+  emailOrLogin?: string
 }

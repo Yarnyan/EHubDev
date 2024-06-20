@@ -1,4 +1,4 @@
-export const createBody = (email: string, login: string, password: string, userType?: boolean) => {
+export const createBody = (email: string, login: string, password: string, userType?: boolean,) => {
   const commonBody = 'Email=' + encodeURIComponent(email) +
   '&Password=' + encodeURIComponent(password) +
   '&Login=' + encodeURIComponent(login)
