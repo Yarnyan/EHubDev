@@ -5,7 +5,7 @@ import { EducationBox } from './components/education-box/Education-box.tsx'
 import { ExperienceBox } from './components/experience-box/Experience-box.tsx'
 import { ProjectsBox } from './components/projects-box/Projects-box.tsx'
 import { ResumeTemplate } from './templates/Resume-template.tsx'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 
 export interface Inputs {
@@ -48,6 +48,7 @@ export interface Inputs {
 
 export const Builder = () => {
   const downloadTemplateRef = useRef<HTMLElement>(null)
+  const [enableToDownload, setEnableToDownload] = useState(false)
 
   const formMethods = useForm<Inputs>({
     mode: 'onBlur',
@@ -80,7 +81,6 @@ export const Builder = () => {
     control,
     resetField,
     getValues,
-    formState: {  isSubmitSuccessful },
   } = formMethods
 
   const educationFields = useFieldArray({
@@ -101,17 +101,24 @@ export const Builder = () => {
     rules: { maxLength: 3 },
   })
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
-  }
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
+  const onSubmit: SubmitHandler<Inputs> = async () => {
+    setEnableToDownload(true)
+    if (enableToDownload) {
       if (downloadTemplateRef.current) {
         downloadTemplateRef.current.click()
       }
     }
-  }, [isSubmitSuccessful])
+  }
+
+  useEffect(() => {
+    if (enableToDownload) {
+      setTimeout(() => {
+        if (downloadTemplateRef.current) {
+          downloadTemplateRef.current.click()
+        }
+      }, 500)
+    }
+  }, [enableToDownload])
 
   const appendEductionFields = () => {
     educationFields.append({

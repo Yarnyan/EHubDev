@@ -13,7 +13,7 @@ interface UserSliceState {
 }
 
 const initialState: UserSliceState = {
-  user: 'unknown',
+  user: {userType: 'Default'},
   otherUsers: [],
   vacancyList: []
 }
@@ -37,9 +37,9 @@ export const userSlice = createSlice({
     builder.addMatcher(profileApi.endpoints.putCurrentUserData.matchFulfilled, (state, action) => {
       state.user = action.payload
     })
-    builder.addMatcher(userApi.endpoints.getCurrentUserData.matchRejected, (state) => {
-      state.user = null
-    })
+    // builder.addMatcher(userApi.endpoints.getCurrentUserData.matchRejected, (state) => {
+    //   state.user = null
+    // })
     builder.addMatcher(userApi.endpoints.getAllUsers.matchFulfilled, (state, action) => {
       state.otherUsers = action.payload
     })
