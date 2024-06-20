@@ -5,7 +5,7 @@ import { useRef, useState } from 'react'
 import { HeaderBurger } from './components/header-burger/Header-burger.tsx'
 import { IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import { CHAT_ROUTE, PORTFOLIO_ROUTE, RESUMEBUILDER_ROUTE, SEARCH_ROUTE } from '../../consts/routes.ts'
+import { PORTFOLIO_ROUTE, RESUMEBUILDER_ROUTE, SEARCH_ROUTE } from '../../consts/routes.ts'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/redux-hooks.ts'
 
@@ -47,7 +47,7 @@ export const Header = () => {
         </div>
         {user !== null && user !== 'unknown' &&
           <div className={styles.navigate}>
-            <button onClick={() => navigate(PORTFOLIO_ROUTE)} className={styles.navigateItem}>
+            <button onClick={() => navigate(user.userType === 'Default' ? '/portfolio' : '/jobs')} className={styles.navigateItem}>
               <img src='/icons/repo.png' alt='' />
               <p>{user.userType === 'Default' ? 'Портфолио' : 'Вакансии'}</p>
             </button>

@@ -7,7 +7,7 @@ import {
   REGISTRATION_ROUTE,
   RESUMEBUILDER_ROUTE,
   SEARCH_ROUTE,
-  CHAT_ROUTE,
+  CHAT_ROUTE, JOBS_ROUTE,
 } from '../../consts/routes.ts'
 import { AuthorizationPage } from '../../pages/Authorization-page.tsx'
 import { ProfilePage } from '../../pages/Profile-page.tsx'
@@ -16,6 +16,7 @@ import { SearchPage } from '../../pages/Search-page.tsx'
 import { ProtectedRoute } from './Protected-route.tsx'
 import { PortfolioPage } from '../../pages/Portfolio-page.tsx'
 import { ChatPage } from '../../pages/Chat-page.tsx'
+import { JobsPage } from '../../pages/Jobs-page.tsx'
 
 export const RootRouter = () => {
   return (
@@ -27,6 +28,9 @@ export const RootRouter = () => {
         </ProtectedRoute>} />
         <Route path={RESUMEBUILDER_ROUTE} element={<ProtectedRoute>
           <BuilderPage />
+        </ProtectedRoute>} />
+        <Route path={JOBS_ROUTE} element={<ProtectedRoute>
+          <JobsPage />
         </ProtectedRoute>} />
         <Route path={PORTFOLIO_ROUTE} element={<ProtectedRoute>
           <PortfolioPage />
