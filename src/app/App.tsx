@@ -16,7 +16,7 @@ export const App = () => {
       connectEnabled={!!token}
       accessTokenFactory={() => token}
       dependencies={[token]} 
-      url={"http://31.28.113.222:8444/chat"}
+      url={"http://31.28.113.222:8443/chat/hub"}
     >
       <ThemeProvider theme={theme}>
         <RootRouter />

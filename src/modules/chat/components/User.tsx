@@ -11,12 +11,14 @@ interface  User {
 }   
 
 const User: React.FC<User> = ({title, message, time, avatar}) => {
-  const formatText = (text: string) => {
-    const maxLength = 20
-    if (text.length > maxLength) {
-        return text.substring(0, maxLength) + '...';
+  const formatText = (text: string | undefined) => {
+    const maxLength = 20;
+    if (!text) {
+      return ""; 
+    } else if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
     } else {
-        return text
+      return text;
     }
   }
 

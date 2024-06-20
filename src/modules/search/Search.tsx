@@ -54,6 +54,7 @@ export const Search = () => {
                             position={item.position}
                             key={item.id}
                             expertise={item.expertise}
+                            userId={item.userId}
                         />
                     ))
                 ) : (
@@ -64,6 +65,7 @@ export const Search = () => {
                             key={item.id}
                             expertise={item.expertise}
                             pay={item.pay}
+                            userId={item.userId}
                         />
                     ))
                 )}

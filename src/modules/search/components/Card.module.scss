@@ -41,6 +41,12 @@
 .expertise {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.expertise .ff {
+    display: flex;
+    align-items: center;
 }
 
 .expertise p {

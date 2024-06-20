@@ -35,7 +35,7 @@
 }
 
 .header input {
-    height: auto !important; 
+    height: auto !important;
     padding: 6px 10px !important;
 }
 
@@ -59,6 +59,46 @@
 
 .message:not(:first-child) {
     margin-top: 14px;
+}
+
+.message {
+    display: flex;
+}
+
+.infoUser {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.avatar {
+    margin-right: 10px;
+}
+
+.infoMessage {
+    margin-top: 6px;
+}
+
+.infoMessage p {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 19.64px;
+    color: #1E331F;
+}
+
+.infoUser p:nth-child(1) {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18.15px;
+    color: #1E331F;
+}
+
+.infoUser p:nth-child(2) {
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14.52px;
+    color: rgba(136, 136, 136, 1)
 }
 
 .chatFooter {
@@ -136,4 +176,10 @@
     text-align: left;
     margin-top: 4px;
     color: #A8A8A8;
+}
+
+.noUsers {
+    font-size: 16px;
+    text-align: center;
+    margin-top: 16px;
 }
