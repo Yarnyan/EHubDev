@@ -8,26 +8,29 @@ import UserAvatar from '../../components/user-avatar/User-avatar';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { setActiveUser, setActiveChatId } from '../../store/reducers/chat-slise';
 import SendIcon from '@mui/icons-material/Send';
-import styles from './Chat.module.scss'
+import styles from './Chat.module.scss';
 import { useGetAllMessagesQuery, useGetChatsQuery, useSendMessageMutation } from './api/chat-api';
 import AddIcon from '@mui/icons-material/Add';
 import Modal from './components/Modal';
+
 interface Message {
     text: string;
-    user?: string;
+    fromId: number;
+    user: string;
     timestamp?: string;
+    timeSpan?: string;
 }
 
 export const Chat = () => {
     const [fileName, setFileName] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
-    const [fromUserId, setFromUserId] = useState<number | null>(null);
+    const [searchValue, setSearchValue] = useState<string>('');
     const activeUser = useAppSelector((state) => state.chatReducer.activeUser);
     const activeChatId = useAppSelector((state) => state.chatReducer.activeChatId);
     const [id, setId] = useState<number | null>(null);
     const dispatch = useAppDispatch();
-    const userData = useAppSelector(state => state.userReducer.user as User)
+    const userData = useAppSelector(state => state.userReducer.user as User);
 
     const formMethods = useForm<Inputs>({ mode: 'onBlur' });
 
@@ -40,14 +43,13 @@ export const Chat = () => {
 
     const { data: gg } = useGetAllMessagesQuery(id, {
         skip: !id,
-    }); // норм вариант
+    });
 
     const [sendMessage] = useSendMessageMutation();
 
     const handleUserClick = (user: any) => {
-        console.log(user)
         dispatch(setActiveUser(user));
-        dispatch(setActiveChatId(user.id))
+        dispatch(setActiveChatId(user.id));
         setId(user.id);
     };
 
@@ -66,41 +68,85 @@ export const Chat = () => {
             })
             .configureLogging(LogLevel.Information)
             .build();
-
+    
         connection.start()
             .then(() => console.log('Connection started'))
             .catch(error => console.log('Error establishing connection', error));
-
-        connection.on('Send', (message: string) => {
-            console.log(message);
-            setMessages(prevMessages => [...prevMessages, { text: message }]);
+    
+        connection.on('Receive', (message: string, userId: number, chatId: number, timeSpan: string) => {
+            setMessages((prevMessages) => [
+                ...prevMessages, 
+                { 
+                    text: message, 
+                    fromId: userId, 
+                    user: activeUser.user1?.username || '', 
+                    chatId: chatId, 
+                    timeSpan: extractTime(timeSpan)
+                }
+            ]);
+            console.log(message, userId, chatId, timeSpan);
         });
-
-        connection.on('notify', (notification: string) => {
-            console.log('Notification received:', notification);
-            setNotifications(prevNotifications => [...prevNotifications, notification]);
-        });
-
+    
         connectionRef.current = connection;
-
+    
         return () => {
             connection.stop().then(() => console.log('Connection stopped'));
         };
-    }, []);
+    }, [activeUser, token]);
+    
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    const extractTime = (timeSpan: string): string => {
+        const parts = timeSpan.split('.');
+        const timePart = parts[1];
+        const [hours, minutes] = timePart.split(':');
+        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    };
+
     const handleSendMessage = async () => {
         if (fileName.trim() && activeUser) {
+            const user1Id = activeUser.user1?.id;
+            const user2Id = activeUser.user2?.id;
+            const currentUserId = userData.id;
+
+            let activeId;
+            let activeUsername;
+
+            if (user1Id !== undefined && user1Id !== currentUserId) {
+                activeId = user1Id;
+                activeUsername = activeUser.user1?.username;
+            } else if (user2Id !== undefined && user2Id !== currentUserId) {
+                activeId = user2Id;
+                activeUsername = activeUser.user2?.username;
+            } else {
+                console.error('Could not determine activeId:', { user1Id, user2Id, currentUserId });
+                return;
+            }
+
             try {
-                await sendMessage({
-                    activeId: 20,
-                    message: fileName,
-                    token: localStorage.getItem('token') || '',
-                });
-                setFileName('');
+                const tokenValue = localStorage.getItem('token');
+                if (tokenValue) {
+                    const response = await sendMessage({
+                        activeId,
+                        message: fileName,
+                        token: tokenValue,
+                    }).unwrap();
+
+                    const newMessage: Message = { 
+                        text: fileName, 
+                        fromId: currentUserId, 
+                        user: userData.username, 
+                        timeSpan: extractTime(response.timeSpan) 
+                    };
+
+                    setMessages((prevMessages) => [...prevMessages, newMessage]);
+                    setFileName('');
+                } else {
+                    console.error('Token not found');
+                }
             } catch (err) {
                 console.error('Error sending message:', err);
             }
@@ -122,15 +168,6 @@ export const Chat = () => {
         setIsModalOpen(false);
     };
 
-    function extractTime(timeSpan: string): string {
-        const parts = timeSpan.split('.');
-        const timePart = parts[1];
-        const [hours, minutes, seconds] = timePart.split(':');
-        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
-    }
-
-    console.log(activeUser)
-
     return (
         <FormProvider {...formMethods}>
             <div className={styles.container}>
@@ -145,7 +182,6 @@ export const Chat = () => {
                                 chats.map((chat) => {
                                     const user = chat.user1 || chat.user2;
                                     const displayStyle = user ? 'block' : 'flex';
-                                    console.log(chat)
                                     return (
                                         <div onClick={() => handleUserClick(chat)} key={chat.id} style={{ display: displayStyle }}>
                                             {user && (
@@ -163,7 +199,6 @@ export const Chat = () => {
                                 <div className={styles.noUsers}>Пока что нет активных чатов</div>
                             )}
                         </div>
-
                     </div>
                     {activeUser && (
                         <div className={styles.chatBody}>
@@ -223,6 +258,36 @@ export const Chat = () => {
                                         </div>
                                     </div>
                                 ))}
+                                {messages.map((msg, index) => {
+                                console.log(messages, msg)
+                                return (
+                                    <div key={index} className={styles.message}>
+                                        <div className={styles.avatar}>
+                                            <UserAvatar
+                                                avatar={
+                                                    msg.fromId === userData?.id
+                                                        ? userData?.avatar
+                                                        : activeUser.user1?.avatar
+                                                }
+                                            />
+                                        </div>
+                                        <div style={{ width: '100%' }}>
+                                            <div className={styles.infoUser}>
+                                                <p>
+                                                    {msg.fromId === activeUser.user1?.id
+                                                        ? activeUser.user1?.username
+                                                        : msg.fromId === activeUser.user2?.id
+                                                            ? activeUser.user2?.username
+                                                            : userData?.username}
+                                                </p>
+                                                <p>{msg.timeSpan}</p>
+                                            </div>
+                                            <div className={styles.infoMessage}>
+                                                <p>{msg.text}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )})}
                                 <div ref={messagesEndRef} />
                             </div>
                             <div className={styles.chatFooter}>

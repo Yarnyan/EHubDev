@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from './User.module.scss'
 import UserAvatar from '../../../components/user-avatar/User-avatar'
-import { useAppSelector } from '../../../hooks/redux-hooks'
 
 interface  User {
   title: string,
