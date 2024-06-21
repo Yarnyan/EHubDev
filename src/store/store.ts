@@ -7,6 +7,7 @@ import { userApi } from '../api/user-api.ts'
 import { profileApi } from '../modules/profile/api/profile-api.ts'
 import { portfolioApi } from '../modules/portfolio/api/portfolio-api.ts'
 import { vacancyApi } from '../api/vacancy-api.ts'
+import { builderApi } from '../modules/Builder/api/builder-api.ts'
 
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   [profileApi.reducerPath]: profileApi.reducer,
   [portfolioApi.reducerPath]: portfolioApi.reducer,
   [vacancyApi.reducerPath]: vacancyApi.reducer,
+  [builderApi.reducerPath]: builderApi.reducer,
 })
 
 export const setupStore = () => {
@@ -30,7 +32,8 @@ export const setupStore = () => {
         chatApi.middleware,
         userApi.middleware,
         portfolioApi.middleware,
-        profileApi.middleware
+        profileApi.middleware,
+        builderApi.middleware,
       ])
     },
   })
