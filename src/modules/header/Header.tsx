@@ -5,7 +5,7 @@ import { useRef, useState } from 'react'
 import { HeaderBurger } from './components/header-burger/Header-burger.tsx'
 import { IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
-import { PORTFOLIO_ROUTE, RESUMEBUILDER_ROUTE, SEARCH_ROUTE, CHAT_ROUTE } from '../../consts/routes.ts'
+import { RESUMEBUILDER_ROUTE, SEARCH_ROUTE, CHAT_ROUTE } from '../../consts/routes.ts'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/redux-hooks.ts'
 

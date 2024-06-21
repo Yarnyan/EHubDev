@@ -14,7 +14,6 @@ import { usePutCurrentUserDataMutation, useUploadAvatarMutation } from './api/pr
 import { useLazyGetCurrentUserDataQuery } from '../../api/user-api.ts'
 import { useSendMessageMutation } from '../chat/api/chat-api.ts'
 import Modal from './components/modal/Modal.tsx'
-import { useGetCurrentUserDataQuery } from '../../api/user-api.ts'
 
 interface Inputs extends Omit<UserProfileData, 'avatar'> {
   avatar?: FileList
@@ -23,7 +22,6 @@ interface Inputs extends Omit<UserProfileData, 'avatar'> {
 export const Profile = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const token = localStorage.getItem('token')
   const userData = useAppSelector(state => state.userReducer.user as User)
   const visitedUserData = useAppSelector(state => {
     return state.userReducer.otherUsers.find(user => `${user.id}` === id)
@@ -31,8 +29,6 @@ export const Profile = () => {
   const [putUserData] = usePutCurrentUserDataMutation()
   const [uploadAvatar] = useUploadAvatarMutation()
   const [getUserData] = useLazyGetCurrentUserDataQuery()
-  const { data, isLoading, error } = useGetCurrentUserDataQuery(token)
-  console.log(data)
   const [sendMessage] = useSendMessageMutation()
   const [isBlocked, setIsBlocked] = useState(false)
   const [showModal, setShowModal] = useState(false);
@@ -126,7 +122,7 @@ export const Profile = () => {
     setModalMessage('Ваше сообщение успешно отправлено! Для продолжения перейдите в мессенджер')
     const activeId = visitedUserData!.id;
     const message = 'Привет, заинтересовала твоя анкета';
-    
+
     try {
       await sendMessage({ activeId, message, token: localStorage.getItem('token')! });
     } catch (error) {
@@ -143,7 +139,7 @@ export const Profile = () => {
   const handleSelectResume = () => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.pdf'; 
+    input.accept = '.pdf';
     input.onchange = (e) => {
       const file = e.target.files[0];
       const reader = new FileReader();

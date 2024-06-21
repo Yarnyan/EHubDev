@@ -22,7 +22,9 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-
+    removeOtherUsers: (state) => {
+      state.otherUsers = []
+    }
   },
   extraReducers: builder => {
     builder.addMatcher(authorizationApi.endpoints.registration.matchFulfilled, (_, action) => {
@@ -53,4 +55,5 @@ export const userSlice = createSlice({
   },
 })
 
+export const {removeOtherUsers} = userSlice.actions
 export default userSlice.reducer
