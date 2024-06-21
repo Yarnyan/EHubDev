@@ -119,7 +119,7 @@ export const Profile = () => {
   const handleSendMessage = async () => {
     openModal()
     setIsBlocked(true)
-    setModalMessage('Ваше сообщение успешно отправлено! Для продолжения перейдите в мессенджер')
+    setModalMessage('Диалог успешно создан! Для продолжения перейдите в мессенджер')
     const activeId = visitedUserData!.id;
     const message = 'Привет, заинтересовала твоя анкета';
 
