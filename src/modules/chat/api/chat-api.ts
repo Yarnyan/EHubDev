@@ -45,4 +45,4 @@ export const chatApi = createApi({
   }),
 })
 
-export const { useGetChatsQuery, useGetAllMessagesQuery, useSendMessageMutation } = chatApi
+export const { useLazyGetChatsQuery , useGetAllMessagesQuery, useSendMessageMutation } = chatApi

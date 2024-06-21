@@ -9,10 +9,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { setActiveUser, setActiveChatId } from '../../store/reducers/chat-slise';
 import SendIcon from '@mui/icons-material/Send';
 import styles from './Chat.module.scss';
-import { useGetAllMessagesQuery, useGetChatsQuery, useSendMessageMutation } from './api/chat-api';
+import { useGetAllMessagesQuery, useLazyGetChatsQuery, useSendMessageMutation } from './api/chat-api';
 import { CircularProgress } from '@mui/material'
 import Modal from './components/Modal';
-
 interface Message {
     text: string;
     fromId: number;
@@ -34,14 +33,21 @@ export const Chat = () => {
     const [filteredChats, setFilteredChats] = useState<any[]>([]);
     const userData = useAppSelector(state => state.userReducer.user as User);
 
-    const formMethods = useForm<Inputs>({ mode: 'onBlur' });
+    const [getChats, chats] = useLazyGetChatsQuery();
 
+    const formMethods = useForm<Inputs>({ mode: 'onBlur' });
     const connectionRef = useRef<HubConnection | null>(null);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     const token = localStorage.getItem('token');
 
-    const { data: chats, isLoading } = useGetChatsQuery(token);
+    useEffect(() => {
+        getChats(token)
+
+        return () => {
+            
+        };
+    }, []);
 
     const { data: gg } = useGetAllMessagesQuery(id, {
         skip: !id,
@@ -60,14 +66,6 @@ export const Chat = () => {
         setFileName(event.target.value);
     };
 
-    const reorderChats = (chatId: number) => {
-        setFilteredChats((prevChats) => {
-            const updatedChats = prevChats.filter((chat) => chat.id !== chatId);
-            const movedChat = prevChats.find((chat) => chat.id === chatId);
-            return movedChat ? [movedChat, ...updatedChats] : prevChats;
-        });
-    };
-
 
     useEffect(() => {
         const connection = new HubConnectionBuilder()
@@ -76,11 +74,11 @@ export const Chat = () => {
             })
             .configureLogging(LogLevel.Information)
             .build();
-    
+
         connection.start()
             .then(() => console.log('Connection started'))
             .catch(error => console.log('Error establishing connection', error));
-    
+
         connection.on('Receive', (message: string, userId: number, chatId: number, timeSpan: string) => {
             console.log(message, chatId);
             setMessages((prevMessages) => {
@@ -97,30 +95,29 @@ export const Chat = () => {
                     }
                 ];
             });
-            // reorderChats(chatId);
         });
-    
+
         connectionRef.current = connection;
-    
+
         return () => {
             connection.stop().then(() => console.log('Connection stopped'));
         };
     }, [activeUser, token]);
-    
+
 
     useEffect(() => {
-        if (chats) {
-            setFilteredChats(chats);
+        if (chats.data) {
+            setFilteredChats(chats.data);
         }
-    }, [chats]);
+    }, [chats.data]);
 
     useEffect(() => {
-        const filteredChats = chats?.filter((chat) => {
-          const username = chat.user2?.username;
-          return username?.toLowerCase().includes(searchValue.toLowerCase());
+        const filteredChats = chats.data?.filter((chat) => {
+            const username = chat.user2?.username;
+            return username?.toLowerCase().includes(searchValue.toLowerCase());
         });
         setFilteredChats(filteredChats ?? []);
-      }, [searchValue, chats]);
+    }, [searchValue, chats.data]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -187,17 +184,13 @@ export const Chat = () => {
         }
     };
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
 
     useEffect(() => {
         setActiveChat(false);
-      }, []);
+    }, []);
     return (
         <FormProvider {...formMethods}>
             <div className={styles.container}>
@@ -213,7 +206,7 @@ export const Chat = () => {
                         </div>
                         <div className={styles.users}>
                             {
-                                isLoading ? (
+                                chats.isLoading ? (
                                     <CircularProgress size={56} color='secondary' sx={{ marginTop: '60%', marginLeft: '40%' }} />
                                 ) : (
                                     filteredChats && Array.isArray(filteredChats) ?

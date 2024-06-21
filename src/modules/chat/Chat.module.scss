@@ -61,13 +61,17 @@
     padding: 30px 10px;
     height: 543px;
     overflow-y: auto;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: thin; /* for Firefox */
+    -ms-overflow-style: none;
+    /* for Internet Explorer, Edge */
+    scrollbar-width: thin;
+    /* for Firefox */
 }
 
 .messages::-webkit-scrollbar {
-    width: 6px; /* for vertical scrollbars */
-    height: 6px; /* for horizontal scrollbars */
+    width: 6px;
+    /* for vertical scrollbars */
+    height: 6px;
+    /* for horizontal scrollbars */
 }
 
 .messages::-webkit-scrollbar-track {
@@ -209,10 +213,37 @@
     margin-top: 16px;
 }
 
+.users {
+    height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Hide the horizontal scrollbar */
+    scrollbar-width: thin;
+}
+
+/* Customize the scrollbar for WebKit browsers (Chrome, Safari) */
+.users::-webkit-scrollbar {
+    width: 8px;
+}
+
+.users::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.users::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.users::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 @media screen and (max-width: 768px) {
     .navbar {
         width: 150px;
     }
+
     .header {
         width: 150px;
     }
