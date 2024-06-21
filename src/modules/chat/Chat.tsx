@@ -10,7 +10,7 @@ import { setActiveUser, setActiveChatId } from '../../store/reducers/chat-slise'
 import SendIcon from '@mui/icons-material/Send';
 import styles from './Chat.module.scss';
 import { useGetAllMessagesQuery, useGetChatsQuery, useSendMessageMutation } from './api/chat-api';
-import AddIcon from '@mui/icons-material/Add';
+import { CircularProgress } from '@mui/material'
 import Modal from './components/Modal';
 
 interface Message {
@@ -39,7 +39,7 @@ export const Chat = () => {
 
     const token = localStorage.getItem('token');
 
-    const { data: chats } = useGetChatsQuery(token);
+    const { data: chats, isLoading } = useGetChatsQuery(token);
 
     const { data: gg } = useGetAllMessagesQuery(id, {
         skip: !id,
@@ -74,16 +74,23 @@ export const Chat = () => {
             .catch(error => console.log('Error establishing connection', error));
 
         connection.on('Receive', (message: string, userId: number, chatId: number, timeSpan: string) => {
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                {
-                    text: message,
-                    fromId: userId,
-                    user: activeUser.user1?.username || '',
-                    chatId: chatId,
-                    timeSpan: extractTime(timeSpan)
-                }
-            ]);
+            setMessages((prevMessages) => {
+                const activeUsr = activeUser;
+                const userImage = userId === activeUsr.user1?.id ? activeUsr.user1?.avatar : activeUsr.user2?.avatar;
+                const username = userId === activeUsr.user1?.id ? activeUsr.user1?.username : activeUsr.user2?.username;
+
+                return [
+                    ...prevMessages,
+                    {
+                        text: message,
+                        fromId: userId,
+                        user: username || '',
+                        chatId: chatId,
+                        timeSpan: extractTime(timeSpan),
+                        image: userImage
+                    }
+                ];
+            });
         });
 
         connectionRef.current = connection;
@@ -96,7 +103,7 @@ export const Chat = () => {
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    }, [messages, gg]);
 
     const extractTime = (timeSpan: string): string => {
         const parts = timeSpan.split('.');
@@ -166,7 +173,6 @@ export const Chat = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-    console.log(import.meta.env.VITE_API_URL)
     return (
         <FormProvider {...formMethods}>
             <div className={styles.container}>
@@ -176,26 +182,34 @@ export const Chat = () => {
                             <ControlledTextField name='поиск' labelType='static' sx={{ width: '240px' }} onChange={handleSearchChange} />
                         </div>
                         <div className={styles.users}>
-                            {chats && Array.isArray(chats) ? (
-                                chats.map((chat) => {
-                                    const user = chat.user2;
-                                    const displayStyle = user ? 'block' : 'flex';
-                                    return (
-                                        <div onClick={() => handleUserClick(chat)} key={chat.id} style={{ display: displayStyle }}>
-                                            {user && (
-                                                <User
-                                                    title={user.username}
-                                                    message={user.hashPassword}
-                                                    time={user.lastMessageTime}
-                                                    avatar={import.meta.env.VITE_API_URL + '/' + user.avatar}
-                                                />
-                                            )}
-                                        </div>
-                                    );
-                                })
-                            ) : (
-                                <div className={styles.noUsers}>Пока что нет активных чатов</div>
-                            )}
+                            {
+                                isLoading ? (
+                                    <CircularProgress size={56} color='secondary' sx={{marginTop: '60%', marginLeft: '40%'}}/>
+                                ) : (
+                                    chats && Array.isArray(chats) ?
+                                        chats.map((chat) => {
+                                            const user = chat.user2;
+                                            const displayStyle = user ? 'block' : 'flex';
+                                            return (
+                                                <div
+                                                    onClick={() => handleUserClick(chat)}
+                                                    key={chat.id}
+                                                    style={{ display: displayStyle }}
+                                                >
+                                                    {user && (
+                                                        <User
+                                                            title={user.username}
+                                                            message={user.hashPassword}
+                                                            time={user.lastMessageTime}
+                                                            avatar={`${import.meta.env.VITE_API_URL}/${user.avatar}`}
+                                                        />
+                                                    )}
+                                                </div>
+                                            );
+                                        }) :
+                                        <div className={styles.noUsers}>Пока что нет активных чатов</div>
+                                )
+                            }
                         </div>
                     </div>
                     {activeUser && (
@@ -204,12 +218,11 @@ export const Chat = () => {
                                 <div className={styles.ff}>
                                     <UserAvatar
                                         avatar={
-                                            import.meta.env.VITE_API_URL + activeUser.user2?.avatar
+                                            import.meta.env.VITE_API_URL + '/' + activeUser.user2?.avatar
                                         }
                                     />
                                     <div className={styles.info}>
                                         <p>{activeUser.user2.username}</p>
-                                        <p>{activeUser.status}</p>
                                     </div>
                                 </div>
                             </div>
@@ -249,12 +262,7 @@ export const Chat = () => {
                                         <div key={index} className={styles.message}>
                                             <div className={styles.avatar}>
                                                 <UserAvatar
-                                                    avatar={
-                                                        msg.fromId === userData?.id
-                                                            ? userData?.avatar
-                                                            : activeUser.user1?.avatar
-                                                    }
-                                                />
+                                                    avatar={import.meta.env.VITE_API_URL + '/' + (msg.fromId === activeUser.user1.id ? activeUser.user1.avatar : activeUser.user2.avatar)} />
                                             </div>
                                             <div style={{ width: '100%' }}>
                                                 <div className={styles.infoUser}>

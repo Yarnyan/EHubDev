@@ -5,7 +5,6 @@ interface avatar {
   avatar?: string
 }
 const UserAvatar: React.FC<avatar> = ({avatar}) => {
-  const {id} = useParams()
   const navigate = useNavigate()
   return (
     <Avatar
