@@ -12,6 +12,7 @@ import styles from './authorization-form.module.scss'
 import { Inputs } from './types/Inputs.ts'
 import { createBody } from './helpers/create-body.ts'
 import { useLazyGetCurrentUserDataQuery } from '../../api/user-api.ts'
+import { useAppSelector } from '../../hooks/redux-hooks.ts'
 
 export const AuthorizationForm = () => {
   const { pathname } = useLocation()
@@ -19,9 +20,9 @@ export const AuthorizationForm = () => {
   const [isSendingForm, setIsSendingForm] = useState(false)
   const [registration, registrationRequestData] = useRegistrationMutation()
   const [authorization, authorizationRequestData] = useAuthorizationMutation()
-  console.log(authorizationRequestData)
   const [getCurrentUser] = useLazyGetCurrentUserDataQuery()
   const navigate = useNavigate()
+  const user = useAppSelector(state => state.userReducer.user)
 
   const formMethods = useForm<Inputs>({ mode: 'onBlur' })
 
@@ -57,11 +58,10 @@ export const AuthorizationForm = () => {
   ])
 
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (user !== null && user !== 'unknown') {
       navigate('/profile')
     }
-    reset()
-  }, [pathname, isSubmitSuccessful])
+  }, [user])
 
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
   return (

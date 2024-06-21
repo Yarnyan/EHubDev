@@ -67,12 +67,14 @@ export const Header = () => {
             </button>
           </div>
         }
-        <div className={styles.tools}>
-          <Link to={'/profile'} className={styles.toolLink}>
-            <img src='/icons/setting.png' alt='' className={styles.toolIcon} />
-          </Link>
-          <UserAvatar />
-        </div>
+        {user &&
+          <div className={styles.tools}>
+            <Link to={'/profile'} className={styles.toolLink}>
+              <img src='/icons/setting.png' alt='' className={styles.toolIcon} />
+            </Link>
+            <UserAvatar />
+          </div>
+        }
       </div>
     </header>
   )
