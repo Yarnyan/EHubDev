@@ -48,3 +48,10 @@
     line-height: 18.15px;
     color: #A8A8A8
 }
+
+@media screen and (max-width: 768px) {
+    .containerInfo {
+        width: 100px;
+        overflow: hidden;
+    }
+}

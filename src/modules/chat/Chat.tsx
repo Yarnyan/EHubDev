@@ -50,7 +50,7 @@ export const Chat = () => {
     const [sendMessage] = useSendMessageMutation();
 
     const handleUserClick = (user: any) => {
-        setActiveChat(true)
+        setActiveChat(true);
         dispatch(setActiveUser(user));
         dispatch(setActiveChatId(user.id));
         setId(user.id);
@@ -68,9 +68,6 @@ export const Chat = () => {
         });
     };
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(event.target.value);
-    };
 
     useEffect(() => {
         const connection = new HubConnectionBuilder()
@@ -79,11 +76,11 @@ export const Chat = () => {
             })
             .configureLogging(LogLevel.Information)
             .build();
-
+    
         connection.start()
             .then(() => console.log('Connection started'))
             .catch(error => console.log('Error establishing connection', error));
-
+    
         connection.on('Receive', (message: string, userId: number, chatId: number, timeSpan: string) => {
             console.log(message, chatId);
             setMessages((prevMessages) => {
@@ -97,19 +94,19 @@ export const Chat = () => {
                         user: username || '',
                         chatId: chatId,
                         timeSpan: extractTime(timeSpan),
-
                     }
                 ];
             });
-            reorderChats(chatId);
+            // reorderChats(chatId);
         });
-
+    
         connectionRef.current = connection;
-
+    
         return () => {
             connection.stop().then(() => console.log('Connection stopped'));
         };
     }, [activeUser, token]);
+    
 
     useEffect(() => {
         if (chats) {

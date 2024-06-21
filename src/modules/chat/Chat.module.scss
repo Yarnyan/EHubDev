@@ -208,3 +208,12 @@
     text-align: center;
     margin-top: 16px;
 }
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        width: 150px;
+    }
+    .header {
+        width: 150px;
+    }
+}
