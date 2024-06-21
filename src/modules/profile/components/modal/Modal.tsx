@@ -8,7 +8,7 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ show, onClose, title }) => {
+const Modal: React.FC<ModalProps> = ({ show, onClose, title, children}) => {
   if (!show) {
     return null;
   }
@@ -23,7 +23,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, title }) => {
           </button>
         </div>
         <div className={styles.modalContent}>
-          <p>Ваше сообщение успешно отправлено! Для продолжения перейдите в мессенджер</p>
+          <p>{children}</p>
         </div>
       </div>
     </div>
@@ -31,3 +31,5 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, title }) => {
 };
 
 export default Modal;
+
+//Ваше сообщение успешно отправлено! Для продолжения перейдите в мессенджер

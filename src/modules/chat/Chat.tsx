@@ -28,8 +28,10 @@ export const Chat = () => {
     const [searchValue, setSearchValue] = useState<string>('');
     const activeUser = useAppSelector((state) => state.chatReducer.activeUser);
     const activeChatId = useAppSelector((state) => state.chatReducer.activeChatId);
+    const [activeChat, setActiveChat] = useState<false>({});
     const [id, setId] = useState<number | null>(null);
     const dispatch = useAppDispatch();
+    const [filteredChats, setFilteredChats] = useState<any[]>([]);
     const userData = useAppSelector(state => state.userReducer.user as User);
 
     const formMethods = useForm<Inputs>({ mode: 'onBlur' });
@@ -48,6 +50,7 @@ export const Chat = () => {
     const [sendMessage] = useSendMessageMutation();
 
     const handleUserClick = (user: any) => {
+        setActiveChat(true)
         dispatch(setActiveUser(user));
         dispatch(setActiveChatId(user.id));
         setId(user.id);
@@ -55,6 +58,14 @@ export const Chat = () => {
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFileName(event.target.value);
+    };
+
+    const reorderChats = (chatId: number) => {
+        setFilteredChats((prevChats) => {
+            const updatedChats = prevChats.filter((chat) => chat.id !== chatId);
+            const movedChat = prevChats.find((chat) => chat.id === chatId);
+            return movedChat ? [movedChat, ...updatedChats] : prevChats;
+        });
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,11 +85,10 @@ export const Chat = () => {
             .catch(error => console.log('Error establishing connection', error));
 
         connection.on('Receive', (message: string, userId: number, chatId: number, timeSpan: string) => {
+            console.log(message, chatId);
             setMessages((prevMessages) => {
                 const activeUsr = activeUser;
-                const userImage = userId === activeUsr.user1?.id ? activeUsr.user1?.avatar : activeUsr.user2?.avatar;
                 const username = userId === activeUsr.user1?.id ? activeUsr.user1?.username : activeUsr.user2?.username;
-
                 return [
                     ...prevMessages,
                     {
@@ -87,10 +97,11 @@ export const Chat = () => {
                         user: username || '',
                         chatId: chatId,
                         timeSpan: extractTime(timeSpan),
-                        image: userImage
+
                     }
                 ];
             });
+            reorderChats(chatId);
         });
 
         connectionRef.current = connection;
@@ -100,6 +111,19 @@ export const Chat = () => {
         };
     }, [activeUser, token]);
 
+    useEffect(() => {
+        if (chats) {
+            setFilteredChats(chats);
+        }
+    }, [chats]);
+
+    useEffect(() => {
+        const filteredChats = chats?.filter((chat) => {
+          const username = chat.user2?.username;
+          return username?.toLowerCase().includes(searchValue.toLowerCase());
+        });
+        setFilteredChats(filteredChats ?? []);
+      }, [searchValue, chats]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -173,21 +197,30 @@ export const Chat = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
+
+    useEffect(() => {
+        setActiveChat(false);
+      }, []);
     return (
         <FormProvider {...formMethods}>
             <div className={styles.container}>
                 <div className={styles.chat}>
                     <div className={styles.navbar}>
                         <div className={styles.header}>
-                            <ControlledTextField name='поиск' labelType='static' sx={{ width: '240px' }} onChange={handleSearchChange} />
+                            <input
+                                type="text"
+                                placeholder='Введите имя'
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
                         </div>
                         <div className={styles.users}>
                             {
                                 isLoading ? (
-                                    <CircularProgress size={56} color='secondary' sx={{marginTop: '60%', marginLeft: '40%'}}/>
+                                    <CircularProgress size={56} color='secondary' sx={{ marginTop: '60%', marginLeft: '40%' }} />
                                 ) : (
-                                    chats && Array.isArray(chats) ?
-                                        chats.map((chat) => {
+                                    filteredChats && Array.isArray(filteredChats) ?
+                                        filteredChats.map((chat) => {
                                             const user = chat.user2;
                                             const displayStyle = user ? 'block' : 'flex';
                                             return (
@@ -212,7 +245,7 @@ export const Chat = () => {
                             }
                         </div>
                     </div>
-                    {activeUser && (
+                    {activeUser && activeChat && (
                         <div className={styles.chatBody}>
                             <div className={styles.chatHeader}>
                                 <div className={styles.ff}>

@@ -31,12 +31,12 @@ export const Profile = () => {
   const [putUserData] = usePutCurrentUserDataMutation()
   const [uploadAvatar] = useUploadAvatarMutation()
   const [getUserData] = useLazyGetCurrentUserDataQuery()
-  const {data, isLoading, error} = useGetCurrentUserDataQuery(token)
+  const { data, isLoading, error } = useGetCurrentUserDataQuery(token)
   console.log(data)
   const [sendMessage] = useSendMessageMutation()
   const [isBlocked, setIsBlocked] = useState(false)
   const [showModal, setShowModal] = useState(false);
-
+  const [modalMessage, setModalMessage] = useState('');
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
@@ -123,8 +123,10 @@ export const Profile = () => {
   const handleSendMessage = async () => {
     openModal()
     setIsBlocked(true)
+    setModalMessage('Ваше сообщение успешно отправлено! Для продолжения перейдите в мессенджер')
     const activeId = visitedUserData!.id;
     const message = 'Привет, заинтересовала твоя анкета';
+    
     try {
       await sendMessage({ activeId, message, token: localStorage.getItem('token')! });
     } catch (error) {
@@ -137,6 +139,19 @@ export const Profile = () => {
       console.log('Component is being unmounted');
     };
   }, []);
+
+  const handleSelectResume = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf'; 
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+    };
+    input.click();
+    openModal()
+    setModalMessage('Резюме успешно загружено')
+  };
 
   return (
     <div className={styles.container}>
@@ -232,14 +247,14 @@ export const Profile = () => {
           }
           {!enableEdit && visitedUserData &&
             <button
-            type='button'
-            onClick={handleSendMessage}
-            className={`${styles.profileBtn} ${isBlocked ? styles.disabled : ''}`}
-            disabled={isBlocked}
-            style={isBlocked ? { backgroundColor: '#bde4bf', border: 'none' } : { backgroundColor: '#72C075' }}
-          >
-            Написать
-          </button>
+              type='button'
+              onClick={handleSendMessage}
+              className={`${styles.profileBtn} ${isBlocked ? styles.disabled : ''}`}
+              disabled={isBlocked}
+              style={isBlocked ? { backgroundColor: '#bde4bf', border: 'none' } : { backgroundColor: '#72C075' }}
+            >
+              Написать
+            </button>
           }
         </form>
       </FormProvider>
@@ -247,13 +262,16 @@ export const Profile = () => {
         <div className={styles.avatarContainer}>
           <img src={avatar} alt='avatar' />
           {enableEdit &&
-            <button className={styles.profileBtn} onClick={handleSelectAvatarClick}>
-              Загрузить фото
-            </button>
+            <div className="">
+              <button className={styles.profileBtn} onClick={handleSelectAvatarClick}>
+                Загрузить фото
+              </button>
+              <button className={styles.profileBtn} onClick={handleSelectResume}>Загрузить резюме</button>
+            </div>
           }
         </div>
       }
-      <Modal show={showModal} onClose={closeModal} title="My Modal" />
+      <Modal show={showModal} onClose={closeModal} title="My Modal" children={modalMessage}/>
     </div>
   )
 }
