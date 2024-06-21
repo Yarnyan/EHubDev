@@ -19,4 +19,4 @@ export const builderApi = createApi({
   }),
 })
 
-export const {} = profileApi
+export const {useUploadResumeMutation} = builderApi

@@ -4,6 +4,7 @@ import styles from './header-burger.module.scss'
 import { CHAT_ROUTE, PORTFOLIO_ROUTE, RESUMEBUILDER_ROUTE, SEARCH_ROUTE } from '../../../../consts/routes'
 import { useAppSelector } from '../../../../hooks/redux-hooks.ts'
 import { User } from '../../../../models/User.ts'
+
 export const HeaderBurger = (props: {
   anchorEl: HTMLElement | null
   isMenuOpen: boolean
@@ -18,7 +19,8 @@ export const HeaderBurger = (props: {
       onClose={props.handleCloseMenu}
     >
       <MenuItem onClick={props.handleCloseMenu}>
-        <Link className={styles.link} to={PORTFOLIO_ROUTE}>{user.userType === 'Default' ? 'Портфолио' : 'Вакансии'}</Link>
+        <Link className={styles.link}
+              to={user.userType === 'Default' ? '/portfolio' : '/jobs'}>{user.userType === 'Default' ? 'Портфолио' : 'Вакансии'}</Link>
       </MenuItem>
       {user.userType === 'Default' &&
         <MenuItem onClick={props.handleCloseMenu}>
@@ -29,7 +31,8 @@ export const HeaderBurger = (props: {
         <Link className={styles.link} to={CHAT_ROUTE}>Мессенджер</Link>
       </MenuItem>
       <MenuItem onClick={props.handleCloseMenu}>
-        <Link className={styles.link} to={SEARCH_ROUTE}>{user.userType === 'Default' ? 'Вакансии' : 'Исполнители'}</Link>
+        <Link className={styles.link}
+              to={SEARCH_ROUTE}>{user.userType === 'Default' ? 'Вакансии' : 'Исполнители'}</Link>
       </MenuItem>
     </Menu>
   )
